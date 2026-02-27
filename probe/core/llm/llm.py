@@ -59,7 +59,7 @@ class Llm:
 
         self.supports_vision = None  # Will try to auto-detect
         self.vision_renderer = (
-            self.interpreter.computer.vision.query
+            self.probe.computer.vision.query
         )  # Will only use if supports_vision is False
 
         self.supports_functions = None  # Will try to auto-detect
@@ -119,12 +119,12 @@ class Llm:
         # Setup our model endpoint
         if model == "i":
             model = "openai/i"
-            if not hasattr(self.interpreter, "conversation_id"):  # Only do this once
+            if not hasattr(self.probe, "conversation_id"):  # Only do this once
                 self.context_window = 7000
                 self.api_key = "x"
                 self.max_tokens = 1000
                 self.api_base = "https://api.probe.sh/v0"
-                self.interpreter.conversation_id = str(uuid.uuid4())
+                self.probe.conversation_id = str(uuid.uuid4())
 
         # Detect function support
         if self.supports_functions == None:
@@ -149,29 +149,29 @@ class Llm:
         # Trim image messages if they're there
         image_messages = [msg for msg in messages if msg["type"] == "image"]
         if self.supports_vision:
-            if self.interpreter.os:
+            if self.probe.os:
                 # Keep only the last two images if the interpreter is running in OS mode
                 if len(image_messages) > 1:
                     for img_msg in image_messages[:-2]:
                         messages.remove(img_msg)
-                        if self.interpreter.verbose:
+                        if self.probe.verbose:
                             print("Removing image message!")
             else:
                 # Delete all the middle ones (leave only the first and last 2 images) from messages_for_llm
                 if len(image_messages) > 3:
                     for img_msg in image_messages[1:-2]:
                         messages.remove(img_msg)
-                        if self.interpreter.verbose:
+                        if self.probe.verbose:
                             print("Removing image message!")
                 # Idea: we could set detail: low for the middle messages, instead of deleting them
         elif self.supports_vision == False and self.vision_renderer:
             for img_msg in image_messages:
                 if img_msg["format"] != "description":
-                    self.interpreter.display_message("\n  *Viewing image...*\n")
+                    self.probe.display_message("\n  *Viewing image...*\n")
 
                     if img_msg["format"] == "path":
                         precursor = f"The image I'm referring to ({img_msg['content']}) contains the following: "
-                        if self.interpreter.computer.import_computer_api:
+                        if self.probe.computer.import_computer_api:
                             postcursor = f"\nIf you want to ask questions about the image, run `computer.vision.query(path='{img_msg['content']}', query='(ask any question here)')` and a vision AI will answer it."
                         else:
                             postcursor = ""
@@ -181,7 +181,7 @@ class Llm:
 
                     try:
                         image_description = self.vision_renderer(lmc=img_msg)
-                        ocr = self.interpreter.computer.vision.ocr(lmc=img_msg)
+                        ocr = self.probe.computer.vision.ocr(lmc=img_msg)
 
                         # It would be nice to format this as a message to the user and display it like: "I see: image_description"
 
@@ -207,8 +207,8 @@ class Llm:
             messages,
             function_calling=self.supports_functions,
             vision=self.supports_vision,
-            shrink_images=self.interpreter.shrink_images,
-            interpreter=self.interpreter,
+            shrink_images=self.probe.shrink_images,
+            interpreter=self.probe,
         )
 
         system_message = messages[0]["content"]
@@ -239,8 +239,8 @@ class Llm:
                     )
                 except:
                     if len(messages) == 1:
-                        if self.interpreter.in_terminal_interface:
-                            self.interpreter.display_message(
+                        if self.probe.in_terminal_interface:
+                            self.probe.display_message(
                                 """
 **We were unable to determine the context window of this model.** Defaulting to 8000.
 
@@ -250,7 +250,7 @@ Continuing...
                             """
                             )
                         else:
-                            self.interpreter.display_message(
+                            self.probe.display_message(
                                 """
 **We were unable to determine the context window of this model.** Defaulting to 8000.
 
@@ -299,17 +299,17 @@ Continuing...
             params["max_tokens"] = self.max_tokens
         if self.temperature:
             params["temperature"] = self.temperature
-        if hasattr(self.interpreter, "conversation_id"):
-            params["conversation_id"] = self.interpreter.conversation_id
+        if hasattr(self.probe, "conversation_id"):
+            params["conversation_id"] = self.probe.conversation_id
 
         # Set some params directly on LiteLLM
         if self.max_budget:
             litellm.max_budget = self.max_budget
-        if self.interpreter.verbose:
+        if self.probe.verbose:
             litellm.set_verbose = True
 
         if (
-            self.interpreter.debug == True and False  # DISABLED
+            self.probe.debug == True and False  # DISABLED
         ):  # debug will equal "server" if we're debugging the server specifically
             print("\n\n\nOPENAI COMPATIBLE MESSAGES:\n\n\n")
             for message in messages:
@@ -364,14 +364,14 @@ Continuing...
 
             except Exception as e:
                 print(str(e))
-                self.interpreter.display_message(
+                self.probe.display_message(
                     f"> Ollama not found\n\nPlease download Ollama from [ollama.com](https://ollama.com/) to use `{model_name}`.\n"
                 )
                 exit()
 
             # Download model if not already installed
             if model_name not in names:
-                self.interpreter.display_message(f"\nDownloading {model_name}...\n")
+                self.probe.display_message(f"\nDownloading {model_name}...\n")
                 requests.post(f"{api_base}/api/pull", json={"name": model_name})
 
             # Get context window if not set
@@ -397,10 +397,10 @@ Continuing...
 
             old_max_tokens = self.max_tokens
             self.max_tokens = 1
-            self.interpreter.computer.ai.chat("ping")
+            self.probe.computer.ai.chat("ping")
             self.max_tokens = old_max_tokens
 
-            self.interpreter.display_message("*Model loaded.*\n")
+            self.probe.display_message("*Model loaded.*\n")
 
         # Validate LLM should be moved here!!
 

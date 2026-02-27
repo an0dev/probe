@@ -606,17 +606,17 @@ def get_argument_dictionary(arguments: list[dict], key: str) -> dict:
 
 
 def main():
-    from probe import interpreter
+    from probe import probe
 
     try:
-        start_terminal_interface(interpreter)
+        start_terminal_interface(probe)
     except KeyboardInterrupt:
         try:
-            interpreter.computer.terminate()
+            probe.computer.terminate()
 
-            if not interpreter.offline and not interpreter.disable_telemetry:
+            if not probe.offline and not probe.disable_telemetry:
                 feedback = None
-                if len(interpreter.messages) > 3:
+                if len(probe.messages) > 3:
                     feedback = (
                         input("\n\nWas Probe helpful? (y/n): ")
                         .strip()
@@ -628,8 +628,8 @@ def main():
                         feedback = False
                     else:
                         feedback = None
-                    if feedback != None and not interpreter.contribute_conversation:
-                        if interpreter.llm.model == "i":
+                    if feedback != None and not probe.contribute_conversation:
+                        if probe.llm.model == "i":
                             contribute = "y"
                         else:
                             print(
@@ -638,24 +638,24 @@ def main():
                             contribute = input("(y/n): ").strip().lower()
 
                         if contribute == "y":
-                            interpreter.contribute_conversation = True
-                            interpreter.display_message(
+                            probe.contribute_conversation = True
+                            probe.display_message(
                                 "\n*Thank you for contributing!*\n"
                             )
 
                 if (
-                    interpreter.contribute_conversation or interpreter.llm.model == "i"
-                ) and interpreter.messages != []:
+                    probe.contribute_conversation or probe.llm.model == "i"
+                ) and probe.messages != []:
                     conversation_id = (
-                        interpreter.conversation_id
+                        probe.conversation_id
                         if hasattr(interpreter, "conversation_id")
                         else None
                     )
                     contribute_conversations(
-                        [interpreter.messages], feedback, conversation_id
+                        [probe.messages], feedback, conversation_id
                     )
 
         except KeyboardInterrupt:
             pass
     finally:
-        interpreter.computer.terminate()
+        probe.computer.terminate()

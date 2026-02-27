@@ -55,8 +55,8 @@ class Computer:
         self.import_skills = False
         self._has_imported_skills = False
         self.max_output = (
-            self.interpreter.max_output
-        )  # Should mirror interpreter.max_output
+            self.probe.max_output
+        )  # Should mirror probe.max_output
 
         computer_tools = "\n".join(
             self._get_all_computer_tools_signature_and_description()
