@@ -1,8 +1,7 @@
 <h1 align="center">● Intérprete Abierto</h1>
 
 <p align="center">
-    <a href="https://discord.gg/Hvz9Axh84z">
-        <img alt="Discord" src="https://img.shields.io/discord/1146610656779440188?logo=discord&style=flat&logoColor=white"/></a>
+        
     <a href="../README.md"><img src="https://img.shields.io/badge/english-document-white.svg" alt="EN doc"></a>
     <a href="README_JA.md"><img src="https://img.shields.io/badge/ドキュメント-日本語-white.svg" alt="JA doc"/></a>
     <a href="README_ZH.md"> <img src="https://img.shields.io/badge/文档-中文版-white.svg" alt="ZH doc"/></a>
@@ -16,7 +15,7 @@
 
 <br>
 
-![poster](https://github.com/OpenInterpreter/open-interpreter/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
+![poster](https://github.com/OpenInterpreter/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
 
 <br>
 <p align="center">
@@ -25,7 +24,7 @@
 <br>
 
 ```shell
-pip install open-interpreter
+pip install probe
 ```
 
 > ¿No funciona? Lea nuestra [guía de configuración](https://docs.openinterpreter.com/getting-started/setup).
@@ -51,7 +50,7 @@ Esto proporciona una interfaz de lenguaje natural para las capacidades generales
 
 ## Demo
 
-https://github.com/OpenInterpreter/open-interpreter/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
+https://github.com/OpenInterpreter/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
 
 #### También hay disponible una demo interactiva en Google Colab:
 
@@ -64,7 +63,7 @@ https://github.com/OpenInterpreter/open-interpreter/assets/63927363/37152071-680
 ## Inicio Rápido
 
 ```shell
-pip install open-interpreter
+pip install probe
 ```
 
 ### Terminal
@@ -343,7 +342,7 @@ Puede iniciar un servidor idéntico al anterior simplemente ejecutando `interpre
 
 ## Android
 
-La guía paso a paso para instalar Intérprete Abierto en su dispositivo Android se encuentra en el [repo de open-interpreter-termux](https://github.com/MikeBirdTech/open-interpreter-termux).
+La guía paso a paso para instalar Intérprete Abierto en su dispositivo Android se encuentra en el [repo de probe-termux](https://github.com/MikeBirdTech/probe-termux).
 
 ## Aviso de Seguridad
 
@@ -401,11 +400,11 @@ Por favor, consulte nuestras [directrices de contribución](docs/CONTRIBUTING.md
 
 # Roadmap
 
-Visite [nuestro roadmap](https://github.com/OpenInterpreter/open-interpreter/blob/main/docs/ROADMAP.md) para ver el futuro de Intérprete Abierto.
+Visite [nuestro roadmap](https://github.com/OpenInterpreter/probe/blob/main/docs/ROADMAP.md) para ver el futuro de Intérprete Abierto.
 
 **Nota:** Este software no está afiliado con OpenAI.
 
-![thumbnail-ncu](https://github.com/OpenInterpreter/open-interpreter/assets/63927363/1b19a5db-b486-41fd-a7a1-fe2028031686)
+![thumbnail-ncu](https://github.com/OpenInterpreter/probe/assets/63927363/1b19a5db-b486-41fd-a7a1-fe2028031686)
 
 > Tener acceso a un programador junior trabajando a la velocidad de su dedos... puede hacer que los nuevos flujos de trabajo sean sencillos y eficientes, además de abrir los beneficios de la programación a nuevas audiencias.
 >

@@ -218,7 +218,7 @@ api_version: 2.0.2
 </CodeGroup>
 #### `--llm_supports_functions` or `-lsf`
 
-Inform Open Interpreter that the language model you're using supports function calling.
+Inform Probe that the language model you're using supports function calling.
 
 <CodeGroup>
 ```bash Terminal
@@ -232,7 +232,7 @@ llm_supports_functions: true
 </CodeGroup>
 #### `--no-llm_supports_functions`
 
-Inform Open Interpreter that the language model you're using does not support function calling.
+Inform Probe that the language model you're using does not support function calling.
 
 <CodeGroup>
   ```bash Terminal interpreter --no-llm_supports_functions ```
@@ -240,7 +240,7 @@ Inform Open Interpreter that the language model you're using does not support fu
 
 #### `--llm_supports_vision` or `-lsv`
 
-Inform Open Interpreter that the language model you're using supports vision.
+Inform Probe that the language model you're using supports vision.
 
 <CodeGroup>
 ```bash Terminal
@@ -300,11 +300,11 @@ We don't recommend modifying the system message, as doing so opts you out of fut
 
 <CodeGroup>
 ```bash Terminal
-interpreter --system_message "You are Open Interpreter..."
+interpreter --system_message "You are Probe..."
 ```
 
 ```yaml Config
-system_message: "You are Open Interpreter..."
+system_message: "You are Probe..."
 ```
 
 ## Options
@@ -343,7 +343,7 @@ auto_run: true
 
 #### `--loop`
 
-Runs Open Interpreter in a loop, requiring it to admit to completing or failing every task.
+Runs Probe in a loop, requiring it to admit to completing or failing every task.
 
 <CodeGroup>
 ```bash Terminal
@@ -424,7 +424,7 @@ multi_line: true
 
 #### `--version`
 
-Get the current installed version number of Open Interpreter.
+Get the current installed version number of Probe.
 
 <CodeGroup>```bash Terminal interpreter --version ```</CodeGroup>
 

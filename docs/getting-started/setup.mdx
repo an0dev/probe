@@ -13,10 +13,10 @@ title: Setup
 
 ## Installation from `pip`
 
-If you are familiar with Python, we recommend installing Open Interpreter via `pip`
+If you are familiar with Python, we recommend installing Probe via `pip`
 
 ```bash
-pip install open-interpreter
+pip install probe
 ```
 
 <Info>
@@ -25,37 +25,37 @@ pip install open-interpreter
   [3.11](https://www.python.org/downloads/release/python-3110/). Run `python
   --version` to check yours.
 
-It is recommended to install Open Interpreter in a [virtual
+It is recommended to install Probe in a [virtual
 environment](https://docs.python.org/3/library/venv.html).
 
 </Info>
 
 ## Install optional dependencies from `pip`
 
-Open Interpreter has optional dependencies for different capabilities
+Probe has optional dependencies for different capabilities
 
 [Local Mode](/guides/running-locally) dependencies
 
 ```bash
-pip install open-interpreter[local]
+pip install probe[local]
 ```
 
 [OS Mode](/guides/os-mode) dependencies
 
 ```bash
-pip install open-interpreter[os]
+pip install probe[os]
 ```
 
 [Safe Mode](/safety/safe-mode) dependencies
 
 ```bash
-pip install open-interpreter[safe]
+pip install probe[safe]
 ```
 
 Server dependencies
 
 ```bash
-pip install open-interpreter[server]
+pip install probe[server]
 ```
 
 ## Experimental one-line installers
@@ -65,21 +65,21 @@ To try our experimental installers, open your Terminal with admin privileges [(c
 <CodeGroup>
 
 ```bash Mac
-curl -sL https://raw.githubusercontent.com/openinterpreter/open-interpreter/main/installers/oi-mac-installer.sh | bash
+curl -sL https://raw.githubusercontent.com/openinterpreter/probe/main/installers/oi-mac-installer.sh | bash
 ```
 
 ```powershell Windows
-iex "& {$(irm https://raw.githubusercontent.com/openinterpreter/open-interpreter/main/installers/oi-windows-installer-conda.ps1)}"
+iex "& {$(irm https://raw.githubusercontent.com/openinterpreter/probe/main/installers/oi-windows-installer-conda.ps1)}"
 ```
 
 ```bash Linux
-curl -sL https://raw.githubusercontent.com/openinterpreter/open-interpreter/main/installers/oi-linux-installer.sh | bash
+curl -sL https://raw.githubusercontent.com/openinterpreter/probe/main/installers/oi-linux-installer.sh | bash
 ```
 
 </CodeGroup>
 
-These installers will attempt to download Python, set up an environment, and install Open Interpreter for you.
+These installers will attempt to download Python, set up an environment, and install Probe for you.
 
 ## No Installation
 
-If configuring your computer environment is challenging, you can press the `,` key on the [GitHub page](https://github.com/OpenInterpreter/open-interpreter) to create a codespace. After a moment, you'll receive a cloud virtual machine environment pre-installed with open-interpreter. You can then start interacting with it directly and freely confirm its execution of system commands without worrying about damaging the system.
+If configuring your computer environment is challenging, you can press the `,` key on the [GitHub page](https://github.com/OpenInterpreter/probe) to create a codespace. After a moment, you'll receive a cloud virtual machine environment pre-installed with probe. You can then start interacting with it directly and freely confirm its execution of system commands without worrying about damaging the system.

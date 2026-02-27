@@ -1,8 +1,7 @@
-<h1 align="center">● Open Interpreter</h1>
+<h1 align="center">● Probe</h1>
 
 <p align="center">
-    <a href="https://discord.gg/6p3fD6rBVm">
-        <img alt="Discord" src="https://img.shields.io/discord/1146610656779440188?logo=discord&style=flat&logoColor=white"/></a>
+        
     <a href="README_ES.md"> <img src="https://img.shields.io/badge/Español-white.svg" alt="ES doc"/></a>
     <a href="../README.md"><img src="https://img.shields.io/badge/english-document-white.svg" alt="EN doc"></a>
     <a href="README_ZH.md"><img src="https://img.shields.io/badge/文档-中文版-white.svg" alt="ZH doc"/></a>
@@ -18,7 +17,7 @@
 
 <br>
 
-![poster](https://github.com/OpenInterpreter/open-interpreter/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
+![poster](https://github.com/OpenInterpreter/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
 
 <br>
 
@@ -27,7 +26,7 @@
 <br>
 
 ```shell
-pip install open-interpreter
+pip install probe
 ```
 
 ```shell
@@ -36,7 +35,7 @@ interpreter
 
 <br>
 
-**Open Interpreter**は、言語モデルに指示し、コード（Python、Javascript、Shell など）をローカル環境で実行できるようにします。インストール後、`$ interpreter` を実行するとターミナル経由で ChatGPT のようなインターフェースを介し、Open Interpreter とチャットができます。
+**Probe**は、言語モデルに指示し、コード（Python、Javascript、Shell など）をローカル環境で実行できるようにします。インストール後、`$ interpreter` を実行するとターミナル経由で ChatGPT のようなインターフェースを介し、Probe とチャットができます。
 
 これにより、自然言語のインターフェースを通して、パソコンの一般的な機能が操作できます。
 
@@ -51,7 +50,7 @@ interpreter
 
 ## デモ
 
-https://github.com/OpenInterpreter/open-interpreter/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
+https://github.com/OpenInterpreter/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
 
 #### Google Colab でも対話形式のデモを利用できます:
 
@@ -64,7 +63,7 @@ https://github.com/OpenInterpreter/open-interpreter/assets/63927363/37152071-680
 ## クイックスタート
 
 ```shell
-pip install open-interpreter
+pip install probe
 ```
 
 ### ターミナル
@@ -97,7 +96,7 @@ GPT-4 で実装された OpenAI の [Code Interpreter](https://openai.com/blog/c
 
 ---
 
-Open Interpreter は、ローカル環境で操作することで、これらの制限を克服しています。インターネットにフルアクセスでき、時間やファイルサイズの制限を受けず、どんなパッケージやライブラリも利用できます。
+Probe は、ローカル環境で操作することで、これらの制限を克服しています。インターネットにフルアクセスでき、時間やファイルサイズの制限を受けず、どんなパッケージやライブラリも利用できます。
 
 Open Interpter は、GPT-4 Code Interpreter のパワーとローカル開発環境の柔軟性を組み合わせたものです。
 
@@ -151,7 +150,7 @@ interpreter.chat("ついでに、字幕を大きくできますか？")
 
 ### 新しいチャットを開始
 
-プログラム的チャットで Open Interpreter は、会話の履歴を記憶しています。新しくやり直したい場合は、リセットすることができます:
+プログラム的チャットで Probe は、会話の履歴を記憶しています。新しくやり直したい場合は、リセットすることができます:
 
 ```python
 interpreter.messages = []
@@ -170,7 +169,7 @@ interpreter.messages = messages # 'messages'からチャットを再開（"田�
 
 ### システムメッセージのカスタマイズ
 
-Open Interpreter のシステムメッセージを確認し、設定することで、機能を拡張したり、権限を変更したり、またはより多くのコンテキストを与えたりすることができます。
+Probe のシステムメッセージを確認し、設定することで、機能を拡張したり、権限を変更したり、またはより多くのコンテキストを与えたりすることができます。
 
 ```python
 interpreter.system_message += """
@@ -181,7 +180,7 @@ print(interpreter.system_message)
 
 ### モデルの変更
 
-Open Interpreter は、ホストされた言語モデルへの接続に [LiteLLM](https://docs.litellm.ai/docs/providers/) を使用しています。
+Probe は、ホストされた言語モデルへの接続に [LiteLLM](https://docs.litellm.ai/docs/providers/) を使用しています。
 
 model パラメータを設定することで、モデルを変更することが可能です:
 
@@ -201,7 +200,7 @@ interpreter.llm.model = "gpt-3.5-turbo"
 
 ### ローカルのモデルを実行する
 
-Open Interpreter は、OpenAI 互換サーバーを使用してモデルをローカルで実行できます。 (LM Studio、jan.ai、ollam など)
+Probe は、OpenAI 互換サーバーを使用してモデルをローカルで実行できます。 (LM Studio、jan.ai、ollam など)
 
 推論サーバーの api_base URL を指定して「interpreter」を実行するだけです (LM Studio の場合、デフォルトでは「http://localhost:1234/v1」です)。
 
@@ -224,7 +223,7 @@ interpreter --local
 3. 左側の **↔️** ボタン（💬 の下）をクリックします。
 4. 上部でモデルを選択し、**サーバーを起動** をクリックします。
 
-サーバーが稼働を開始したら、Open Interpreter との会話を開始できます。
+サーバーが稼働を開始したら、Probe との会話を開始できます。
 
 > **注意:** ローカルモードでは、`context_window` を 3000 に、`max_tokens` を 1000 に設定します。モデルによって異なる要件がある場合、これらのパラメータを手動で設定してください（下記参照）。
 
@@ -240,7 +239,7 @@ interpreter --local --max_tokens 1000 --context_window 3000
 
 ### デバッグモード
 
-コントリビューターが Open Interpreter を調査するのを助けるために、`--verbose` モードは非常に便利です。
+コントリビューターが Probe を調査するのを助けるために、`--verbose` モードは非常に便利です。
 
 デバッグモードは、フラグ（`interpreter --verbose`）を使用するか、またはチャットの中から有効にできます:
 
@@ -268,7 +267,7 @@ $ interpreter
 
 ### 設定
 
-Open Interpreter では、`config.yaml` ファイルを使用してデフォルトの動作を設定することができます。
+Probe では、`config.yaml` ファイルを使用してデフォルトの動作を設定することができます。
 
 これにより、毎回コマンドライン引数を変更することなく柔軟に設定することができます。
 
@@ -280,7 +279,7 @@ interpreter --config
 
 #### 設定ファイルの複数利用
 
-Open Interpreter は複数の `config.yaml` ファイルをサポートしており、`--config_file` 引数を通じて簡単に設定を切り替えることができます。
+Probe は複数の `config.yaml` ファイルをサポートしており、`--config_file` 引数を通じて簡単に設定を切り替えることができます。
 
 **注意**: `--config_file` はファイル名またはファイルパスを受け入れます。ファイル名はデフォルトの設定ディレクトリを使用し、ファイルパスは指定されたパスを使用します。
 
@@ -290,7 +289,7 @@ Open Interpreter は複数の `config.yaml` ファイルをサポートしてお
 interpreter --config --config_file $config_path
 ```
 
-特定の設定ファイルをロードして Open Interpreter を実行するには、次のコマンドを実行します:
+特定の設定ファイルをロードして Probe を実行するには、次のコマンドを実行します:
 
 ```
 interpreter --config_file $config_path
@@ -305,14 +304,14 @@ interpreter --config_file $config_path
    interpreter --config --config_file config.turbo.yaml
    ```
 2. `config.turbo.yaml` ファイルを編集して、`model` を `gpt-3.5-turbo` に設定します
-3. `config.turbo.yaml` 設定で、Open Interpreter を実行します
+3. `config.turbo.yaml` 設定で、Probe を実行します
    ```
    interpreter --config_file config.turbo.yaml
    ```
 
 ##### Python での使用例
 
-Python のスクリプトから Open Interpreter を呼び出すときにも設定ファイルをロードできます:
+Python のスクリプトから Probe を呼び出すときにも設定ファイルをロードできます:
 
 ```python
 import os
@@ -331,7 +330,7 @@ for chunk in interpreter.chat(message, display=False, stream=True):
 
 ## FastAPI サーバーのサンプル
 
-アップデートにより Open Interpreter は、HTTP REST エンドポイントを介して制御できるようになりました:
+アップデートにより Probe は、HTTP REST エンドポイントを介して制御できるようになりました:
 
 ```python
 # server.py
@@ -364,19 +363,19 @@ uvicorn server:app --reload
 
 生成されたコードはローカル環境で実行されるため、ファイルやシステム設定と相互作用する可能性があり、データ損失やセキュリティリスクなど予期せぬ結果につながる可能性があります。
 
-**⚠️ Open Interpreter はコードを実行する前にユーザーの確認を求めます。**
+**⚠️ Probe はコードを実行する前にユーザーの確認を求めます。**
 
 この確認を回避するには、`interpreter -y` を実行するか、`interpreter.auto_run = True` を設定します。その場合:
 
 - ファイルやシステム設定を変更するコマンドを要求するときは注意してください。
-- Open Interpreter を自動運転車のように監視し、ターミナルを閉じてプロセスを終了できるように準備しておいてください。
-- Google Colab や Replit のような制限された環境で Open Interpreter を実行することを検討してください。これらの環境はより隔離されており、任意のコードの実行に関連するリスクを軽減します。
+- Probe を自動運転車のように監視し、ターミナルを閉じてプロセスを終了できるように準備しておいてください。
+- Google Colab や Replit のような制限された環境で Probe を実行することを検討してください。これらの環境はより隔離されており、任意のコードの実行に関連するリスクを軽減します。
 
 一部のリスクを軽減するための[セーフモード](docs/SAFE_MODE.md)と呼ばれる **実験的な** サポートがあります。
 
-## Open Interpreter はどのように機能するのか？
+## Probe はどのように機能するのか？
 
-Open Interpreter は、[関数が呼び出せる言語モデル](https://platform.openai.com/docs/guides/gpt/function-calling)に `exec()` 関数を装備し、実行する言語（"python"や"javascript"など）とコードが渡せるようになっています。
+Probe は、[関数が呼び出せる言語モデル](https://platform.openai.com/docs/guides/gpt/function-calling)に `exec()` 関数を装備し、実行する言語（"python"や"javascript"など）とコードが渡せるようになっています。
 
 そして、モデルからのメッセージ、コード、システムの出力を Markdown としてターミナルにストリーミングします。
 
@@ -388,7 +387,7 @@ Open Interpreter は、[関数が呼び出せる言語モデル](https://platfor
 
 # ロードマップ
 
-Open Interpreter の未来を一足先に見るために、[私たちのロードマップ](https://github.com/OpenInterpreter/open-interpreter/blob/main/docs/ROADMAP.md)をご覧ください。
+Probe の未来を一足先に見るために、[私たちのロードマップ](https://github.com/OpenInterpreter/probe/blob/main/docs/ROADMAP.md)をご覧ください。
 
 **注意**: このソフトウェアは OpenAI とは関連していません。
 

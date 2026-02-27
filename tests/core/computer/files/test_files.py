@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 
-from interpreter.core.computer.files.files import Files
+from probe.core.computer.files.files import Files
 
 
 class TestFiles(unittest.TestCase):

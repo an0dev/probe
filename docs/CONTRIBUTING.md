@@ -1,16 +1,16 @@
 # ●
 
-**Open Interpreter is large, open-source initiative to build a standard interface between language models and computers.**
+**Probe is large, open-source initiative to build a standard interface between language models and computers.**
 
-There are many ways to contribute, from helping others on [Github](https://github.com/OpenInterpreter/open-interpreter/issues) or [Discord](https://discord.gg/6p3fD6rBVm), writing documentation, or improving code.
+There are many ways to contribute, from helping others on [Github](https://github.com/OpenInterpreter/probe/issues) or [Discord](https://discord.gg/6p3fD6rBVm), writing documentation, or improving code.
 
 We depend on contributors like you. Let's build this.
 
 ## What should I work on?
 
-First, please familiarize yourself with our [project scope](https://github.com/OpenInterpreter/open-interpreter/blob/main/docs/ROADMAP.md#whats-in-our-scope). Then, pick up a task from our [roadmap](https://github.com/OpenInterpreter/open-interpreter/blob/main/docs/ROADMAP.md) or work on solving an [issue](https://github.com/OpenInterpreter/open-interpreter/issues).
+First, please familiarize yourself with our [project scope](https://github.com/OpenInterpreter/probe/blob/main/docs/ROADMAP.md#whats-in-our-scope). Then, pick up a task from our [roadmap](https://github.com/OpenInterpreter/probe/blob/main/docs/ROADMAP.md) or work on solving an [issue](https://github.com/OpenInterpreter/probe/issues).
 
-If you encounter a bug or have a feature in mind, don't hesitate to [open a new issue](https://github.com/OpenInterpreter/open-interpreter/issues/new/choose).
+If you encounter a bug or have a feature in mind, don't hesitate to [open a new issue](https://github.com/OpenInterpreter/probe/issues/new/choose).
 
 ## Philosophy
 
@@ -20,9 +20,9 @@ This is a minimalist, **tightly scoped** project that places a premium on simpli
 
 1. Before taking on significant code changes, please discuss your ideas on [Discord](https://discord.gg/6p3fD6rBVm) to ensure they align with our vision. We want to keep the codebase simple and unintimidating for new users.
 2. Fork the repository and create a new branch for your work.
-3. Follow the [Running Your Local Fork](https://github.com/OpenInterpreter/open-interpreter/blob/main/docs/CONTRIBUTING.md#running-your-local-fork) guide below.
+3. Follow the [Running Your Local Fork](https://github.com/OpenInterpreter/probe/blob/main/docs/CONTRIBUTING.md#running-your-local-fork) guide below.
 4. Make changes with clear code comments explaining your approach. Try to follow existing conventions in the code.
-5. Follow the [Code Formatting and Linting](https://github.com/OpenInterpreter/open-interpreter/blob/main/docs/CONTRIBUTING.md#code-formatting-and-linting) guide below.
+5. Follow the [Code Formatting and Linting](https://github.com/OpenInterpreter/probe/blob/main/docs/CONTRIBUTING.md#code-formatting-and-linting) guide below.
 6. Open a PR into `main` linking any related issues. Provide detailed context on your changes.
 
 We will review PRs when possible and work with you to integrate your contribution. Please be patient as reviews take time. Once approved, your code will be merged.
@@ -33,7 +33,7 @@ We will review PRs when possible and work with you to integrate your contributio
 
 Once you've forked the code and created a new branch for your work, you can run the fork in CLI mode by following these steps:
 
-1. CD into the project folder by running `cd open-interpreter`.
+1. CD into the project folder by running `cd probe`.
 2. Install `poetry` [according to their documentation](https://python-poetry.org/docs/#installing-with-pipx), which will create a virtual environment for development + handle dependencies.
 3. Install dependencies by running `poetry install`.
 4. Run the program with `poetry run interpreter`. Run tests with `poetry run pytest -s -x`.
@@ -82,7 +82,7 @@ Our project uses `black` for code formatting and `isort` for import sorting. To 
 
 # Licensing
 
-Contributions to Open Interpreter would be under the MIT license before version 0.2.0, or under AGPL for subsequent contributions.
+Contributions to Probe would be under the MIT license before version 0.2.0, or under AGPL for subsequent contributions.
 
 # Questions?
 

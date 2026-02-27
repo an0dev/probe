@@ -2,7 +2,7 @@
 title: Streaming Response
 ---
 
-You can stream messages, code, and code outputs out of Open Interpreter by setting `stream=True` in an `interpreter.chat(message)` call.
+You can stream messages, code, and code outputs out of Probe by setting `stream=True` in an `interpreter.chat(message)` call.
 
 ```python
 for chunk in interpreter.chat("What's 34/24?", stream=True, display=False):
@@ -61,7 +61,7 @@ In this example, the LLM decided to start writing code first. It could have deci
 
 Every streamed chunk of type "code" has a format key that specifies the language. In this case it decided to write `python`.
 
-This can be any language defined in [our languages directory.](https://github.com/OpenInterpreter/open-interpreter/tree/main/interpreter/core/computer/terminal/languages)
+This can be any language defined in [our languages directory.](https://github.com/OpenInterpreter/probe/tree/main/interpreter/core/computer/terminal/languages)
 
 ```
 
@@ -90,7 +90,7 @@ When the LLM finishes writing code, it will send an "end" chunk:
 
 ## Code Output
 
-After the LLM finishes writing a code block, Open Interpreter will attempt to run it.
+After the LLM finishes writing a code block, Probe will attempt to run it.
 
 **Before** it runs it, the following chunk is sent:
 
@@ -117,7 +117,7 @@ for chunk in interpreter.chat("What's 34/24?", stream=True):
 {"role": "computer", "type": "console", "format": "active_line", "content": "1"}
 ```
 
-We use this to highlight the active line of code on our UI, which keeps the user aware of what Open Interpreter is doing.
+We use this to highlight the active line of code on our UI, which keeps the user aware of what Probe is doing.
 
 You'll then receive its output, if it produces any:
 
@@ -156,4 +156,4 @@ Finally, the LLM decided to write a message. This is streamed token-by-token as 
 {"role": "assistant", "type": "message", "end": True}
 ```
 
-For an example in JavaScript on how you might process these streamed chunks, see the [migration guide](https://github.com/OpenInterpreter/open-interpreter/blob/main/docs/NCU_MIGRATION_GUIDE.md)
+For an example in JavaScript on how you might process these streamed chunks, see the [migration guide](https://github.com/OpenInterpreter/probe/blob/main/docs/NCU_MIGRATION_GUIDE.md)

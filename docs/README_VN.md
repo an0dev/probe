@@ -1,8 +1,7 @@
-<h1 align="center">● Open Interpreter</h1>
+<h1 align="center">● Probe</h1>
 
 <p align="center">
-    <a href="https://discord.gg/6p3fD6rBVm">
-        <img alt="Discord" src="https://img.shields.io/discord/1146610656779440188?logo=discord&style=flat&logoColor=white"/></a>
+        
     <a href="README_ES.md"> <img src="https://img.shields.io/badge/Español-white.svg" alt="ES doc"/></a>
     <a href="docs/README_JA.md"><img src="https://img.shields.io/badge/ドキュメント-日本語-white.svg" alt="JA doc"/></a>
     <a href="docs/README_ZH.md"><img src="https://img.shields.io/badge/文档-中文版-white.svg" alt="ZH doc"/></a>
@@ -18,12 +17,12 @@
 
 <br>
 
-![poster](https://github.com/OpenInterpreter/open-interpreter/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
+![poster](https://github.com/OpenInterpreter/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
 
 <br>
 
 ```shell
-pip install open-interpreter
+pip install probe
 ```
 
 ```shell
@@ -32,7 +31,7 @@ interpreter
 
 <br>
 
-**Open Interpreter** Chạy LLMs trên máy tính cục bộ (Có thể sử dụng ngôn ngữ Python, Javascript, Shell, và nhiều hơn thế). Bạn có thể nói chuyện với Open Interpreter thông qua giao diện giống với ChatGPT ngay trên terminal của bạn bằng cách chạy lệnh `$ interpreter` sau khi tải thành công.
+**Probe** Chạy LLMs trên máy tính cục bộ (Có thể sử dụng ngôn ngữ Python, Javascript, Shell, và nhiều hơn thế). Bạn có thể nói chuyện với Probe thông qua giao diện giống với ChatGPT ngay trên terminal của bạn bằng cách chạy lệnh `$ interpreter` sau khi tải thành công.
 
 Các tính năng chung giao diện ngôn ngữ mang llại
 
@@ -47,7 +46,7 @@ Các tính năng chung giao diện ngôn ngữ mang llại
 
 ## Thử nghiệm
 
-https://github.com/OpenInterpreter/open-interpreter/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
+https://github.com/OpenInterpreter/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
 
 #### Bản thử nghiệm có sẵn trên Google Colab:
 
@@ -60,7 +59,7 @@ https://github.com/OpenInterpreter/open-interpreter/assets/63927363/37152071-680
 ## Hướng dẫn khởi dộng ngắn
 
 ```shell
-pip install open-interpreter
+pip install probe
 ```
 
 ### Terminal
@@ -93,7 +92,7 @@ Tuy nhiên, dịch vụ của OpenAI được lưu trữ, mã nguồn đóng, v�
 
 ---
 
-Open Interpreter khắc phục những hạn chế này bằng cách chạy cục bộ trobộ môi trường máy tính của bạn. Nó có toàn quyền truy cập vào Internet, không bị hạn chế về thời gian hoặc kích thước tệp và có thể sử dụng bất kỳ gói hoặc thư viện nào.
+Probe khắc phục những hạn chế này bằng cách chạy cục bộ trobộ môi trường máy tính của bạn. Nó có toàn quyền truy cập vào Internet, không bị hạn chế về thời gian hoặc kích thước tệp và có thể sử dụng bất kỳ gói hoặc thư viện nào.
 
 Đây là sự kết hợp sức mạnh của mã nguồn của GPT-4 với tính linh hoạt của môi trường phát triển cục bộ của bạn.
 
@@ -147,7 +146,7 @@ interpreter.chat("Nhìn đẹp đấy nhưng bạn có thể làm cho phụ đ�
 
 ### Tạo một cuộc trò chuyện mới:
 
-Trong Python, Open Interpreter ghi nhớ lịch sử hội thoại, nếu muốn bắt đầu lại từ đầu, bạn có thể cài thứ:
+Trong Python, Probe ghi nhớ lịch sử hội thoại, nếu muốn bắt đầu lại từ đầu, bạn có thể cài thứ:
 
 ```python
 interpreter.messages = []
@@ -177,7 +176,7 @@ print(interpreter.system_message)
 
 ### Thay đổi mô hình ngôn ngữ
 
-Open Interpreter sử dụng mô hình [LiteLLM](https://docs.litellm.ai/docs/providers/) để kết nối tới các mô hình ngôn ngữ được lưu trữ trước đó.
+Probe sử dụng mô hình [LiteLLM](https://docs.litellm.ai/docs/providers/) để kết nối tới các mô hình ngôn ngữ được lưu trữ trước đó.
 
 Bạn có thể thay đổi mô hình ngôn ngữ bằng cách thay đổi tham số mô hình:
 
@@ -195,9 +194,9 @@ interpreter.llm.model = "gpt-3.5-turbo"
 
 [Tìm tên chuỗi "mô hình" phù hợp cho mô hình ngôn ngữ của bạn ở đây.](https://docs.litellm.ai/docs/providers/)
 
-### Chạy Open Interpreter trên máy cục bộ
+### Chạy Probe trên máy cục bộ
 
-Open Interpreter có thể sử dụng máy chủ tương thích với OpenAI để chạy các mô hình cục bộ. (LM Studio, jan.ai, ollama, v.v.)
+Probe có thể sử dụng máy chủ tương thích với OpenAI để chạy các mô hình cục bộ. (LM Studio, jan.ai, ollama, v.v.)
 
 Chỉ cần chạy `interpreter` với URL api_base của máy chủ suy luận của bạn (đối với LM studio, nó là `http://localhost:1234/v1` theo mặc định):
 
@@ -220,7 +219,7 @@ thông dịch viên --local
 3. Nhấn vào nút **↔️** ở bên trái (dưới 💬).
 4. Chọn mô hình của bạn ở phía trên, rồi nhấn chạy **Start Server**.
 
-Một khi server chạy, bạn có thể bắt đầu trò chuyện với Open Interpreter.
+Một khi server chạy, bạn có thể bắt đầu trò chuyện với Probe.
 
 > **Lưu ý:** Chế độ cục bộ chỉnh `context_window` của bạn tới 3000, và `max_tokens` của bạn tới 600. Nếu mô hình của bạn có các yêu cầu khác, thì hãy chỉnh các tham số thủ công (xem bên dưới).
 
@@ -236,7 +235,7 @@ interpreter --local --max_tokens 1000 --context_window 3000
 
 ### Chế độ sửa lỗi
 
-Để giúp đóng góp kiểm tra Open Interpreter, thì chế độ `--verbose` hơi dài dòng.
+Để giúp đóng góp kiểm tra Probe, thì chế độ `--verbose` hơi dài dòng.
 
 Bạn có thể khởi động chế độ sửa lỗi bằng cách sử dụng cờ (`interpreter --verbose`), hoặc mid-chat:
 
@@ -264,7 +263,7 @@ Trong chế độ tương tác, bạn có thể sử dụng những dòng lệnh
 
 ### Cấu hình cài
 
-Open Interpreter cho phép bạn thiết lập các tác vụ mặc định bằng cách sử dụng file `config.yaml`.
+Probe cho phép bạn thiết lập các tác vụ mặc định bằng cách sử dụng file `config.yaml`.
 
 Điều này cung cấp một cách linh hoạt để định cấu hình trình thông dịch mà không cần thay đổi đối số dòng lệnh mỗi lần
 
@@ -276,7 +275,7 @@ interpreter --config
 
 #### Cấu hình cho nhiều tệp
 
-Open Interpreter hỗ trợ nhiều file `config.yaml`, cho phép bạn dễ dàng chuyển đổi giữa các cấu hình thông qua lệnh `--config_file`.
+Probe hỗ trợ nhiều file `config.yaml`, cho phép bạn dễ dàng chuyển đổi giữa các cấu hình thông qua lệnh `--config_file`.
 
 **Chú ý**: `--config_file` chấp nhận tên tệp hoặc đường dẫn tệp. Tên tệp sẽ sử dụng thư mục cấu hình mặc định, trong khi đường dẫn tệp sẽ sử dụng đường dẫn đã chỉ định.
 
@@ -286,7 +285,7 @@ Open Interpreter hỗ trợ nhiều file `config.yaml`, cho phép bạn dễ dà
 interpreter --config --config_file $config_path
 ```
 
-Để yêu cầu Open Interpreter chạy một tệp cấu hình cụ thể, hãy chạy:
+Để yêu cầu Probe chạy một tệp cấu hình cụ thể, hãy chạy:
 
 ```
 interpreter --config_file $config_path
@@ -301,14 +300,14 @@ interpreter --config_file $config_path
    interpreter --config --config_file config.turbo.yaml
    ```
 2. Chạy file `config.turbo.yaml`để đặt lại `model` thành `gpt-3.5-turbo`
-3. Chạy Open Interpreter với cấu hình `config.turbo.yaml
+3. Chạy Probe với cấu hình `config.turbo.yaml
    ```
    interpreter --config_file config.turbo.yaml
    ```
 
 ##### Ví dụ Python
 
-Bạn cũng có thể tải các tệp cấu hình khi gọi Open Interpreter từ tập lệnh Python:
+Bạn cũng có thể tải các tệp cấu hình khi gọi Probe từ tập lệnh Python:
 
 ```python
 import os
@@ -360,19 +359,19 @@ uvicorn server:app --reload
 
 Vì mã được tạo được thực thi trong môi trường cục bộ của bạn nên nó có thể tương tác với các tệp và cài đặt hệ thống của bạn, có khả năng dẫn đến các kết quả không mong muốn như mất dữ liệu hoặc rủi ro bảo mật.
 
-**⚠️ Open Interpreter sẽ yêu cầu xác nhận của người dùng trước khi chạy code.**
+**⚠️ Probe sẽ yêu cầu xác nhận của người dùng trước khi chạy code.**
 
 Bạn có thể chạy `interpreter -y` hoặc đặt `interpreter.auto_run = True` để bỏ qua xác nhận này, trong trường hợp đó:
 
 - Hãy thận trọng khi yêu cầu các lệnh sửa đổi tệp hoặc cài đặt hệ thống.
-- Theo dõi Open Interpreter giống như một chiếc ô tô tự lái và sẵn sàng kết thúc quá trình bằng cách đóng terminal của bạn.
-- Cân nhắc việc chạy Open Interpreter trong môi trường bị hạn chế như Google Colab hoặc Replit. Những môi trường này biệt lập hơn, giảm thiểu rủi ro khi chạy code tùy ý.
+- Theo dõi Probe giống như một chiếc ô tô tự lái và sẵn sàng kết thúc quá trình bằng cách đóng terminal của bạn.
+- Cân nhắc việc chạy Probe trong môi trường bị hạn chế như Google Colab hoặc Replit. Những môi trường này biệt lập hơn, giảm thiểu rủi ro khi chạy code tùy ý.
 
 Đây là hỗ trợ **thử nghiệm** cho [chế độ an toàn](docs/SAFE_MODE.md) giúp giảm thiểu rủi ro.
 
 ## Nó hoạt động thế nào?
 
-Open Interpreter trang bị [mô hình ngôn ngữ gọi hàm](https://platform.openai.com/docs/guides/gpt/function-calling) với một hàm `exec()`, chấp nhận một `language` (như "Python" hoặc "JavaScript") và `code` để chạy.
+Probe trang bị [mô hình ngôn ngữ gọi hàm](https://platform.openai.com/docs/guides/gpt/function-calling) với một hàm `exec()`, chấp nhận một `language` (như "Python" hoặc "JavaScript") và `code` để chạy.
 
 Sau đó, chúng tôi truyền trực tuyến thông báo, mã của mô hình và kết quả đầu ra của hệ thống của bạn đến terminal dưới dạng Markdown.
 
@@ -384,7 +383,7 @@ Vui lòng xem [Hướng dẫn đóng góp](CONTRIBUTING.md) để biết thêm c
 
 ## Giấy phép
 
-Open Interpreter được cấp phép theo Giấy phép MIT. Bạn được phép sử dụng, sao chép, sửa đổi, phân phối, cấp phép lại và bán các bản sao của phần mềm.
+Probe được cấp phép theo Giấy phép MIT. Bạn được phép sử dụng, sao chép, sửa đổi, phân phối, cấp phép lại và bán các bản sao của phần mềm.
 
 **Lưu ý**: Phần mềm này không liên kết với OpenAI.
 

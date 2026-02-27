@@ -364,7 +364,7 @@ def main():
 
     # Get LLM model from profile
     default_profile_path = os.path.join(
-        platformdirs.user_config_dir("open-interpreter"), "profiles", "default.yaml"
+        platformdirs.user_config_dir("probe"), "profiles", "default.yaml"
     )
 
     try:

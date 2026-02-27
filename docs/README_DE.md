@@ -1,14 +1,13 @@
-<h1 align="center">● Open Interpreter</h1>
+<h1 align="center">● Probe</h1>
 
 <p align="center">
-    <a href="https://discord.gg/6p3fD6rBVm">
         <img alt="Discord" src="https://img.shields.io/discord/1146610656779440188?logo=discord&style=flat&logoColor=white">
     </a>
     <a href="README_ES.md"> <img src="https://img.shields.io/badge/Español-white.svg" alt="ES doc"/></a>
     <a href="README_JA.md"><img src="https://img.shields.io/badge/ドキュメント-日本語-white.svg" alt="JA doc"></a>
     <a href="README_ZH.md"><img src="https://img.shields.io/badge/文档-中文版-white.svg" alt="ZH doc"></a>
     <a href="../README.md"><img src="https://img.shields.io/badge/english-document-white.svg" alt="EN doc"></a>
-    <a href="https://github.com/OpenInterpreter/open-interpreter/blob/main/docs/README_UK.md"><img src="https://img.shields.io/badge/Українська-white.svg" alt="UK doc"/></a>
+    <a href="https://github.com/OpenInterpreter/probe/blob/main/docs/README_UK.md"><img src="https://img.shields.io/badge/Українська-white.svg" alt="UK doc"/></a>
     <a href="../LICENSE"><img src="https://img.shields.io/static/v1?label=license&message=AGPL&color=white&style=flat" alt="License"/></a>
     <br><br>
     <b>Lassen Sie Sprachmodelle Code auf Ihrem Computer ausführen.</b><br>
@@ -18,12 +17,12 @@
 
 <br>
 
-![poster](https://github.com/OpenInterpreter/open-interpreter/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
+![poster](https://github.com/OpenInterpreter/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
 
 <br>
 
 ```shell
-pip install open-interpreter
+pip install probe
 ```
 
 ```shell
@@ -32,7 +31,7 @@ interpreter
 
 <br>
 
-**Open Interpreter** ermöglicht es LLMs (Language Models), Code (Python, Javascript, Shell und mehr) lokal auszuführen. Sie können mit Open Interpreter über eine ChatGPT-ähnliche Schnittstelle in Ihrem Terminal chatten, indem Sie $ interpreter nach der Installation ausführen.
+**Probe** ermöglicht es LLMs (Language Models), Code (Python, Javascript, Shell und mehr) lokal auszuführen. Sie können mit Probe über eine ChatGPT-ähnliche Schnittstelle in Ihrem Terminal chatten, indem Sie $ interpreter nach der Installation ausführen.
 
 Dies bietet eine natürliche Sprachschnittstelle zu den allgemeinen Fähigkeiten Ihres Computers:
 
@@ -47,7 +46,7 @@ Dies bietet eine natürliche Sprachschnittstelle zu den allgemeinen Fähigkeiten
 
 ## Demo
 
-https://github.com/OpenInterpreter/open-interpreter/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
+https://github.com/OpenInterpreter/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
 
 #### Eine interaktive Demo ist auch auf Google Colab verfügbar:
 
@@ -56,7 +55,7 @@ https://github.com/OpenInterpreter/open-interpreter/assets/63927363/37152071-680
 ## Schnellstart
 
 ```shell
-pip install open-interpreter
+pip install probe
 ```
 
 ### Terminal
@@ -89,7 +88,7 @@ Allerdings ist OpenAIs Dienst gehostet, Closed-Source und stark eingeschränkt:
 
 ---
 
-Open Interpreter überwindet diese Einschränkungen, indem es in Ihrer lokalen Umgebung läuft. Es hat vollen Zugang zum Internet, ist nicht durch Zeit oder Dateigröße eingeschränkt und kann jedes Paket oder jede Bibliothek nutzen.
+Probe überwindet diese Einschränkungen, indem es in Ihrer lokalen Umgebung läuft. Es hat vollen Zugang zum Internet, ist nicht durch Zeit oder Dateigröße eingeschränkt und kann jedes Paket oder jede Bibliothek nutzen.
 
 Dies kombiniert die Kraft von GPT-4s Code Interpreter mit der Flexibilität Ihrer lokalen Maschine.
 
@@ -97,19 +96,19 @@ Dies kombiniert die Kraft von GPT-4s Code Interpreter mit der Flexibilität Ihre
 
 Da generierter Code in deiner lokalen Umgebung ausgeführt wird, kann er mit deinen Dateien und Systemeinstellungen interagieren, was potenziell zu unerwarteten Ergebnissen wie Datenverlust oder Sicherheitsrisiken führen kann.
 
-**⚠️ Open Interpreter wird um Nutzerbestätigung bitten, bevor Code ausgeführt wird.**
+**⚠️ Probe wird um Nutzerbestätigung bitten, bevor Code ausgeführt wird.**
 
 Du kannst `interpreter -y` ausführen oder `interpreter.auto_run = True` setzen, um diese Bestätigung zu umgehen, in diesem Fall:
 
 - Sei vorsichtig bei Befehlsanfragen, die Dateien oder Systemeinstellungen ändern.
-- Beobachte Open Interpreter wie ein selbstfahrendes Auto und sei bereit, den Prozess zu beenden, indem du dein Terminal schließt.
-- Betrachte die Ausführung von Open Interpreter in einer eingeschränkten Umgebung wie Google Colab oder Replit. Diese Umgebungen sind isolierter und reduzieren das Risiko der Ausführung willkürlichen Codes.
+- Beobachte Probe wie ein selbstfahrendes Auto und sei bereit, den Prozess zu beenden, indem du dein Terminal schließt.
+- Betrachte die Ausführung von Probe in einer eingeschränkten Umgebung wie Google Colab oder Replit. Diese Umgebungen sind isolierter und reduzieren das Risiko der Ausführung willkürlichen Codes.
 
 Es gibt **experimentelle** Unterstützung für einen [Sicherheitsmodus](docs/SAFE_MODE.md), um einige Risiken zu mindern.
 
 ## Wie funktioniert es?
 
-Open Interpreter rüstet ein [funktionsaufrufendes Sprachmodell](https://platform.openai.com/docs/guides/gpt/function-calling) mit einer `exec()`-Funktion aus, die eine `language` (wie "Python" oder "JavaScript") und auszuführenden `code` akzeptiert.
+Probe rüstet ein [funktionsaufrufendes Sprachmodell](https://platform.openai.com/docs/guides/gpt/function-calling) mit einer `exec()`-Funktion aus, die eine `language` (wie "Python" oder "JavaScript") und auszuführenden `code` akzeptiert.
 
 Wir streamen dann die Nachrichten des Modells, Code und die Ausgaben deines Systems zum Terminal als Markdown.
 
@@ -121,7 +120,7 @@ Bitte sieh dir unsere [Richtlinien für Mitwirkende](docs/CONTRIBUTING.md) für 
 
 ## Lizenz
 
-Open Interpreter ist unter der MIT-Lizenz lizenziert. Du darfst die Software verwenden, kopieren, modifizieren, verteilen, unterlizenzieren und Kopien der Software verkaufen.
+Probe ist unter der MIT-Lizenz lizenziert. Du darfst die Software verwenden, kopieren, modifizieren, verteilen, unterlizenzieren und Kopien der Software verkaufen.
 
 **Hinweis**: Diese Software ist nicht mit OpenAI affiliiert.
 

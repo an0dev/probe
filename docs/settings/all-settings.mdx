@@ -31,7 +31,7 @@ title: All Settings
 
 ### Model Selection
 
-Specifies which language model to use. Check out the [models](/language-models/) section for a list of available models. Open Interpreter uses [LiteLLM](https://github.com/BerriAI/litellm) under the hood to support over 100+ models.
+Specifies which language model to use. Check out the [models](/language-models/) section for a list of available models. Probe uses [LiteLLM](https://github.com/BerriAI/litellm) under the hood to support over 100+ models.
 
 <CodeGroup>
 
@@ -199,7 +199,7 @@ llm:
 
 ### LLM Supports Functions
 
-Inform Open Interpreter that the language model you're using supports function calling.
+Inform Probe that the language model you're using supports function calling.
 
 <CodeGroup>
 
@@ -220,7 +220,7 @@ llm:
 
 ### LLM Does Not Support Functions
 
-Inform Open Interpreter that the language model you're using does not support function calling.
+Inform Probe that the language model you're using does not support function calling.
 
 <CodeGroup>
 
@@ -257,7 +257,7 @@ interpreter.llm.execution_instructions = "To execute code on the user's machine,
 
 ### LLM Supports Vision
 
-Inform Open Interpreter that the language model you're using supports vision. Defaults to `False`.
+Inform Probe that the language model you're using supports vision. Defaults to `False`.
 
 <CodeGroup>
 
@@ -335,7 +335,7 @@ os: true
 
 ### Version
 
-Get the current installed version number of Open Interpreter.
+Get the current installed version number of Probe.
 
 <CodeGroup>
 
@@ -395,7 +395,7 @@ interpreter --help
 
 ### Loop (Force Task Completion)
 
-Runs Open Interpreter in a loop, requiring it to admit to completing or failing every task.
+Runs Probe in a loop, requiring it to admit to completing or failing every task.
 
 <CodeGroup>
 
@@ -563,15 +563,15 @@ We don't recommend modifying the system message, as doing so opts you out of fut
 <CodeGroup>
 
 ```bash Terminal
-interpreter --system_message "You are Open Interpreter..."
+interpreter --system_message "You are Probe..."
 ```
 
 ```python Python
-interpreter.system_message = "You are Open Interpreter..."
+interpreter.system_message = "You are Probe..."
 ```
 
 ```yaml Profile
-system_message: "You are Open Interpreter..."
+system_message: "You are Probe..."
 ```
 
 </CodeGroup>

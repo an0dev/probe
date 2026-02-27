@@ -2,9 +2,9 @@
 title: Running Locally
 ---
 
-Open Interpreter can be run fully locally.
+Probe can be run fully locally.
 
-Users need to install software to run local LLMs. Open Interpreter supports multiple local model providers such as [Ollama](https://www.ollama.com/), [Llamafile](https://github.com/Mozilla-Ocho/llamafile), [Jan](https://jan.ai/), and [LM Studio](https://lmstudio.ai/).
+Users need to install software to run local LLMs. Probe supports multiple local model providers such as [Ollama](https://www.ollama.com/), [Llamafile](https://github.com/Mozilla-Ocho/llamafile), [Jan](https://jan.ai/), and [LM Studio](https://lmstudio.ai/).
 
 <Tip>
   Local models perform better with extra guidance and direction. You can improve
@@ -37,7 +37,7 @@ interpreter --api_base "http://localhost:11434" --model ollama/codestral
 
 ## Python Usage
 
-In order to have a Python script use Open Interpreter locally, some fields need to be set
+In order to have a Python script use Probe locally, some fields need to be set
 
 ```python
 from interpreter import interpreter
@@ -51,7 +51,7 @@ interpreter.chat("how many files are on my desktop?")
 
 ## Helpful settings for local models
 
-Local models benefit from more coercion and guidance. This verbosity of adding extra context to messages can impact the conversational experience of Open Interpreter. The following settings allow templates to be applied to messages to improve the steering of the language model while maintaining the natural flow of conversation.
+Local models benefit from more coercion and guidance. This verbosity of adding extra context to messages can impact the conversational experience of Probe. The following settings allow templates to be applied to messages to improve the steering of the language model while maintaining the natural flow of conversation.
 
 `interpreter.user_message_template` allows users to have their message wrapped in a template. This can be helpful steering a language model to a desired behaviour without needing the user to add extra context to their message.
 

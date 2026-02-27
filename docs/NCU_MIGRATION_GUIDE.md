@@ -1,10 +1,10 @@
 # `0.2.0` Migration Guide
 
-Open Interpreter is [changing](https://changes.openinterpreter.com/log/the-new-computer-update). This guide will help you migrate your application to `0.2.0`, also called the _New Computer Update_ (NCU), the latest major version of Open Interpreter.
+Probe is [changing](https://changes.openinterpreter.com/log/the-new-computer-update). This guide will help you migrate your application to `0.2.0`, also called the _New Computer Update_ (NCU), the latest major version of Probe.
 
 ## A New Start
 
-To start using Open Interpreter in Python, we now use a standard **class instantiation** format:
+To start using Probe in Python, we now use a standard **class instantiation** format:
 
 ```python
 # From the module `interpreter`, import the class `OpenInterpreter`
@@ -38,13 +38,13 @@ All stateless LLM attributes have been moved to `interpreter.llm`:
 - `interpreter.api_version` → `interpreter.llm.api_version`
 - `interpreter.api_base` → `interpreter.llm.api_base`
 
-This is reflected **1)** in Python applications using Open Interpreter and **2)** in your profile for OI's terminal interface, which can be edited via `interpreter --profiles`.
+This is reflected **1)** in Python applications using Probe and **2)** in your profile for OI's terminal interface, which can be edited via `interpreter --profiles`.
 
 ## New Static Messages Structure
 
 - The array of messages is now flat, making the architecture more modular, and easier to adapt to new kinds of media in the future.
 - Each message holds only one kind of data. This yields more messages, but prevents large nested messages that can be difficult to parse.
-- This allows you to pass the full `messages` list into Open Interpreter as `interpreter.messages = message_list`.
+- This allows you to pass the full `messages` list into Probe as `interpreter.messages = message_list`.
 - Every message has a "role", which can be "assistant", "computer", or "user".
 - Every message has a "type", specifying the type of data it contains.
 - Every message has "content", which contains the data for the message.
@@ -107,7 +107,7 @@ This is reflected **1)** in Python applications using Open Interpreter and **2)*
 
 - Adding an `id` and a `created_at` field to messages can be helpful to manipulate the messages later on.
 - If you want your application to run the code instead of OI, then your app will act as the `computer`. This means breaking from the stream once OI emits a confirmation chunk (`{'role': 'computer', 'type': 'confirmation' ...}`) to prevent OI from running the code. When you run code, grab the message history via `messages = interpreter.messages`, then simply mimic the `computer` format above by appending new `{'role': 'computer' ...}` messages, then run `interpreter.chat(messages)`.
-- Open Interpreter is designed to stop code execution when the stream is disconnected. Use this to your advantage to add a "Stop" button to the UI.
+- Probe is designed to stop code execution when the stream is disconnected. Use this to your advantage to add a "Stop" button to the UI.
 - Setting up your Python server to send errors and exceptions to the client can be helpful for debugging and generating error messages.
 
 ## Example Code
