@@ -1,13 +1,16 @@
-# Probe
+<p align="center">
+  <img src="https://raw.githubusercontent.com/an0dev/probe/main/assets/logo/probe.png" alt="Probe logo" width="80"/>
+  <br/>
+  <strong>Probe</strong>
+  <br/>
 
-
-[![PyPI Version](https://img.shields.io/pypi/v/probers?color=green)](https://pypi.org/project/probers/)
-[![PyPI Downloads](https://img.shields.io/pypi/dm/probers?color=blue)](https://pypi.org/project/probers/)
-[![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
-[![Python Version](https://img.shields.io/pypi/pyversions/probers?color=informational)](https://pypi.org/project/probers/)
-[![GitHub Release](https://img.shields.io/github/v/release/an0dev/probe?color=orange)](https://github.com/an0dev/probe/releases)
-[![Downloads](https://img.shields.io/github/downloads/an0dev/probe/total?color=yellow)](https://github.com/an0dev/probe/releases)
-
+  [![PyPI Version](https://img.shields.io/pypi/v/probers?color=green)](https://pypi.org/project/probers/)
+  [![PyPI Downloads](https://img.shields.io/pypi/dm/probers?color=blue)](https://pypi.org/project/probers/)
+  [![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+  [![Python Version](https://img.shields.io/pypi/pyversions/probers?color=informational)](https://pypi.org/project/probers/)
+  [![GitHub Release](https://img.shields.io/github/v/release/an0dev/probe?color=orange)](https://github.com/an0dev/probe/releases)
+  [![Downloads](https://img.shields.io/github/downloads/an0dev/probe/total?color=yellow)](https://github.com/an0dev/probe/releases)
+</p>
 
 
 Probe is an AI-powered cybersecurity execution engine built for penetration testing, vulnerability assessment, red team operations, OSINT, exploit development, reverse engineering, and comprehensive offensive/defensive security workflows. It is designed to operate in both online and completely offline environments, allowing you to run local language models or disconnect from the network when required.
