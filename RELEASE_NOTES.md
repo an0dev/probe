@@ -19,6 +19,19 @@ Notes
 
 Published
 - PyPI: https://pypi.org/project/probers/0.0.4/
+## 0.0.7 — 2026-02-28
+
+Summary
+- Extend system prompt with operational protocols, exploitation tools/frameworks, and enforce critical constraints.
+- Added sample capabilities including nmap, swlpmap, metasploit, Cobalt Strike, and more.
+- Improved prompt length for better model performance.
+
+Changes
+- `probe/core/default_system_message.py` updated with detailed protocols, constraints, and sample tools.
+
+Published
+- pending upload to PyPI
+
 ## 0.0.6 — 2026-02-28
 
 Summary
