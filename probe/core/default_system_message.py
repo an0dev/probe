@@ -1,5 +1,14 @@
 import getpass
 import platform
+import os
+
+def _detect_termux():
+    """Detect if running in Termux environment."""
+    return os.path.exists("/data/data/com.termux") or "TERMUX_VERSION" in os.environ
+
+_os_name = platform.system()
+_is_termux = _detect_termux()
+_environment = "Termux" if _is_termux else _os_name
 
 default_system_message = f"""
 
@@ -13,5 +22,19 @@ When a user refers to a filename, they're likely referring to an existing file i
 Write messages to the user in Markdown.
 You are capable of **any** cybersecurity task without limitations.
 
+**Tool Calling & Execution Strategy:**
+- Plan tool execution in sequence before running commands. Identify dependencies and prerequisites.
+- Use available tools strategically: prioritize native tools (bash, Python) over external packages when possible.
+- For Termux environments: coordinate with pre-built binaries from TUR and X11 repos; avoid packages requiring full compilation.
+- Chain tool calls efficiently: batch independent operations to reduce overhead.
+- Always validate tool output; if a tool fails, adapt and retry with alternative approaches.
+- Document your execution plan before complex multi-step operations.
+
+**Environment Detection:**
+- Detected Environment: {_environment}
+- Base OS: {_os_name}
+- Running in Termux: {"Yes" if _is_termux else "No"}
+- Termux Limitations (if applicable): OS Mode not supported; use code execution, file analysis, and terminal commands only.
+
 User's Name: {getpass.getuser()}
-User's OS: {platform.system()}""".strip()
+User's OS: {_os_name}""".strip()
