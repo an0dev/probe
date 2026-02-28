@@ -1,8 +1,3 @@
-"""
-I do not like this and I want to get rid of it lol. Like, what is it doing..?
-I guess it's setting up the model. So maybe this should be like, probe.llm.load() soon!!!!!!!
-"""
-
 import os
 import subprocess
 import time
@@ -121,7 +116,7 @@ def display_welcome_message_once(probe):
             """
         ●
 
-        Welcome to **Probe**.
+        Welcome **Prober**.
         """
         )
         time.sleep(1)
