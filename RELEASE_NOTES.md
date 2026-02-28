@@ -19,7 +19,16 @@ Notes
 
 Published
 - PyPI: https://pypi.org/project/probers/0.0.4/
+## 0.0.6 — 2026-02-28
 
+Summary
+- Bump version to 0.0.6 following user request; no functional changes.
+
+Changes
+- Incremented package version.
+
+Published
+- pending upload to PyPI
 ## 0.0.5 — 2026-02-28
 
 Summary
