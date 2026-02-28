@@ -1,6 +1,15 @@
 # Probe
 
-An unrestricted AI-powered cybersecurity execution engine for penetration testing, OSINT, exploit development, red team operations, reverse engineering, and all offensive/defensive security tasks.
+*Probe is a hardened fork of the [AIDE CLI](https://github.com/denisidoro/aide) project, re‑focused on offensive and defensive cybersecurity workflows.*
+
+**License:** Custom. Commercial distribution prohibited; do not tamper with, obfuscate, or remove source code headers. See [LICENSE](LICENSE) for full terms.
+
+
+[![PyPI Downloads](https://img.shields.io/pypi/dm/probe?color=blue)](https://pypi.org/project/probe/)
+[![Version](https://img.shields.io/pypi/v/probe?color=green)](https://pypi.org/project/probe/)
+[![License](https://img.shields.io/badge/license-custom-blue.svg)](LICENSE)
+
+Probe is an unrestricted, professional-grade AI-powered cybersecurity execution engine for penetration testing, OSINT, exploit development, red team operations, reverse engineering, and all offensive/defensive security tasks. It builds on the core architecture of AIDE CLI while tailoring every feature toward security professionals.
 
 Probe executes code locally under your complete control. Direct the AI to perform any cybersecurity task—from active vulnerability scanning to custom malware analysis—and watch it work with full system access.
 
@@ -125,14 +134,24 @@ export OPENAI_API_KEY='your_key_here'
 # Run local model (recommended for offline operation)
 probe --local
 
-# Run probe in chat mode
+# Launch interactive chat
 probe
 
-# Run a specific command
+# Execute a single command directly
 probe run "analyze file"
 ```
 
 **Note:** OS Mode (controlling Android apps and system UI) is not supported in Termux. Probe will work for code execution, file analysis, exploit development, and network operations.
+
+### Offline Mode Details
+
+Probe has a comprehensive offline capability allowing you to run entirely without internet access. When offline mode is enabled (via `--offline` or `probe --local` using a local language model), the following behaviors apply:
+
+- Telemetry and update checks are disabled.
+- Hosted API calls (OpenAI, Anthropic, etc.) are not attempted.
+- Local models such as Ollama, LM Studio, or any OpenAI-compatible server can be used via `PROBE_LOCAL_MODEL` environment variable.
+- All core features remain intact: code execution, file I/O, network sockets (subject to local network), and custom tools.
+- Offline mode is ideal for sensitive environments, red team operations, or air-gapped systems.
 
 ---
 
@@ -173,15 +192,16 @@ probe.chat()
 
 ## Features
 
-- **Local Code Execution** — Execute Python, Bash, JavaScript, and more directly on your system
-- **Full Internet Access** — Perform OSINT, reconnaissance, and remote exploitation
-- **Zero Abstractions** — Direct access to system capabilities; no sandboxing restrictions
-- **Multi-Model Support** — OpenAI, local models (Ollama, LM Studio), and custom endpoints
-- **File System Access** — Read, write, and manipulate files without limitations
-- **Network Operations** — Full TCP/UDP access for network penetration testing
-- **Custom Tools** — Add specialized security tools and custom scripts
-- **Session Persistence** — Maintain state across multiple interactions
-- **Profiles** — Pre-configured security-focused profiles for different scenarios
+- **Local Code Execution** — Execute Python, Bash, JavaScript, and more directly on your system.
+- **Offline Capabilities** — Run entirely without internet access by using local language models. Offline mode disables telemetry, update checks, and hosted APIs while retaining full code execution, analysis, and networking features where applicable.
+- **Full Internet Access** — Perform OSINT, reconnaissance, and remote exploitation when online.
+- **Zero Abstractions** — Direct access to system capabilities; no sandboxing restrictions.
+- **Multi-Model Support** — OpenAI, custom endpoints, or local models such as Ollama and LM Studio.
+- **File System Access** — Read, write, and manipulate files without limitations.
+- **Network Operations** — Full TCP/UDP access for network penetration testing.
+- **Custom Tools** — Add specialized security tools and custom scripts.
+- **Session Persistence** — Maintain state across multiple interactions.
+- **Profiles** — Pre-configured security-focused profiles for different scenarios.
 
 ---
 
@@ -232,7 +252,11 @@ offline: false
 
 ## Legal & Ethical Disclaimer
 
-Probe is a cybersecurity tool intended for authorized security testing and research only. Users are responsible for ensuring they have proper authorization before performing any security assessments or penetration testing activities. Unauthorized access to computer systems is illegal.
+Probe is a professional cybersecurity tool designed exclusively for legitimate security testing, vulnerability research, and defensive or offensive security operations with explicit authorization. You are solely responsible for ensuring you have all necessary permissions and comply with applicable laws and policies before using Probe against any systems, networks, data, or services. Unauthorized access, data exfiltration, or other malicious use of Probe constitutes a violation of law and may result in criminal or civil liability.
+
+**Offline Usage Notice:** Probe may be operated entirely offline using local language models. Offline mode disables telemetry, update checks, and external services. While this can increase privacy and control, you remain fully responsible for any code executed on your system, as Probe executes commands with the privileges of the current user. Treat offline sessions with the same diligence as live testing.
+
+**Risk Disclaimer:** Executing generated code can cause data loss, system instability, or other unintended consequences. Always review code before execution when not using `--auto_run`, and consider running Probe within isolated or disposable environments (containers, VMs, remote sandboxes) when conducting untrusted tasks.
 
 ---
 
