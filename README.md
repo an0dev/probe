@@ -12,7 +12,7 @@
 
 Probe is an AI-powered cybersecurity execution engine built for penetration testing, vulnerability assessment, red team operations, OSINT, exploit development, reverse engineering, and comprehensive offensive/defensive security workflows. It is designed to operate in both online and completely offline environments, allowing you to run local language models or disconnect from the network when required.
 
-Based on AIDE CLI – Leveraging best practices from open-source AI infrastructure.
+Based on [AIDE CLI](https://github.com/denisidoro/aide) – Leveraging best practices from open-source AI infrastructure.
 
 ## Features
 
