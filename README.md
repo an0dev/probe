@@ -1,5 +1,8 @@
 # Probe
 
+[![PyPI Version](https://img.shields.io/pypi/v/probers?color=green)](https://pypi.org/project/probers/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/probers?color=blue)](https://pypi.org/project/probers/)
+
 
 Probe is an AI-powered cybersecurity execution engine built for penetration testing, vulnerability assessment, red team operations, OSINT, exploit development, reverse engineering, and comprehensive offensive/defensive security workflows. It is designed to operate in both online and completely offline environments, allowing you to run local language models or disconnect from the network when required.
 

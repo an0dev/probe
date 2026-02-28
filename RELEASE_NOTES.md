@@ -1,0 +1,22 @@
+# Release Notes
+
+## 0.0.4 — 2026-02-28
+
+Summary
+- Rename distribution from `probe` → `prober(s)` during transition to new PyPI name `probers`.
+- Update installation documentation and badges to use `pip install probers`.
+- Bump package version to `0.0.4` and publish to PyPI as `probers`.
+- Updated docs, installers and examples to reference the new package name.
+
+Changes
+- `pyproject.toml`: package `name` set to `probers`, version set to `0.0.4`.
+- `README.md`: installation instructions and badges updated to refer to `probers`.
+- Installers and examples updated to use `pip install probers`.
+
+Notes
+- The repository remains `anosd3v/probe` (source code name), while the PyPI distribution name is `probers` to avoid a name conflict.
+- A GitHub release draft can be created from the `0.0.4` tag; if you want I can create the release entry on GitHub if you provide a GitHub token or allow me to use the `gh` CLI.
+
+Published
+- PyPI: https://pypi.org/project/probers/0.0.4/
+
