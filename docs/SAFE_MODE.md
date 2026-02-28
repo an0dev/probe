@@ -7,7 +7,7 @@ Probe is working on providing an experimental safety toolkit to help you feel mo
 Install Probe with the safety toolkit dependencies as part of the bundle:
 
 ```shell
-pip install probe[safe]
+pip install probers[safe]
 ```
 
 Alternatively, you can install the safety toolkit dependencies separately in your virtual environment:

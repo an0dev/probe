@@ -2,7 +2,7 @@
 EXPERIMENTAL
 """
 
-print("Remember to `pip install probe[local]`.")
+print("Remember to `pip install probers[local]`.")
 
 import subprocess
 

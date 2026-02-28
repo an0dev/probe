@@ -115,7 +115,7 @@ class Vision:
             return text.strip()
         except ImportError:
             print(
-                "\nTo use local vision, run `pip install 'probe[local]'`.\n"
+                "\nTo use local vision, run `pip install 'prober[local]'`.\n"
             )
             return ""
 
@@ -136,7 +136,7 @@ class Vision:
                 success = self.load(load_easyocr=False)
             except ImportError:
                 print(
-                    "\nTo use local vision, run `pip install 'probe[local]'`.\n"
+                    "\nTo use local vision, run `pip install 'prober[local]'`.\n"
                 )
                 return ""
             if not success:

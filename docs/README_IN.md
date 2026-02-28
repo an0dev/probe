@@ -20,7 +20,7 @@
 <br>
 
 ```shell
-pip install probe
+pip install probers
 ```
 
 ```shell
@@ -49,7 +49,7 @@ probe
 ## त्वरित प्रारंभ
 
 ```shell
-pip install probe
+pip install probers
 ```
 
 ### टर्मिनल

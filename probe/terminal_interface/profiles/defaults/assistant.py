@@ -4,7 +4,7 @@ try:
     import pyautogui
 except ImportError:
     print(
-        "Some actions may fail as OS dependencies are not installed. Please run 'pip install probe[os]' to install them."
+        "Some actions may fail as OS dependencies are not installed. Please run 'pip install probers[os]' to install them."
     )
 
 # Connect your 01 to a language model

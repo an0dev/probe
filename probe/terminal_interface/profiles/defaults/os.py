@@ -179,9 +179,9 @@ if missing_packages:
             ["pip", "no-quotes"],
         ]:
             if pip_combo[1] == "quotes":
-                command = f'{pip_combo[0]} install "probe[os]"'
+                command = f'{pip_combo[0]} install "prober[os]"'
             else:
-                command = f"{pip_combo[0]} install probe[os]"
+                command = f"{pip_combo[0]} install prober[os]"
 
             probe.computer.run("shell", command, display=True)
 

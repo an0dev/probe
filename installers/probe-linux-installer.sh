@@ -27,7 +27,7 @@ $pyenv_root init
 $pyenv_root install $python_version --skip-existing
 $pyenv_root shell $python_version
 
-$pyenv_root exec pip install probe --break-system-packages
+$pyenv_root exec pip install probers --break-system-packages
 # Unset the Python version
 $pyenv_root shell --unset
 

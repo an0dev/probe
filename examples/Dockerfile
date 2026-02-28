@@ -7,7 +7,7 @@ FROM python:3.11
 ENV OPENAI_API_KEY <your_openai_api_key>
 
 # Install Probe
-RUN pip install probe
+RUN pip install probers
 
 
 # To run the container

@@ -197,7 +197,7 @@ class Llm:
 
                     except ImportError:
                         print(
-                            "\nTo use local vision, run `pip install 'probe[local]'`.\n"
+                            "\nTo use local vision, run `pip install 'prober[local]'`.\n"
                         )
                         img_msg["format"] = "description"
                         img_msg["content"] = ""

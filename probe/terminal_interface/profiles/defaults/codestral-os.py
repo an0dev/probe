@@ -29,7 +29,7 @@ for package in REQUIRED_PACKAGES:
 
 if missing_packages:
     print(
-        '{} isn\'t installed. Please run `pip install "probe[os]"` to install all required packages for OS mode'.format(
+        '{} isn\'t installed. Please run `pip install "prober[os]"` to install all required packages for OS mode'.format(
             ", ".join(missing_packages)
         )
     )

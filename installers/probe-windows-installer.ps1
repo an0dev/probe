@@ -31,7 +31,7 @@ if (!(Get-Command rustc -ErrorAction SilentlyContinue)) {
 
 # Turn on this Python and install OI
 $env:PYENV_VERSION="3.11.7"
-& pip install probe
+& pip install probers
 
 # Get us out of this vers of Python (which was just used to setup OI, which should stay in that vers of Python...?)
 Remove-Item Env:\PYENV_VERSION

@@ -49,7 +49,7 @@ Ensure you have Python 3.9+ installed on your system.
 ### Via PyPI (Recommended)
 
 ```shell
-pip install prober
+pip install probers
 ```
 
 ### From Source
@@ -132,7 +132,7 @@ pip install cycler fonttools pyparsing python-dateutil
 ### Final Installation & Launch
 
 ```bash
-pip install prober
+pip install probers
 ```
 
 ### How to Use It Now
@@ -174,21 +174,21 @@ probe --help
 **Windows**
 
 ```bash
-pip install prober
+pip install probers
 # run in cmd or Powershell: probe
 ```
 
 **Linux / macOS**
 
 ```bash
-pip install prober
+pip install probers
 # run: probe
 ```
 
 **Termux** (see Termux guide above for manual package prep)
 
 ```bash
-pip install prober
+pip install probers
 ```
 
 ### Python API

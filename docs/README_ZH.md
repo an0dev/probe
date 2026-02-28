@@ -21,7 +21,7 @@
 <br>
 
 ```shell
-pip install probe
+pip install probers
 ```
 
 ```shell
@@ -54,7 +54,7 @@ https://github.com/Probe/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7
 ## 快速开始
 
 ```shell
-pip install probe
+pip install probers
 ```
 
 ### 终端

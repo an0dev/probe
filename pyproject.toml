@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "prober"
+name = "probers"
 packages = [
     {include = "probe"},
     {include = "scripts"},
 ]
-version = "0.0.3" # Use "-rc1", "-rc2", etc. for pre-release versions
+version = "0.0.4" # Use "-rc1", "-rc2", etc. for pre-release versions
 description = "An unrestricted AI-powered cybersecurity execution engine for penetration testing, OSINT, exploit development, red team operations, reverse engineering, and offensive/defensive security tasks."
 authors = ["Probe Contributors"]
 readme = "README.md"

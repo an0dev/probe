@@ -112,7 +112,7 @@ if [[ $installed_version != *"$python_version"* ]]; then
 fi
 
 # Use the specific Python version to install probe
-$pyenv_root exec python$python_version -m pip install probe
+$pyenv_root exec python$python_version -m pip install probers
 
 echo "Probe has been installed. Run the following command to use it:"
 echo "probe"

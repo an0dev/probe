@@ -1033,7 +1033,7 @@ class Server:
         #         if _ == 4:  # If this is the last attempt
         #             raise ImportError(
         #                 str(e)
-        #                 + """\n\nPlease ensure you have run `pip install "probe[server]"` to install server dependencies."""
+        #                 + """\n\nPlease ensure you have run `pip install "prober[server]"` to install server dependencies."""
         #             )
         #     except:
         #         print("An unexpected error occurred:", traceback.format_exc())
