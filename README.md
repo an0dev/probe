@@ -1,8 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/an0dev/probe/main/assets/logo/probe.png" alt="Probe logo" width="80"/>
-  <br/>
-  <strong>Probe</strong>
-  <br/>
+  <h1>Probe</h1>
 
   [![PyPI Version](https://img.shields.io/pypi/v/probers?color=green)](https://pypi.org/project/probers/)
   [![PyPI Downloads](https://img.shields.io/pypi/dm/probers?color=blue)](https://pypi.org/project/probers/)

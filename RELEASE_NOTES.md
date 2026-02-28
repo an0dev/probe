@@ -20,3 +20,14 @@ Notes
 Published
 - PyPI: https://pypi.org/project/probers/0.0.4/
 
+## 0.0.5 — 2026-02-28
+
+Summary
+- Adjust README appearance: removed probe logo, centered title and badges for better layout.
+
+Changes
+- README.md: logo stripped, title and badges wrapped in centered HTML block.
+
+Published
+- pending upload to PyPI
+
