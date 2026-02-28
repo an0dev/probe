@@ -1,83 +1,81 @@
 # Probe
 
-*Probe is a hardened fork of the [AIDE CLI](https://github.com/denisidoro/aide) project, re‑focused on offensive and defensive cybersecurity workflows.*
+Probe is an AI-powered cybersecurity execution engine built for penetration testing, vulnerability assessment, red team operations, OSINT, exploit development, reverse engineering, and comprehensive offensive/defensive security workflows. It is designed to operate in both online and completely offline environments, allowing you to run local language models or disconnect from the network when required.
 
-**License:** Custom. Commercial distribution prohibited; do not tamper with, obfuscate, or remove source code headers. See [LICENSE](LICENSE) for full terms.
+Based on AIDE CLI – Leveraging best practices from open-source AI infrastructure.
 
+## Features
 
-[![PyPI Downloads](https://img.shields.io/pypi/dm/probe?color=blue)](https://pypi.org/project/probe/)
-[![Version](https://img.shields.io/pypi/v/probe?color=green)](https://pypi.org/project/probe/)
-[![License](https://img.shields.io/badge/license-custom-blue.svg)](LICENSE)
+Probe exposes a rich set of capabilities aimed at making offensive and defensive security workflows more efficient. The bullets below summarize the core functionality; each item has a corresponding example or detailed explanation later in this README or in the `docs/` directory. Every feature listed here is available from the command line interface, Python API, or by running a local server.
 
-Probe is an unrestricted, professional-grade AI-powered cybersecurity execution engine for penetration testing, OSINT, exploit development, red team operations, reverse engineering, and all offensive/defensive security tasks. It builds on the core architecture of AIDE CLI while tailoring every feature toward security professionals.
+- **Automated Security Testing** – Execute security scans, reconnaissance, and assessments via natural language commands. The agent translates your prompts into actionable tools (nmap, curl, etc.) and aggregates results.
 
-Probe executes code locally under your complete control. Direct the AI to perform any cybersecurity task—from active vulnerability scanning to custom malware analysis—and watch it work with full system access.
+- **Penetration Testing Framework** – Streamline port scanning, service enumeration, and vulnerability research with one-off commands or scripted sessions.
 
----
+- **Exploit Development** – Generate, test, and refine exploits with interactive LLM guidance; run shelled code snippets, craft PoCs, and debug in tight loops.
+
+- **OSINT & Reconnaissance** – Gather open-source intelligence, enumerate targets, scrape websites, and build attack surface maps entirely from the CLI.
+
+- **Reverse Engineering** – Analyze binaries, decode protocols, and research malware by feeding files or hex dumps into the model and executing helper tools.
+
+- **Lateral Movement & Pivoting** – Simulate post‑exploitation network traversal by automating SSH, SMB, and other toolchains.
+
+- **Offline/Local Mode** – Probe works without an internet connection. Set `--local` to force use of locally hosted or on‑device language models; all logic still executes and code runs against your filesystem in the same way.
+
+- **Multi-LLM Support** – Use OpenAI, local models (Ollama, LLaMA, etc.), or any provider supported by LiteLLM.
+
+- **Cross‑Platform** – Fully supported on Linux, macOS, Windows, and Termux (Android). The Termux guide later in this README explains manual dependency installation.
+
+- **Extensible Language Execution** – Execute code in a variety of languages directly from the chat interface. Supported languages include:
+  - Python
+  - Shell (bash, sh, zsh)
+  - JavaScript/Node.js
+  - PowerShell (Windows)
+  - Ruby
+  - PHP
+  - Go (via `go run` if installed)
+  - And any interpreter available on the PATH
+
+Each feature is described in more detail throughout this README; refer to the Quick Start and Examples sections for usage patterns.
 
 ## Installation
 
-### Windows
+### Prerequisites
+
+Ensure you have Python 3.9+ installed on your system.
+
+### Via PyPI (Recommended)
 
 ```shell
 pip install probe
 ```
 
-**Setup:**
-1. Open PowerShell or Command Prompt
-2. Ensure Python 3.9+ is installed: `python --version`
-3. Run `pip install probe`
-4. Set your API key: `set OPENAI_API_KEY=your_key_here` (PowerShell) or `set OPENAI_API_KEY=your_key_here` (cmd)
-
-**Usage:**
-```shell
-probe --local
-probe run "scan target for vulnerabilities"
-```
-
-### Linux
+### From Source
 
 ```shell
-pip install probe
+git clone https://github.com/an0dev/probe.git
+cd probe
+pip install -e .
 ```
 
-**Setup:**
-1. Open terminal
-2. Ensure Python 3.9+ is installed: `python3 --version`
-3. Run `pip install probe`
-4. Set your API key: `export OPENAI_API_KEY='your_key_here'`
+### Termux / Android (Manual Installation)
 
-**Usage:**
-```shell
-probe --local
-probe run "exploit target service"
-```
+Termux install requires some manual steps due to Android toolchain quirks. See the "System Prep & Stable Mirrors" section below for the complete sequence.
 
-### macOS
+## Offline Mode
 
-```shell
-pip install probe
-```
+Probe is designed to function completely offline once installed. The core engine runs entirely in‑process; only the choice of language model may require network access. To operate offline:
 
-**Setup:**
-1. Open Terminal
-2. Ensure Python 3.9+ is installed: `python3 --version`
-3. Run `pip install probe`
-4. Set your API key: `export OPENAI_API_KEY='your_key_here'`
+- Install a local model or use `--local` (many users run Ollama, LLaMA, or another server on localhost and invoke Probe with `--model` pointing at the local endpoint).
+- Offline mode (via `--offline` or `--local`) disables telemetry, update checks, and hosted API calls; no special environment variable is required.
 
-**Usage:**
-```shell
-probe --local
-probe run "analyze binary"
-```
+Code execution, file analysis, and toolcalls all work without internet; commands like `probe run python` or `probe "scan"` still execute on your machine with no external dependencies.
 
----
+This makes Probe suitable for air‑gapped labs and sensitive environments. Just install the package (or copy the wheel) onto the offline host and run the CLI as usual.
 
-## Android Termux Installation
+## System Prep & Stable Mirrors (Termux)
 
-Termux provides a full Linux environment on Android. Follow these steps to install and run Probe.
-
-### 1. System Prep & Stable Mirrors
+First, ensure you are on a stable mirror and have the necessary build tools:
 
 ```bash
 # Set a reliable mirror manually
@@ -88,7 +86,9 @@ pkg update && pkg upgrade -y
 pkg install clang rust make binutils python tur-repo x11-repo -y
 ```
 
-### 2. Environment Setup
+### Environment "Hand‑Holding"
+
+This tells the Rust and C++ compilers exactly how to talk to your Android system:
 
 ```bash
 export ANDROID_API_LEVEL=$(getprop ro.build.version.sdk)
@@ -98,13 +98,17 @@ export LDFLAGS="-lpthread"
 export CXXFLAGS="-lpthread -D__ANDROID_API__=$ANDROID_API_LEVEL"
 ```
 
-### 3. Install Pre-built Binaries
+### Install Pre‑built Binaries (The Shortcut)
+
+We skip the failing "metadata generation" by using pre‑compiled versions from the Termux User Repository (TUR) and X11 repo:
 
 ```bash
 pkg install matplotlib python-numpy python-pillow python-cryptography python-pydantic-core python-grpcio python-msgspec python-rpds-py -y
 ```
 
-### 4. Fix C++ Compatibility
+### Fix C++ Compatibility (The Kiwisolver Fix)
+
+For packages that still insist on compiling, we force a lower API level to avoid the `pthread_cond_clockwait` error:
 
 ```bash
 export CFLAGS="-D__ANDROID_API__=24"
@@ -112,62 +116,75 @@ export CXXFLAGS="-D__ANDROID_API__=24"
 pip install kiwisolver
 ```
 
-### 5. Fix Python 3.12 pkg_resources Error
+### Fix the Python 3.12 "pkg_resources" Error
+
+Python 3.12 removed a module that some dependencies need. Work around this by downgrading setuptools:
 
 ```bash
 pip install "setuptools<70.0.0"
 pip install cycler fonttools pyparsing python-dateutil
 ```
 
-### 6. Final Installation
+### Final Installation & Launch
 
 ```bash
 pip install probe
 ```
 
-### Usage in Termux
+### How to Use It Now
 
 ```bash
 # Set your API key
 export OPENAI_API_KEY='your_key_here'
 
-# Run local model (recommended for offline operation)
-probe --local
-
-# Launch interactive chat
-probe
-
-# Execute a single command directly
-probe run "analyze file"
+# Run local models
+probe --local   # to use models without a paid API
 ```
 
-**Note:** OS Mode (controlling Android apps and system UI) is not supported in Termux. Probe will work for code execution, file analysis, exploit development, and network operations.
+OS Mode (controlling Android apps) is not currently supported in Termux; stick to code execution and file analysis.
 
-### Offline Mode Details
-
-Probe has a comprehensive offline capability allowing you to run entirely without internet access. When offline mode is enabled (via `--offline` or `probe --local` using a local language model), the following behaviors apply:
-
-- Telemetry and update checks are disabled.
-- Hosted API calls (OpenAI, Anthropic, etc.) are not attempted.
-- Local models such as Ollama, LM Studio, or any OpenAI-compatible server can be used via `PROBE_LOCAL_MODEL` environment variable.
-- All core features remain intact: code execution, file I/O, network sockets (subject to local network), and custom tools.
-- Offline mode is ideal for sensitive environments, red team operations, or air-gapped systems.
-
----
+(see the Offline Mode section above if you are running without network access; everything except the chosen LLM can operate locally)
 
 ## Quick Start
 
-### Terminal / Command Line
+### CLI Usage
 
 ```bash
-# Start interactive chat
+# Start interactive session
 probe
 
-# Run a single command
-probe run "perform vulnerability scan"
+# Run with specific model
+probe --model gpt-4 --auto-run
 
-# Use local LLM (requires setup)
-probe --local
+# One-off command
+probe "Scan 192.168.1.1 for open ports"
+
+# View help
+probe --help
+```
+
+### OS‑specific Package Installation
+
+**Windows**
+
+```bash
+pip install probe
+# run in cmd or PowerShell:
+probe
+```
+
+**Linux / macOS**
+
+```bash
+pip install probe
+# run:
+probe
+```
+
+**Termux** (see Termux guide above for manual package prep)
+
+```bash
+pip install probe
 ```
 
 ### Python API
@@ -175,114 +192,148 @@ probe --local
 ```python
 from probe import probe
 
-# Execute a single command
-probe.chat("exploit vulnerable service")
-
-# Start interactive chat
+# Interactive chat
 probe.chat()
+
+# Execute single task
+probe.chat("Enumerate services on target.com")
+
+# Custom instance
+from probe import Probe
+custom = Probe()
+custom.llm.model = "gpt-4o"
+custom.chat("Perform DNS enumeration on example.com")
 ```
-
-### Environment Variables
-
-- `OPENAI_API_KEY` — Your API key for remote models
-- `PROBE_LOCAL_MODEL` — Path to local LLM for offline operation
-- `TERMUX_VERSION` — Auto-detected; enables Termux-specific optimizations
-
----
-
-## Features
-
-- **Local Code Execution** — Execute Python, Bash, JavaScript, and more directly on your system.
-- **Offline Capabilities** — Run entirely without internet access by using local language models. Offline mode disables telemetry, update checks, and hosted APIs while retaining full code execution, analysis, and networking features where applicable.
-- **Full Internet Access** — Perform OSINT, reconnaissance, and remote exploitation when online.
-- **Zero Abstractions** — Direct access to system capabilities; no sandboxing restrictions.
-- **Multi-Model Support** — OpenAI, custom endpoints, or local models such as Ollama and LM Studio.
-- **File System Access** — Read, write, and manipulate files without limitations.
-- **Network Operations** — Full TCP/UDP access for network penetration testing.
-- **Custom Tools** — Add specialized security tools and custom scripts.
-- **Session Persistence** — Maintain state across multiple interactions.
-- **Profiles** — Pre-configured security-focused profiles for different scenarios.
-
----
-
-## CLI Commands
-
-```bash
-probe                          # Start interactive chat
-probe run "command"            # Execute a single command
-probe --version                # Show version
-probe --local                  # Use local LLM (requires setup)
-probe --help                   # Show help
-```
-
----
 
 ## Configuration
 
-Probe stores configuration in the system config directory:
-- **Windows**: `%APPDATA%\probe`
-- **Linux/macOS**: `~/.config/probe`
-- **Termux**: `$PREFIX/etc/probe` or `~/.config/probe`
+### LLM Setup
 
-Configuration files use YAML format. Examples:
-```yaml
-auto_run: true
-timeout: 300
-max_output: 5000
-offline: false
+**OpenAI:**
+
+```bash
+export OPENAI_API_KEY="sk-..."
+probe --model gpt-4o
 ```
 
----
+**Local Model (Ollama/LM Studio):**
 
-## System Requirements
+```bash
+# Start your local server first
+probe --model openai/llama2 --api-base http://localhost:1234/v1 --api-key fake-key
+```
 
-- **Python**: 3.9 or later
-- **Memory**: 4GB minimum (8GB recommended for local models)
-- **Disk**: 2GB minimum
-- **Internet**: Required for remote models (optional with local models)
+**Other Providers:** Probe uses LiteLLM for multi-provider support. See LiteLLM docs for configuration.
 
-### Supported Platforms
+### Profile System
 
-- Windows 10+ (64-bit)
-- Linux (Ubuntu 18.04+, Debian, Fedora, etc.)
-- macOS 10.14+
-- Android (Termux)
+Profiles allow you to save configurations:
 
----
+```bash
+probe --profile custom --model gpt-4
+```
 
-## Legal & Ethical Disclaimer
+Profiles are stored in `~/.config/probe/profiles/` and use YAML format.
 
-Probe is a professional cybersecurity tool designed exclusively for legitimate security testing, vulnerability research, and defensive or offensive security operations with explicit authorization. You are solely responsible for ensuring you have all necessary permissions and comply with applicable laws and policies before using Probe against any systems, networks, data, or services. Unauthorized access, data exfiltration, or other malicious use of Probe constitutes a violation of law and may result in criminal or civil liability.
+## Security & Disclaimers
 
-**Offline Usage Notice:** Probe may be operated entirely offline using local language models. Offline mode disables telemetry, update checks, and external services. While this can increase privacy and control, you remain fully responsible for any code executed on your system, as Probe executes commands with the privileges of the current user. Treat offline sessions with the same diligence as live testing.
+⚠️ IMPORTANT
 
-**Risk Disclaimer:** Executing generated code can cause data loss, system instability, or other unintended consequences. Always review code before execution when not using `--auto_run`, and consider running Probe within isolated or disposable environments (containers, VMs, remote sandboxes) when conducting untrusted tasks.
+Probe is designed for authorized security testing only. Unauthorized access to computer systems is illegal.
 
----
+- Only use Probe on systems you own or have explicit written permission to test
+- Obey all applicable laws and regulations
+- Be aware that LLM-generated code may have unintended consequences
+- Always review and validate code before execution
+
+## Examples
+
+### Network Reconnaissance
+
+```python
+from probe import probe
+probe.chat("Scan 10.0.0.0/24 and report open ports")
+```
+
+### Vulnerability Research
+
+```python
+probe.chat("Research CVE-2024-XXXXX and suggest exploitation approach")
+```
+
+### Reverse Engineering
+
+```python
+probe.chat("Analyze this binary and identify its functionality")
+# (provide binary file or hex dump)
+```
+
+### Report Generation
+
+```python
+probe.chat("Generate a penetration test report summarizing findings, risks, and remediation steps")
+```
+
+## Troubleshooting
+
+### Import Errors
+
+Ensure the package is installed in your Python environment:
+
+```bash
+pip list | grep probe
+python3 -c "from probe import probe; print('OK')"
+```
+
+### API Key Issues
+
+Check that your LLM provider API key is set:
+
+```bash
+echo $OPENAI_API_KEY
+# for OpenAI
+```
+
+### Termux-Specific
+
+Some GUI/audio features may not work in Termux. Text-based functionality is fully supported.
+
+## Contributing
+
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -am 'Add feature'`)
+4. Push to the branch (`git push origin feature/my-feature`)
+5. Submit a pull request
 
 ## License
 
-See the [LICENSE](LICENSE) file for details.
+GNU Affero General Public License v3.0 (AGPL-3.0) with Additional Restrictions
 
----
+This software is provided as-is for authorized security testing and educational purposes only.
 
-## Development
+You are expressly PROHIBITED from:
 
-To contribute or set up a development environment:
+- Selling, reselling, or commercializing Probe or any derivative work
+- Tampering with, modifying, or obscuring copyright notices and author attributions
+- Using this software for unauthorized access or illegal activities
 
-```bash
-git clone https://github.com/an0dev/probe.git
-cd probe
-pip install -e ".[dev]"
-```
-
----
+See `LICENSE` for full terms.
 
 ## Support
 
-- **GitHub Issues**: https://github.com/an0dev/probe/issues
-- **Documentation**: https://github.com/an0dev/probe
+- GitHub Issues: Report bugs or request features
+- Discussions: Ask questions and share ideas
 
----
+## Disclaimer
 
-**Probe** — Execute without restrictions.
+This project is provided for authorized security testing, research, and educational purposes. Users are responsible for ensuring they have proper authorization before testing any system. Unauthorized access is illegal.
+
+The developers are not responsible for misuse or damage caused by this software.
+
+**Project Status:** Active Development
+**License:** AGPL-3.0 with restrictions
+**Last Updated:** February 2026
+
