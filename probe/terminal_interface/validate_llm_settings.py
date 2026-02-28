@@ -48,7 +48,7 @@ def validate_llm_settings(probe):
 
                     To use `gpt-4o` (recommended) please provide an OpenAI API key.
 
-                    To use another language model, run `probe --local` or consult the documentation at [docs.probe.com](https://github.com/an0dev/probe/language-model-setup/).
+                    To use another language model, run `probe --local` or consult the documentation at [GitHub docs](https://github.com/an0dev/probe/tree/main/docs/language-models/).
                     
                     ---
                     """

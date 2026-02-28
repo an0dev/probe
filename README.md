@@ -140,7 +140,7 @@ pip install cycler fonttools pyparsing python-dateutil
 ### Final Installation & Launch
 
 ```bash
-pip install probers
+pip install probers uvicorn fastapi
 ```
 
 ### How to Use It Now
