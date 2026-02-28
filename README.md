@@ -49,13 +49,14 @@ Ensure you have Python 3.9+ installed on your system.
 ### Via PyPI (Recommended)
 
 ```shell
-pip install probe
+pip install prober
 ```
 
 ### From Source
 
 ```shell
 git clone https://github.com/an0dev/probe.git
+# note: package name is prober for pip
 cd probe
 pip install -e .
 ```
@@ -131,7 +132,7 @@ pip install cycler fonttools pyparsing python-dateutil
 ### Final Installation & Launch
 
 ```bash
-pip install probe
+pip install prober
 ```
 
 ### How to Use It Now
@@ -173,21 +174,21 @@ probe --help
 **Windows**
 
 ```bash
-pip install probe
+pip install prober
 # run in cmd or Powershell: probe
 ```
 
 **Linux / macOS**
 
 ```bash
-pip install probe
+pip install prober
 # run: probe
 ```
 
 **Termux** (see Termux guide above for manual package prep)
 
 ```bash
-pip install probe
+pip install prober
 ```
 
 ### Python API
