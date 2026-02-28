@@ -6,7 +6,6 @@
   [![License](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
   [![Python Version](https://img.shields.io/pypi/pyversions/probers?color=informational)](https://pypi.org/project/probers/)
   [![GitHub Release](https://img.shields.io/github/v/release/an0dev/probe?color=orange)](https://github.com/an0dev/probe/releases)
-  [![Downloads](https://img.shields.io/github/downloads/an0dev/probe/total?color=yellow)](https://github.com/an0dev/probe/releases)
 </p>
 
 
