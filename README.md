@@ -1,5 +1,6 @@
 # Probe
 
+
 Probe is an AI-powered cybersecurity execution engine built for penetration testing, vulnerability assessment, red team operations, OSINT, exploit development, reverse engineering, and comprehensive offensive/defensive security workflows. It is designed to operate in both online and completely offline environments, allowing you to run local language models or disconnect from the network when required.
 
 Based on AIDE CLI – Leveraging best practices from open-source AI infrastructure.
@@ -24,9 +25,10 @@ Probe exposes a rich set of capabilities aimed at making offensive and defensive
 
 - **Multi-LLM Support** – Use OpenAI, local models (Ollama, LLaMA, etc.), or any provider supported by LiteLLM.
 
-- **Cross‑Platform** – Fully supported on Linux, macOS, Windows, and Termux (Android). The Termux guide later in this README explains manual dependency installation.
+- **Cross‑Platform** – Fully supported on Linux, macOS, Windows, and Termux (Android). The Termux guide above explains manual dependency installation.
 
 - **Extensible Language Execution** – Execute code in a variety of languages directly from the chat interface. Supported languages include:
+
   - Python
   - Shell (bash, sh, zsh)
   - JavaScript/Node.js
@@ -60,20 +62,21 @@ pip install -e .
 
 ### Termux / Android (Manual Installation)
 
-Termux install requires some manual steps due to Android toolchain quirks. See the "System Prep & Stable Mirrors" section below for the complete sequence.
+Termux install requires some manual steps due to Android toolchain quirks.
 
 ## Offline Mode
 
 Probe is designed to function completely offline once installed. The core engine runs entirely in‑process; only the choice of language model may require network access. To operate offline:
 
-- Install a local model or use `--local` (many users run Ollama, LLaMA, or another server on localhost and invoke Probe with `--model` pointing at the local endpoint).
-- Offline mode (via `--offline` or `--local`) disables telemetry, update checks, and hosted API calls; no special environment variable is required.
+- Install a local model or use `--local`: many users run Ollama, LLaMA, or another server on localhost and invoke Probe with `--model` pointing at the local endpoint.
 
-Code execution, file analysis, and toolcalls all work without internet; commands like `probe run python` or `probe "scan"` still execute on your machine with no external dependencies.
+- Disable telemetry and network checks: set `export PROBE_OFFLINE=true` or run `probe --offline` to suppress any outbound traffic. By default Probe only contacts telemetry endpoints if you explicitly opt in.
+
+- Code execution, file analysis, and toolcalls all work without internet; commands like `probe "run python"` or `probe "scan"` still execute on your machine with no external dependencies.
 
 This makes Probe suitable for air‑gapped labs and sensitive environments. Just install the package (or copy the wheel) onto the offline host and run the CLI as usual.
 
-## System Prep & Stable Mirrors (Termux)
+## System Prep & Stable Mirrors
 
 First, ensure you are on a stable mirror and have the necessary build tools:
 
@@ -86,7 +89,7 @@ pkg update && pkg upgrade -y
 pkg install clang rust make binutils python tur-repo x11-repo -y
 ```
 
-### Environment "Hand‑Holding"
+### Environment "Hand-Holding"
 
 This tells the Rust and C++ compilers exactly how to talk to your Android system:
 
@@ -98,9 +101,9 @@ export LDFLAGS="-lpthread"
 export CXXFLAGS="-lpthread -D__ANDROID_API__=$ANDROID_API_LEVEL"
 ```
 
-### Install Pre‑built Binaries (The Shortcut)
+### Install Pre-built Binaries (The Shortcut)
 
-We skip the failing "metadata generation" by using pre‑compiled versions from the Termux User Repository (TUR) and X11 repo:
+We skipped the failing "metadata generation" by using pre-compiled versions from the Termux User Repository (TUR) and X11 repo:
 
 ```bash
 pkg install matplotlib python-numpy python-pillow python-cryptography python-pydantic-core python-grpcio python-msgspec python-rpds-py -y
@@ -116,9 +119,9 @@ export CXXFLAGS="-D__ANDROID_API__=24"
 pip install kiwisolver
 ```
 
-### Fix the Python 3.12 "pkg_resources" Error
+### Fix the Python 3.12 "pkg_resources" Error
 
-Python 3.12 removed a module that some dependencies need. Work around this by downgrading setuptools:
+Python 3.12 removed a module that some dependencies need. Work around this by downgrading setuptools:
 
 ```bash
 pip install "setuptools<70.0.0"
@@ -143,6 +146,8 @@ probe --local   # to use models without a paid API
 
 OS Mode (controlling Android apps) is not currently supported in Termux; stick to code execution and file analysis.
 
+Use all commands with caution when copying from this guide.
+
 (see the Offline Mode section above if you are running without network access; everything except the chosen LLM can operate locally)
 
 ## Quick Start
@@ -163,22 +168,20 @@ probe "Scan 192.168.1.1 for open ports"
 probe --help
 ```
 
-### OS‑specific Package Installation
+### OS-specific Package Installation
 
 **Windows**
 
 ```bash
 pip install probe
-# run in cmd or PowerShell:
-probe
+# run in cmd or Powershell: probe
 ```
 
 **Linux / macOS**
 
 ```bash
 pip install probe
-# run:
-probe
+# run: probe
 ```
 
 **Termux** (see Termux guide above for manual package prep)
@@ -191,13 +194,10 @@ pip install probe
 
 ```python
 from probe import probe
-
 # Interactive chat
 probe.chat()
-
 # Execute single task
 probe.chat("Enumerate services on target.com")
-
 # Custom instance
 from probe import Probe
 custom = Probe()
