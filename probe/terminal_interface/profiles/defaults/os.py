@@ -1,22 +1,22 @@
 import time
 
-from probe import interpreter
+from probe import probe
 
-interpreter.os = True
-interpreter.llm.supports_vision = True
+probe.os = True
+probe.llm.supports_vision = True
 
-interpreter.llm.model = "gpt-4o"
+probe.llm.model = "gpt-4o"
 
-interpreter.computer.import_computer_api = True
+probe.computer.import_computer_api = True
 
-interpreter.llm.supports_functions = True
-interpreter.llm.context_window = 110000
-interpreter.llm.max_tokens = 4096
-interpreter.auto_run = True
-interpreter.loop = True
-interpreter.sync_computer = True
+probe.llm.supports_functions = True
+probe.llm.context_window = 110000
+probe.llm.max_tokens = 4096
+probe.auto_run = True
+probe.loop = True
+probe.sync_computer = True
 
-interpreter.system_message = r"""
+probe.system_message = r"""
 
 You are Probe, a world-class programmer that can complete any goal by executing code.
 
@@ -162,7 +162,7 @@ for package in packages:
         missing_packages.append(package)
 
 if missing_packages:
-    interpreter.display_message(
+    probe.display_message(
         f"> **Missing Package(s): {', '.join(['`' + p + '`' for p in missing_packages])}**\n\nThese packages are required for OS Control.\n\nInstall them?\n"
     )
     user_input = input("(y/n) > ")
@@ -183,7 +183,7 @@ if missing_packages:
             else:
                 command = f"{pip_combo[0]} install probe[os]"
 
-            interpreter.computer.run("shell", command, display=True)
+            probe.computer.run("shell", command, display=True)
 
             got_em = True
             for package in missing_packages:
@@ -210,7 +210,7 @@ if missing_packages:
             time.sleep(2)
             print("Attempting to start OS control anyway...\n\n")
 
-interpreter.display_message("> `OS Control` enabled")
+probe.display_message("> `OS Control` enabled")
 
 # Should we explore other options for ^ these kinds of tags?
 # Like:
@@ -228,23 +228,23 @@ interpreter.display_message("> `OS Control` enabled")
 # print(">\n\n")
 # console.print(Panel("[bold italic white on black]OS CONTROL[/bold italic white on black] Enabled", box=box.SQUARE, expand=False), style="white on black")
 
-if not interpreter.auto_run:
+if not probe.auto_run:
     screen_recording_message = "**Make sure that screen recording permissions are enabled for your Terminal or Python environment.**"
-    interpreter.display_message(screen_recording_message)
+    probe.display_message(screen_recording_message)
     print("")
 
 # # FOR TESTING ONLY
 # # Install Probe from GitHub
-# for chunk in interpreter.computer.run(
+# for chunk in probe.computer.run(
 #     "shell",
-#     "pip install git+https://github.com/Probe/open-interpreter.git",
+#     "pip install git+https://github.com/Probe/open-probe.git",
 # ):
 #     if chunk.get("format") != "active_line":
 #         print(chunk.get("content"))
 
-interpreter.auto_run = True
+probe.auto_run = True
 
-interpreter.display_message(
+probe.display_message(
     "**Warning:** In this mode, Probe will not require approval before performing actions. Be ready to close your terminal."
 )
 print("")  # < - Aesthetic choice

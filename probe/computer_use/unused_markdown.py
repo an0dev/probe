@@ -198,7 +198,7 @@ import requests
 # Download a large markdown file to test different styles
 url = "https://raw.githubusercontent.com/matiassingers/awesome-readme/master/readme.md"
 url = (
-    "https://raw.githubusercontent.com/Probe/open-interpreter/main/README.md"
+    "https://raw.githubusercontent.com/Probe/open-probe/main/README.md"
 )
 
 response = requests.get(url)

@@ -2,10 +2,10 @@
 title: Streaming Response
 ---
 
-You can stream messages, code, and code outputs out of Probe by setting `stream=True` in an `interpreter.chat(message)` call.
+You can stream messages, code, and code outputs out of Probe by setting `stream=True` in an `probe.chat(message)` call.
 
 ```python
-for chunk in interpreter.chat("What's 34/24?", stream=True, display=False):
+for chunk in probe.chat("What's 34/24?", stream=True, display=False):
   print(chunk)
 ```
 
@@ -61,7 +61,7 @@ In this example, the LLM decided to start writing code first. It could have deci
 
 Every streamed chunk of type "code" has a format key that specifies the language. In this case it decided to write `python`.
 
-This can be any language defined in [our languages directory.](https://github.com/OpenInterpreter/probe/tree/main/interpreter/core/computer/terminal/languages)
+This can be any language defined in [our languages directory.](https://github.com/Probe/probe/tree/main/probe/core/computer/terminal/languages)
 
 ```
 
@@ -105,7 +105,7 @@ If you check for this object, you can break (or get confirmation) **before** exe
 ```python
 # This example asks the user before running code
 
-for chunk in interpreter.chat("What's 34/24?", stream=True):
+for chunk in probe.chat("What's 34/24?", stream=True):
     if "executing" in chunk:
         if input("Press ENTER to run this code.") != "":
             break
@@ -156,4 +156,4 @@ Finally, the LLM decided to write a message. This is streamed token-by-token as 
 {"role": "assistant", "type": "message", "end": True}
 ```
 
-For an example in JavaScript on how you might process these streamed chunks, see the [migration guide](https://github.com/OpenInterpreter/probe/blob/main/docs/NCU_MIGRATION_GUIDE.md)
+For an example in JavaScript on how you might process these streamed chunks, see the [migration guide](https://github.com/Probe/probe/blob/main/docs/NCU_MIGRATION_GUIDE.md)

@@ -7,14 +7,14 @@ To use Probe with a model from OpenRouter, set the `model` flag to begin with `o
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model openrouter/openai/gpt-3.5-turbo
+probe --model openrouter/openai/gpt-3.5-turbo
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "openrouter/openai/gpt-3.5-turbo"
-interpreter.chat()
+probe.llm.model = "openrouter/openai/gpt-3.5-turbo"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -26,29 +26,29 @@ We support any model on [OpenRouter's models page:](https://openrouter.ai/models
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model openrouter/openai/gpt-3.5-turbo
-interpreter --model openrouter/openai/gpt-3.5-turbo-16k
-interpreter --model openrouter/openai/gpt-4
-interpreter --model openrouter/openai/gpt-4-32k
-interpreter --model openrouter/anthropic/claude-2
-interpreter --model openrouter/anthropic/claude-instant-v1
-interpreter --model openrouter/google/palm-2-chat-bison
-interpreter --model openrouter/google/palm-2-codechat-bison
-interpreter --model openrouter/meta-llama/llama-2-13b-chat
-interpreter --model openrouter/meta-llama/llama-2-70b-chat
+probe --model openrouter/openai/gpt-3.5-turbo
+probe --model openrouter/openai/gpt-3.5-turbo-16k
+probe --model openrouter/openai/gpt-4
+probe --model openrouter/openai/gpt-4-32k
+probe --model openrouter/anthropic/claude-2
+probe --model openrouter/anthropic/claude-instant-v1
+probe --model openrouter/google/palm-2-chat-bison
+probe --model openrouter/google/palm-2-codechat-bison
+probe --model openrouter/meta-llama/llama-2-13b-chat
+probe --model openrouter/meta-llama/llama-2-70b-chat
 ```
 
 ```python Python
-interpreter.llm.model = "openrouter/openai/gpt-3.5-turbo"
-interpreter.llm.model = "openrouter/openai/gpt-3.5-turbo-16k"
-interpreter.llm.model = "openrouter/openai/gpt-4"
-interpreter.llm.model = "openrouter/openai/gpt-4-32k"
-interpreter.llm.model = "openrouter/anthropic/claude-2"
-interpreter.llm.model = "openrouter/anthropic/claude-instant-v1"
-interpreter.llm.model = "openrouter/google/palm-2-chat-bison"
-interpreter.llm.model = "openrouter/google/palm-2-codechat-bison"
-interpreter.llm.model = "openrouter/meta-llama/llama-2-13b-chat"
-interpreter.llm.model = "openrouter/meta-llama/llama-2-70b-chat"
+probe.llm.model = "openrouter/openai/gpt-3.5-turbo"
+probe.llm.model = "openrouter/openai/gpt-3.5-turbo-16k"
+probe.llm.model = "openrouter/openai/gpt-4"
+probe.llm.model = "openrouter/openai/gpt-4-32k"
+probe.llm.model = "openrouter/anthropic/claude-2"
+probe.llm.model = "openrouter/anthropic/claude-instant-v1"
+probe.llm.model = "openrouter/google/palm-2-chat-bison"
+probe.llm.model = "openrouter/google/palm-2-codechat-bison"
+probe.llm.model = "openrouter/meta-llama/llama-2-13b-chat"
+probe.llm.model = "openrouter/meta-llama/llama-2-70b-chat"
 ```
 
 </CodeGroup>
@@ -60,5 +60,5 @@ Set the following LiteLLM environment variables [(click here to learn how)](http
 | Environment Variable  | Description  | Where to Find  |
 | --------------------- | ------------ | -------------- |
 | `OPENROUTER_API_KEY`       | The API key for authenticating to OpenRouter's services. | [OpenRouter Account Page](https://openrouter.ai/keys) |
-| `OR_SITE_URL`      | An optional app URL for tracking usage, such as `https://github.com/openinterpreter/probe/`. | Your choice |
+| `OR_SITE_URL`      | An optional app URL for tracking usage, such as `https://github.com/probe/probe/`. | Your choice |
 | `OR_APP_NAME`   | An optional app name for tracking usage, such as `"Probe"`. | Your choice |

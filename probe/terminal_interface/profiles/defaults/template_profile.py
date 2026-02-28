@@ -7,8 +7,8 @@ Learn about all the available settings - https://github.com/an0dev/probe/setting
 
 """
 
-# Import the interpreter
-from probe import interpreter
+# Import the probe
+from probe import probe
 
 # You can import other libraries too
 from datetime import date
@@ -17,28 +17,28 @@ from datetime import date
 today = date.today()
 
 # LLM Settings
-interpreter.llm.model = "groq/llama-3.1-70b-versatile"
-interpreter.llm.context_window = 110000
-interpreter.llm.max_tokens = 4096
-interpreter.llm.api_base = "https://api.example.com"
-interpreter.llm.api_key = "your_api_key_here"
-interpreter.llm.supports_functions = False
-interpreter.llm.supports_vision = False
+probe.llm.model = "groq/llama-3.1-70b-versatile"
+probe.llm.context_window = 110000
+probe.llm.max_tokens = 4096
+probe.llm.api_base = "https://api.example.com"
+probe.llm.api_key = "your_api_key_here"
+probe.llm.supports_functions = False
+probe.llm.supports_vision = False
 
 
-# Interpreter Settings
-interpreter.offline = False
-interpreter.loop = True
-interpreter.auto_run = False
+# Probe Settings
+probe.offline = False
+probe.loop = True
+probe.auto_run = False
 
 # Toggle OS Mode - https://github.com/an0dev/probe/guides/os-mode
-interpreter.os = False
+probe.os = False
 
 # Import Computer API - https://github.com/an0dev/probe/code-execution/computer-api
-interpreter.computer.import_computer_api = True
+probe.computer.import_computer_api = True
 
 
-# Set Custom Instructions to improve your Interpreter's performance at a given task
-interpreter.custom_instructions = f"""
+# Set Custom Instructions to improve your Probe's performance at a given task
+probe.custom_instructions = f"""
     Today's date is {today}.
     """

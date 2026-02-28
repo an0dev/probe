@@ -6,14 +6,14 @@ Simply set `api_base` to any OpenAI compatible server:
 
 <CodeGroup>
 ```bash Terminal
-interpreter --api_base <custom_endpoint>
+probe --api_base <custom_endpoint>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.api_base = "<custom_endpoint>"
-interpreter.chat()
+probe.llm.api_base = "<custom_endpoint>"
+probe.chat()
 ```
 
 </CodeGroup>

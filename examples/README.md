@@ -1,6 +1,6 @@
-# Open Interpreter Examples
+# Probe Examples
 
-This directory contains various examples demonstrating how to use Open Interpreter in different scenarios and configurations. Each example is designed to provide a practical guide to integrating and leveraging Open Interpreter's capabilities in your projects.
+This directory contains various examples demonstrating how to use Probe in different scenarios and configurations. Each example is designed to provide a practical guide to integrating and leveraging Probe's capabilities in your projects.
 
 ## Colab Notebooks
 

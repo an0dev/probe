@@ -14,13 +14,13 @@ os.environ["AWS_REGION_NAME"] = "" # us-east-1, us-east-2, us-west-1, us-west-2
 More information can be found here: https://docs.litellm.ai/docs/providers/bedrock
 """
 
-from probe import interpreter
+from probe import probe
 
-interpreter.llm.model = "bedrock/anthropic.claude-3-sonnet-20240229-v1:0"
+probe.llm.model = "bedrock/anthropic.claude-3-sonnet-20240229-v1:0"
 
-interpreter.computer.import_computer_api = True
+probe.computer.import_computer_api = True
 
-interpreter.llm.supports_functions = False
-interpreter.llm.supports_vision = False
-interpreter.llm.context_window = 10000
-interpreter.llm.max_tokens = 4096
+probe.llm.supports_functions = False
+probe.llm.supports_vision = False
+probe.llm.context_window = 10000
+probe.llm.max_tokens = 4096

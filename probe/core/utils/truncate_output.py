@@ -15,7 +15,7 @@ def truncate_output(data, max_output_chars=2800, add_scrollbars=False):
                "repeat shell commands with wc/grep/sed, etc. or break it down "
                "into smaller steps.\n\n")
 
-    # This won't work because truncated code is stored in interpreter.messages :/
+    # This won't work because truncated code is stored in probe.messages :/
     # If the full code was stored, we could do this:
     if add_scrollbars:
         message = (

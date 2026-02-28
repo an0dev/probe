@@ -16,9 +16,9 @@ from .utils.check_for_update import check_for_update
 from .validate_llm_settings import validate_llm_settings
 
 
-def start_terminal_interface(interpreter):
+def start_terminal_interface(probe):
     """
-    Meant to be used from the command line. Parses arguments, starts OI's terminal interface.
+    Meant to be used from the command line. Parses arguments and starts Probe's terminal interface.
     """
 
     # Instead use an async probe, which has a server. Set settings on that
@@ -40,21 +40,21 @@ def start_terminal_interface(interpreter):
             "nickname": "ci",
             "help_text": "custom instructions for the language model. will be appended to the system_message",
             "type": str,
-            "attribute": {"object": interpreter, "attr_name": "custom_instructions"},
+            "attribute": {"object": probe, "attr_name": "custom_instructions"},
         },
         {
             "name": "system_message",
             "nickname": "sm",
             "help_text": "(we don't recommend changing this) base prompt for the language model",
             "type": str,
-            "attribute": {"object": interpreter, "attr_name": "system_message"},
+            "attribute": {"object": probe, "attr_name": "system_message"},
         },
         {
             "name": "auto_run",
             "nickname": "y",
             "help_text": "automatically run generated code",
             "type": bool,
-            "attribute": {"object": interpreter, "attr_name": "auto_run"},
+            "attribute": {"object": probe, "attr_name": "auto_run"},
         },
         {
             "name": "no_highlight_active_line",
@@ -69,92 +69,92 @@ def start_terminal_interface(interpreter):
             "nickname": "v",
             "help_text": "print detailed logs",
             "type": bool,
-            "attribute": {"object": interpreter, "attr_name": "verbose"},
+            "attribute": {"object": probe, "attr_name": "verbose"},
         },
         {
             "name": "model",
             "nickname": "m",
             "help_text": "language model to use",
             "type": str,
-            "attribute": {"object": interpreter.llm, "attr_name": "model"},
+            "attribute": {"object": probe.llm, "attr_name": "model"},
         },
         {
             "name": "temperature",
             "nickname": "t",
             "help_text": "optional temperature setting for the language model",
             "type": float,
-            "attribute": {"object": interpreter.llm, "attr_name": "temperature"},
+            "attribute": {"object": probe.llm, "attr_name": "temperature"},
         },
         {
             "name": "llm_supports_vision",
             "nickname": "lsv",
-            "help_text": "inform OI that your model supports vision, and can receive vision inputs",
+            "help_text": "inform Probe that your model supports vision, and can receive vision inputs",
             "type": bool,
             "action": argparse.BooleanOptionalAction,
-            "attribute": {"object": interpreter.llm, "attr_name": "supports_vision"},
+            "attribute": {"object": probe.llm, "attr_name": "supports_vision"},
         },
         {
             "name": "llm_supports_functions",
             "nickname": "lsf",
-            "help_text": "inform OI that your model supports OpenAI-style functions, and can make function calls",
+            "help_text": "inform Probe that your model supports OpenAI-style functions, and can make function calls",
             "type": bool,
             "action": argparse.BooleanOptionalAction,
-            "attribute": {"object": interpreter.llm, "attr_name": "supports_functions"},
+            "attribute": {"object": probe.llm, "attr_name": "supports_functions"},
         },
         {
             "name": "context_window",
             "nickname": "cw",
             "help_text": "optional context window size for the language model",
             "type": int,
-            "attribute": {"object": interpreter.llm, "attr_name": "context_window"},
+            "attribute": {"object": probe.llm, "attr_name": "context_window"},
         },
         {
             "name": "max_tokens",
             "nickname": "x",
             "help_text": "optional maximum number of tokens for the language model",
             "type": int,
-            "attribute": {"object": interpreter.llm, "attr_name": "max_tokens"},
+            "attribute": {"object": probe.llm, "attr_name": "max_tokens"},
         },
         {
             "name": "max_budget",
             "nickname": "b",
             "help_text": "optionally set the max budget (in USD) for your llm calls",
             "type": float,
-            "attribute": {"object": interpreter.llm, "attr_name": "max_budget"},
+            "attribute": {"object": probe.llm, "attr_name": "max_budget"},
         },
         {
             "name": "api_base",
             "nickname": "ab",
             "help_text": "optionally set the API base URL for your llm calls (this will override environment variables)",
             "type": str,
-            "attribute": {"object": interpreter.llm, "attr_name": "api_base"},
+            "attribute": {"object": probe.llm, "attr_name": "api_base"},
         },
         {
             "name": "api_key",
             "nickname": "ak",
             "help_text": "optionally set the API key for your llm calls (this will override environment variables)",
             "type": str,
-            "attribute": {"object": interpreter.llm, "attr_name": "api_key"},
+            "attribute": {"object": probe.llm, "attr_name": "api_key"},
         },
         {
             "name": "api_version",
             "nickname": "av",
             "help_text": "optionally set the API version for your llm calls (this will override environment variables)",
             "type": str,
-            "attribute": {"object": interpreter.llm, "attr_name": "api_version"},
+            "attribute": {"object": probe.llm, "attr_name": "api_version"},
         },
         {
             "name": "max_output",
             "nickname": "xo",
             "help_text": "optional maximum number of characters for code outputs",
             "type": int,
-            "attribute": {"object": interpreter, "attr_name": "max_output"},
+            "attribute": {"object": probe, "attr_name": "max_output"},
         },
         {
             "name": "loop",
-            "help_text": "runs OI in a loop, requiring it to admit to completing/failing task",
+            "help_text": "runs Probe in a loop, requiring it to admit to completing/failing task",
             "type": bool,
-            "attribute": {"object": interpreter, "attr_name": "loop"},
+            "attribute": {"object": probe, "attr_name": "loop"},
         },
         {
             "name": "disable_telemetry",
@@ -162,21 +162,21 @@ def start_terminal_interface(interpreter):
             "help_text": "disables sending of basic anonymous usage stats",
             "type": bool,
             "default": False,
-            "attribute": {"object": interpreter, "attr_name": "disable_telemetry"},
+            "attribute": {"object": probe, "attr_name": "disable_telemetry"},
         },
         {
             "name": "offline",
             "nickname": "o",
             "help_text": "turns off all online features (except the language model, if it's hosted)",
             "type": bool,
-            "attribute": {"object": interpreter, "attr_name": "offline"},
+            "attribute": {"object": probe, "attr_name": "offline"},
         },
         {
             "name": "speak_messages",
             "nickname": "sp",
             "help_text": "(Mac only, experimental) use the applescript `say` command to read messages aloud",
             "type": bool,
-            "attribute": {"object": interpreter, "attr_name": "speak_messages"},
+            "attribute": {"object": probe, "attr_name": "speak_messages"},
         },
         {
             "name": "safe_mode",
@@ -185,19 +185,19 @@ def start_terminal_interface(interpreter):
             "type": str,
             "choices": ["off", "ask", "auto"],
             "default": "off",
-            "attribute": {"object": interpreter, "attr_name": "safe_mode"},
+            "attribute": {"object": probe, "attr_name": "safe_mode"},
         },
         {
             "name": "debug",
             "nickname": "debug",
-            "help_text": "debug mode for open interpreter developers",
+            "help_text": "debug mode for open probe developers",
             "type": bool,
-            "attribute": {"object": interpreter, "attr_name": "debug"},
+            "attribute": {"object": probe, "attr_name": "debug"},
         },
         {
             "name": "fast",
             "nickname": "f",
-            "help_text": "runs `interpreter --model gpt-4o-mini` and asks OI to be extremely concise (shortcut for `interpreter --profile fast`)",
+            "help_text": "runs `probe --model gpt-4o-mini` and asks OI to be extremely concise (shortcut for `probe --profile fast`)",
             "type": bool,
         },
         {
@@ -205,44 +205,44 @@ def start_terminal_interface(interpreter):
             "nickname": "ml",
             "help_text": "enable multi-line inputs starting and ending with ```",
             "type": bool,
-            "attribute": {"object": interpreter, "attr_name": "multi_line"},
+            "attribute": {"object": probe, "attr_name": "multi_line"},
         },
         {
             "name": "local",
             "nickname": "l",
-            "help_text": "setup a local model (shortcut for `interpreter --profile local`)",
+            "help_text": "setup a local model (shortcut for `probe --profile local`)",
             "type": bool,
         },
         {
             "name": "codestral",
-            "help_text": "shortcut for `interpreter --profile codestral`",
+            "help_text": "shortcut for `probe --profile codestral`",
             "type": bool,
         },
         {
             "name": "assistant",
-            "help_text": "shortcut for `interpreter --profile assistant.py`",
+            "help_text": "shortcut for `probe --profile assistant.py`",
             "type": bool,
         },
         {
             "name": "llama3",
-            "help_text": "shortcut for `interpreter --profile llama3`",
+            "help_text": "shortcut for `probe --profile llama3`",
             "type": bool,
         },
         {
             "name": "groq",
-            "help_text": "shortcut for `interpreter --profile groq`",
+            "help_text": "shortcut for `probe --profile groq`",
             "type": bool,
         },
         {
             "name": "vision",
             "nickname": "vi",
-            "help_text": "experimentally use vision for supported languages (shortcut for `interpreter --profile vision`)",
+            "help_text": "experimentally use vision for supported languages (shortcut for `probe --profile vision`)",
             "type": bool,
         },
         {
             "name": "os",
             "nickname": "os",
-            "help_text": "experimentally let Probe control your mouse and keyboard (shortcut for `interpreter --profile os`)",
+            "help_text": "experimentally let Probe control your mouse and keyboard (shortcut for `probe --profile os`)",
             "type": bool,
         },
         # Special commands
@@ -266,7 +266,7 @@ def start_terminal_interface(interpreter):
         },
         {
             "name": "server",
-            "help_text": "start open interpreter as a server",
+            "help_text": "start open probe as a server",
             "type": bool,
         },
         {
@@ -279,7 +279,7 @@ def start_terminal_interface(interpreter):
             "help_text": "let Probe use the current conversation to train an Open-Source LLM",
             "type": bool,
             "attribute": {
-                "object": interpreter,
+                "object": probe,
                 "attr_name": "contribute_conversation",
             },
         },
@@ -289,14 +289,14 @@ def start_terminal_interface(interpreter):
             "help_text": "set output to plain text",
             "type": bool,
             "attribute": {
-                "object": interpreter,
+                "object": probe,
                 "attr_name": "plain_text_display",
             },
         },
         {
             "name": "stdin",
             "nickname": "s",
-            "help_text": "Run OI in stdin mode",
+            "help_text": "Run Probe in stdin mode",
             "type": bool,
         },
     ]
@@ -307,20 +307,20 @@ def start_terminal_interface(interpreter):
     # i shortcut
     if len(sys.argv) > 1 and not sys.argv[1].startswith("-"):
         message = " ".join(sys.argv[1:])
-        interpreter.messages.append(
+        probe.messages.append(
             {"role": "user", "type": "message", "content": "I " + message}
         )
         sys.argv = sys.argv[:1]
 
-        interpreter.custom_instructions = "UPDATED INSTRUCTIONS: You are in ULTRA FAST, ULTRA CERTAIN mode. Do not ask the user any questions or run code to gathet information. Go as quickly as you can. Run code quickly. Do not plan out loud, simply start doing the best thing. The user expects speed. Trust that the user knows best. Just interpret their ambiguous command as quickly and certainly as possible and try to fulfill it IN ONE COMMAND, assuming they have the right information. If they tell you do to something, just do it quickly in one command, DO NOT try to get more information (for example by running `cat` to get a file's infomration— this is probably unecessary!). DIRECTLY DO THINGS AS FAST AS POSSIBLE."
+        probe.custom_instructions = "UPDATED INSTRUCTIONS: You are in ULTRA FAST, ULTRA CERTAIN mode. Do not ask the user any questions or run code to gathet information. Go as quickly as you can. Run code quickly. Do not plan out loud, simply start doing the best thing. The user expects speed. Trust that the user knows best. Just interpret their ambiguous command as quickly and certainly as possible and try to fulfill it IN ONE COMMAND, assuming they have the right information. If they tell you do to something, just do it quickly in one command, DO NOT try to get more information (for example by running `cat` to get a file's infomration— this is probably unecessary!). DIRECTLY DO THINGS AS FAST AS POSSIBLE."
 
         files_in_directory = os.listdir()[:100]
-        interpreter.custom_instructions += (
+        probe.custom_instructions += (
             "\nThe files in CWD, which THE USER MAY BE REFERRING TO, are: "
             + ", ".join(files_in_directory)
         )
 
-        # interpreter.debug = True
+        # probe.debug = True
 
     # Check for deprecated flags before parsing arguments
     deprecated_flags = {
@@ -415,15 +415,15 @@ Use """ to write multi-line messages.
         return
 
     if args.no_highlight_active_line:
-        interpreter.highlight_active_line = False
+        probe.highlight_active_line = False
 
     # if safe_mode and auto_run are enabled, safe_mode disables auto_run
-    if interpreter.auto_run and (
-        interpreter.safe_mode == "ask" or interpreter.safe_mode == "auto"
+    if probe.auto_run and (
+        probe.safe_mode == "ask" or probe.safe_mode == "auto"
     ):
-        setattr(interpreter, "auto_run", False)
+        setattr(probe, "auto_run", False)
 
-    ### Set attributes on interpreter, so that a profile script can read the arguments passed in via the CLI
+    ### Set attributes on probe, so that a profile script can read the arguments passed in via the CLI
 
     set_attributes(args, arguments)
 
@@ -444,7 +444,7 @@ Use """ to write multi-line messages.
         args.profile = "local.py"
         if args.vision:
             # This is local vision, set up moondream!
-            interpreter.computer.vision.load()
+            probe.computer.vision.load()
         if args.os:
             args.profile = "local-os.py"
 
@@ -469,113 +469,113 @@ Use """ to write multi-line messages.
         args.profile = "groq.py"
 
     probe = profile(
-        interpreter,
+        probe,
         args.profile or get_argument_dictionary(arguments, "profile")["default"],
     )
 
-    ### Set attributes on interpreter, because the arguments passed in via the CLI should override profile
+    ### Set attributes on probe, because the arguments passed in via the CLI should override profile
 
     set_attributes(args, arguments)
-    interpreter.disable_telemetry = (
+    probe.disable_telemetry = (
         os.getenv("DISABLE_TELEMETRY", "false").lower() == "true"
         or args.disable_telemetry
     )
 
     ### Set some helpful settings we know are likely to be true
 
-    if interpreter.llm.model == "gpt-4" or interpreter.llm.model == "openai/gpt-4":
-        if interpreter.llm.context_window is None:
-            interpreter.llm.context_window = 6500
-        if interpreter.llm.max_tokens is None:
-            interpreter.llm.max_tokens = 4096
-        if interpreter.llm.supports_functions is None:
-            interpreter.llm.supports_functions = (
-                False if "vision" in interpreter.llm.model else True
+    if probe.llm.model == "gpt-4" or probe.llm.model == "openai/gpt-4":
+        if probe.llm.context_window is None:
+            probe.llm.context_window = 6500
+        if probe.llm.max_tokens is None:
+            probe.llm.max_tokens = 4096
+        if probe.llm.supports_functions is None:
+            probe.llm.supports_functions = (
+                False if "vision" in probe.llm.model else True
             )
 
-    elif interpreter.llm.model.startswith("gpt-4") or interpreter.llm.model.startswith(
+    elif probe.llm.model.startswith("gpt-4") or probe.llm.model.startswith(
         "openai/gpt-4"
     ):
-        if interpreter.llm.context_window is None:
-            interpreter.llm.context_window = 123000
-        if interpreter.llm.max_tokens is None:
-            interpreter.llm.max_tokens = 4096
-        if interpreter.llm.supports_functions is None:
-            interpreter.llm.supports_functions = (
-                False if "vision" in interpreter.llm.model else True
+        if probe.llm.context_window is None:
+            probe.llm.context_window = 123000
+        if probe.llm.max_tokens is None:
+            probe.llm.max_tokens = 4096
+        if probe.llm.supports_functions is None:
+            probe.llm.supports_functions = (
+                False if "vision" in probe.llm.model else True
             )
 
-    if interpreter.llm.model.startswith(
+    if probe.llm.model.startswith(
         "gpt-3.5-turbo"
-    ) or interpreter.llm.model.startswith("openai/gpt-3.5-turbo"):
-        if interpreter.llm.context_window is None:
-            interpreter.llm.context_window = 16000
-        if interpreter.llm.max_tokens is None:
-            interpreter.llm.max_tokens = 4096
-        if interpreter.llm.supports_functions is None:
-            interpreter.llm.supports_functions = True
+    ) or probe.llm.model.startswith("openai/gpt-3.5-turbo"):
+        if probe.llm.context_window is None:
+            probe.llm.context_window = 16000
+        if probe.llm.max_tokens is None:
+            probe.llm.max_tokens = 4096
+        if probe.llm.supports_functions is None:
+            probe.llm.supports_functions = True
 
     ### Check for update
 
     try:
-        if not interpreter.offline and not args.stdin:
+        if not probe.offline and not args.stdin:
             # This message should actually be pushed into the utility
             if check_for_update():
-                interpreter.display_message(
+                probe.display_message(
                     "> **A new version of Probe is available.**\n>Please run: `pip install --upgrade probe`\n\n---"
                 )
     except:
         # Doesn't matter
         pass
 
-    if interpreter.llm.api_base:
+    if probe.llm.api_base:
         if (
-            not interpreter.llm.model.lower().startswith("openai/")
-            and not interpreter.llm.model.lower().startswith("azure/")
-            and not interpreter.llm.model.lower().startswith("ollama")
-            and not interpreter.llm.model.lower().startswith("jan")
-            and not interpreter.llm.model.lower().startswith("local")
+            not probe.llm.model.lower().startswith("openai/")
+            and not probe.llm.model.lower().startswith("azure/")
+            and not probe.llm.model.lower().startswith("ollama")
+            and not probe.llm.model.lower().startswith("jan")
+            and not probe.llm.model.lower().startswith("local")
         ):
-            interpreter.llm.model = "openai/" + interpreter.llm.model
-        elif interpreter.llm.model.lower().startswith("jan/"):
+            probe.llm.model = "openai/" + probe.llm.model
+        elif probe.llm.model.lower().startswith("jan/"):
             # Strip jan/ from the model name
-            interpreter.llm.model = interpreter.llm.model[4:]
+            probe.llm.model = probe.llm.model[4:]
 
     # If --conversations is used, run conversation_navigator
     if args.conversations:
-        conversation_navigator(interpreter)
+        conversation_navigator(probe)
         return
 
-    if interpreter.llm.model in [
+    if probe.llm.model in [
         "claude-3.5",
         "claude-3-5",
         "claude-3.5-sonnet",
         "claude-3-5-sonnet",
     ]:
-        interpreter.llm.model = "claude-3-5-sonnet-20240620"
+        probe.llm.model = "claude-3-5-sonnet-20240620"
 
     if not args.server:
         # This SHOULD RUN WHEN THE SERVER STARTS. But it can't rn because
         # if you don't have an API key, a prompt shows up, breaking the whole thing.
         validate_llm_settings(
-            interpreter
-        )  # This should actually just run interpreter.llm.load() once that's == to validate_llm_settings
+            probe
+        )  # This should actually just run probe.llm.load() once that's == to validate_llm_settings
 
     if args.server:
-        interpreter.server.run()
+        probe.server.run()
         return
 
-    interpreter.in_terminal_interface = True
+    probe.in_terminal_interface = True
 
-    contribute_conversation_launch_logic(interpreter)
+    contribute_conversation_launch_logic(probe)
 
     # Standard in mode
     if args.stdin:
         stdin_input = input()
-        interpreter.plain_text_display = True
-        interpreter.chat(stdin_input)
+        probe.plain_text_display = True
+        probe.chat(stdin_input)
     else:
-        interpreter.chat()
+        probe.chat()
 
 
 def set_attributes(args, arguments):
@@ -613,48 +613,6 @@ def main():
     except KeyboardInterrupt:
         try:
             probe.computer.terminate()
-
-            if not probe.offline and not probe.disable_telemetry:
-                feedback = None
-                if len(probe.messages) > 3:
-                    feedback = (
-                        input("\n\nWas Probe helpful? (y/n): ")
-                        .strip()
-                        .lower()
-                    )
-                    if feedback == "y":
-                        feedback = True
-                    elif feedback == "n":
-                        feedback = False
-                    else:
-                        feedback = None
-                    if feedback != None and not probe.contribute_conversation:
-                        if probe.llm.model == "i":
-                            contribute = "y"
-                        else:
-                            print(
-                                "\nThanks for your feedback! Would you like to send us this chat so we can improve?\n"
-                            )
-                            contribute = input("(y/n): ").strip().lower()
-
-                        if contribute == "y":
-                            probe.contribute_conversation = True
-                            probe.display_message(
-                                "\n*Thank you for contributing!*\n"
-                            )
-
-                if (
-                    probe.contribute_conversation or probe.llm.model == "i"
-                ) and probe.messages != []:
-                    conversation_id = (
-                        probe.conversation_id
-                        if hasattr(interpreter, "conversation_id")
-                        else None
-                    )
-                    contribute_conversations(
-                        [probe.messages], feedback, conversation_id
-                    )
-
         except KeyboardInterrupt:
             pass
     finally:

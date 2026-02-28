@@ -10,14 +10,14 @@ To use Probe with vLLM, you will need to:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --api_base <https://your-hosted-vllm-server>
+probe --api_base <https://your-hosted-vllm-server>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.api_base = "<https://your-hosted-vllm-server>"
-interpreter.chat()
+probe.llm.api_base = "<https://your-hosted-vllm-server>"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -27,14 +27,14 @@ interpreter.chat()
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model vllm/<vllm-model>
+probe --model vllm/<vllm-model>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "vllm/<vllm-model>"
-interpreter.chat()
+probe.llm.model = "vllm/<vllm-model>"
+probe.chat()
 ```
 
 </CodeGroup>

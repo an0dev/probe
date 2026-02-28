@@ -4,15 +4,15 @@ It leverages Llama 3.1 70b served by Groq and requires the environment variable 
 """
 
 # Configure Probe
-from probe import interpreter
+from probe import probe
 from datetime import datetime, timezone
 
-interpreter.llm.model = "groq/llama-3.1-70b-versatile"
-interpreter.computer.import_computer_api = False
-interpreter.llm.supports_functions = False
-interpreter.llm.supports_vision = False
-interpreter.llm.context_window = 100000
-interpreter.llm.max_tokens = 4096
+probe.llm.model = "groq/llama-3.1-70b-versatile"
+probe.computer.import_computer_api = False
+probe.llm.supports_functions = False
+probe.llm.supports_vision = False
+probe.llm.context_window = 100000
+probe.llm.max_tokens = 4096
 
 # Add the current date and time in UTC
 current_datetime = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
@@ -46,10 +46,10 @@ def search_screenpipe(query, limit=5, start_time=None, end_time=None):
         return f"Error: Unable to fetch data from ScreenPipe. Status code: {response.status_code}"
 """
 
-# Add the custom tool to the interpreter's environment
-interpreter.computer.run("python", custom_tool)
+# Add the custom tool to the probe's environment
+probe.computer.run("python", custom_tool)
 
-interpreter.custom_instructions = f"""
+probe.custom_instructions = f"""
 Current date and time: {current_datetime}
 
 ScreenPipe is a powerful tool that continuously captures and indexes the content displayed on your screen. It creates a searchable history of everything you've seen or interacted with on your computer. This includes text from websites, documents, applications, and even images (through OCR).

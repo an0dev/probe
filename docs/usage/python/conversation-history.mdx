@@ -7,14 +7,14 @@ Conversations will be saved in your application directory. **This is true for py
 The command below, when run in your terminal, will show you which folder they're being saved in (use your arrow keys to move down and press enter over `> Open Folder`):
 
 ```shell
-interpreter --conversations
+probe --conversations
 ```
 
 You can turn off conversation history for a particular conversation:
 
 ```python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.conversation_history = False
-interpreter.chat() # Conversation history will not be saved
+probe.conversation_history = False
+probe.chat() # Conversation history will not be saved
 ```

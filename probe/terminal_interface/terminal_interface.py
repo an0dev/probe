@@ -44,33 +44,33 @@ except:
     pass
 
 
-def terminal_interface(interpreter, message):
+def terminal_interface(probe, message):
     # Auto run and offline (this.. this isn't right) don't display messages.
     # Probably worth abstracting this to something like "debug_cli" at some point.
-    # If (len(interpreter.messages) == 1), they probably used the advanced "i {command}" entry, so no message should be displayed.
+    # If (len(probe.messages) == 1), they probably used the advanced "i {command}" entry, so no message should be displayed.
     if (
-        not interpreter.auto_run
-        and not interpreter.offline
-        and not (len(interpreter.messages) == 1)
+        not probe.auto_run
+        and not probe.offline
+        and not (len(probe.messages) == 1)
     ):
-        interpreter_intro_message = [
+        probe_intro_message = [
             "**Probe** will require approval before running code."
         ]
 
-        if interpreter.safe_mode == "ask" or interpreter.safe_mode == "auto":
+        if probe.safe_mode == "ask" or probe.safe_mode == "auto":
             if not check_for_package("semgrep"):
-                interpreter_intro_message.append(
-                    f"**Safe Mode**: {interpreter.safe_mode}\n\n>Note: **Safe Mode** requires `semgrep` (`pip install semgrep`)"
+                probe_intro_message.append(
+                    f"**Safe Mode**: {probe.safe_mode}\n\n>Note: **Safe Mode** requires `semgrep` (`pip install semgrep`)"
                 )
         else:
-            interpreter_intro_message.append("Use `interpreter -y` to bypass this.")
+            probe_intro_message.append("Use `probe -y` to bypass this.")
 
         if (
-            not interpreter.plain_text_display
+            not probe.plain_text_display
         ):  # A proxy/heuristic for standard in mode, which isn't tracked (but prob should be)
-            interpreter_intro_message.append("Press `CTRL-C` to exit.")
+            probe_intro_message.append("Press `CTRL-C` to exit.")
 
-        interpreter.display_message("\n\n".join(interpreter_intro_message) + "\n")
+        probe.display_message("\n\n".join(probe_intro_message) + "\n")
 
     if message:
         interactive = False
@@ -83,24 +83,24 @@ def terminal_interface(interpreter, message):
     while True:
         if interactive:
             if (
-                len(interpreter.messages) == 1
-                and interpreter.messages[-1]["role"] == "user"
-                and interpreter.messages[-1]["type"] == "message"
+                len(probe.messages) == 1
+                and probe.messages[-1]["role"] == "user"
+                and probe.messages[-1]["type"] == "message"
             ):
                 # They passed in a message already, probably via "i {command}"!
-                message = interpreter.messages[-1]["content"]
-                interpreter.messages = interpreter.messages[:-1]
+                message = probe.messages[-1]["content"]
+                probe.messages = probe.messages[:-1]
             else:
                 ### This is the primary input for Probe.
                 try:
                     message = (
                         cli_input("> ").strip()
-                        if interpreter.multi_line
+                        if probe.multi_line
                         else input("> ").strip()
                     )
                 except (KeyboardInterrupt, EOFError):
                     # Treat Ctrl-D on an empty line the same as Ctrl-C by exiting gracefully
-                    interpreter.display_message("\n\n`Exiting...`")
+                    probe.display_message("\n\n`Exiting...`")
                     raise KeyboardInterrupt
 
             try:
@@ -119,30 +119,30 @@ def terminal_interface(interpreter, message):
                 continue
 
             if message.startswith("%") and interactive:
-                handle_magic_command(interpreter, message)
+                handle_magic_command(probe, message)
                 continue
 
             # Many users do this
-            if message.strip() == "interpreter --local":
-                print("Please exit this conversation, then run `interpreter --local`.")
+            if message.strip() == "probe --local":
+                print("Please exit this conversation, then run `probe --local`.")
                 continue
-            if message.strip() == "pip install --upgrade open-interpreter":
+            if message.strip() == "pip install --upgrade open-probe":
                 print(
-                    "Please exit this conversation, then run `pip install --upgrade open-interpreter`."
+                    "Please exit this conversation, then run `pip install --upgrade open-probe`."
                 )
                 continue
 
             if (
-                interpreter.llm.supports_vision
-                or interpreter.llm.vision_renderer != None
+                probe.llm.supports_vision
+                or probe.llm.vision_renderer != None
             ):
                 # Is the input a path to an image? Like they just dragged it into the terminal?
                 image_path = find_image_path(message)
 
                 ## If we found an image, add it to the message
                 if image_path:
-                    # Add the text interpreter's message history
-                    interpreter.messages.append(
+                    # Add the text probe's message history
+                    probe.messages.append(
                         {
                             "role": "user",
                             "type": "message",
@@ -150,7 +150,7 @@ def terminal_interface(interpreter, message):
                         }
                     )
 
-                    # Pass in the image to interpreter in a moment
+                    # Pass in the image to probe in a moment
                     message = {
                         "role": "user",
                         "type": "image",
@@ -159,19 +159,19 @@ def terminal_interface(interpreter, message):
                     }
 
         try:
-            for chunk in interpreter.chat(message, display=False, stream=True):
+            for chunk in probe.chat(message, display=False, stream=True):
                 yield chunk
 
                 # Is this for thine eyes?
                 if "recipient" in chunk and chunk["recipient"] != "user":
                     continue
 
-                if interpreter.verbose:
+                if probe.verbose:
                     print("Chunk in `terminal_interface`:", chunk)
 
                 # Comply with PyAutoGUI fail-safe for OS mode
                 # so people can turn it off by moving their mouse to a corner
-                if interpreter.os:
+                if probe.os:
                     if (
                         chunk.get("format") == "output"
                         and "failsafeexception" in chunk["content"].lower()
@@ -185,11 +185,11 @@ def terminal_interface(interpreter, message):
 
                 # Execution notice
                 if chunk["type"] == "confirmation":
-                    if not interpreter.auto_run:
+                    if not probe.auto_run:
                         # OI is about to execute code. The user wants to approve this
 
                         # End the active code block so you can run input() below it
-                        if active_block and not interpreter.plain_text_display:
+                        if active_block and not probe.plain_text_display:
                             active_block.refresh(cursor=False)
                             active_block.end()
                             active_block = None
@@ -200,10 +200,10 @@ def terminal_interface(interpreter, message):
 
                         should_scan_code = False
 
-                        if not interpreter.safe_mode == "off":
-                            if interpreter.safe_mode == "auto":
+                        if not probe.safe_mode == "off":
+                            if probe.safe_mode == "auto":
                                 should_scan_code = True
-                            elif interpreter.safe_mode == "ask":
+                            elif probe.safe_mode == "ask":
                                 response = input(
                                     "  Would you like to scan this code? (y/n)\n\n  "
                                 )
@@ -213,9 +213,9 @@ def terminal_interface(interpreter, message):
                                     should_scan_code = True
 
                         if should_scan_code:
-                            scan_code(code, language, interpreter)
+                            scan_code(code, language, probe)
 
-                        if interpreter.plain_text_display:
+                        if probe.plain_text_display:
                             response = input(
                                 "Would you like to run this code? (y/n)\n\n"
                             )
@@ -228,7 +228,7 @@ def terminal_interface(interpreter, message):
                         if response.strip().lower() == "y":
                             # Create a new, identical block where the code will actually be run
                             # Conveniently, the chunk includes everything we need to do this:
-                            active_block = CodeBlock(interpreter)
+                            active_block = CodeBlock(probe)
                             active_block.margin_top = False  # <- Aesthetic choice
                             active_block.language = language
                             active_block.code = code
@@ -249,7 +249,7 @@ def terminal_interface(interpreter, message):
                             with open(tf.name, "r") as tf:
                                 code = tf.read()
 
-                            interpreter.messages[-1]["content"] = code  # Give it code
+                            probe.messages[-1]["content"] = code  # Give it code
 
                             # Delete the temporary file
                             os.unlink(tf.name)
@@ -259,7 +259,7 @@ def terminal_interface(interpreter, message):
                             active_block.code = code
                         else:
                             # User declined to run code.
-                            interpreter.messages.append(
+                            probe.messages.append(
                                 {
                                     "role": "user",
                                     "type": "message",
@@ -269,7 +269,7 @@ def terminal_interface(interpreter, message):
                             break
 
                 # Plain text mode
-                if interpreter.plain_text_display:
+                if probe.plain_text_display:
                     if "start" in chunk or "end" in chunk:
                         print("")
                     if chunk["type"] in ["code", "console"] and "format" in chunk:
@@ -300,8 +300,8 @@ def terminal_interface(interpreter, message):
                     if "content" in chunk:
                         active_block.message += chunk["content"]
 
-                    if "end" in chunk and interpreter.os:
-                        last_message = interpreter.messages[-1]["content"]
+                    if "end" in chunk and probe.os:
+                        last_message = probe.messages[-1]["content"]
 
                         # Remove markdown lists and the line above markdown lists
                         lines = last_message.split("\n")
@@ -324,10 +324,10 @@ def terminal_interface(interpreter, message):
                         )
 
                         # Display notification in OS mode
-                        interpreter.computer.os.notify(sanitized_message)
+                        probe.computer.os.notify(sanitized_message)
 
                         # Speak message aloud
-                        if platform.system() == "Darwin" and interpreter.speak_messages:
+                        if platform.system() == "Darwin" and probe.speak_messages:
                             if voice_subprocess:
                                 voice_subprocess.terminate()
                             voice_subprocess = subprocess.Popen(
@@ -363,14 +363,14 @@ def terminal_interface(interpreter, message):
                         or ("format" in chunk and chunk["format"] == "javascript")
                     )
                 ):
-                    if (interpreter.os == True) and (interpreter.verbose == False):
+                    if (probe.os == True) and (probe.verbose == False):
                         # We don't display things to the user in OS control mode, since we use vision to communicate the screen to the LLM so much.
                         # But if verbose is true, we do display it!
                         continue
 
                     assistant_code_blocks = [
                         m
-                        for m in interpreter.messages
+                        for m in probe.messages
                         if m.get("role") == "assistant" and m.get("type") == "code"
                     ]
                     if assistant_code_blocks:
@@ -398,12 +398,12 @@ def terminal_interface(interpreter, message):
                     # and that if we made a new block here with "recipient: assistant" it wouldn't add new console outputs to that block (thus hiding them from the user)
 
                     if (
-                        interpreter.messages[-1].get("format") != "output"
-                        or interpreter.messages[-1]["role"] != "computer"
-                        or interpreter.messages[-1]["type"] != "console"
+                        probe.messages[-1].get("format") != "output"
+                        or probe.messages[-1]["role"] != "computer"
+                        or probe.messages[-1]["type"] != "console"
                     ):
                         # If the last message isn't a console output, make a new block
-                        interpreter.messages.append(
+                        probe.messages.append(
                             {
                                 "role": "computer",
                                 "type": "console",
@@ -413,10 +413,10 @@ def terminal_interface(interpreter, message):
                         )
                     else:
                         # If the last message is a console output, simply append the extra output to it
-                        interpreter.messages[-1]["content"] += (
+                        probe.messages[-1]["content"] += (
                             "\n" + extra_computer_output
                         )
-                        interpreter.messages[-1]["content"] = interpreter.messages[-1][
+                        probe.messages[-1]["content"] = probe.messages[-1][
                             "content"
                         ].strip()
 
@@ -432,14 +432,14 @@ def terminal_interface(interpreter, message):
                         # Truncate output
                         active_block.output = truncate_output(
                             active_block.output,
-                            interpreter.max_output,
+                            probe.max_output,
                             add_scrollbars=False,
                         )  # ^ Notice that this doesn't add the "scrollbars" line, which I think is fine
                     if "format" in chunk and chunk["format"] == "active_line":
                         active_block.active_line = chunk["content"]
 
                         # Display action notifications if we're in OS mode
-                        if interpreter.os and active_block.active_line != None:
+                        if probe.os and active_block.active_line != None:
                             action = ""
 
                             code_lines = active_block.code.split("\n")
@@ -501,7 +501,7 @@ def terminal_interface(interpreter, message):
                                     description = f"Getting selected text."
 
                                 if description:
-                                    interpreter.computer.os.notify(description)
+                                    probe.computer.os.notify(description)
 
                     if "start" in chunk:
                         # We need to make a code block if we pushed out an HTML block first, which would have closed our code block.
@@ -536,6 +536,6 @@ def terminal_interface(interpreter, message):
             else:
                 break
         except:
-            if interpreter.debug:
-                system_info(interpreter)
+            if probe.debug:
+                system_info(probe)
             raise

@@ -1,5 +1,5 @@
 {
-  "name": "Open Interpreter",
+  "name": "Probe",
   "logo": {
     "dark": "/assets/logo/circle-inverted.png",
     "light": "/assets/logo/circle.png"
@@ -21,12 +21,10 @@
   "topbarLinks": [
     {
       "name": "50K ★ GitHub",
-      "url": "https://github.com/OpenInterpreter/open-interpreter"
+      "url": "https://github.com/Probe/probe"
     }
   ],
   "topbarCtaButton": {
-    "name": "Join Discord",
-    "url": "https://discord.gg/Hvz9Axh84z"
   },
   "navigation": [
     {
@@ -147,8 +145,8 @@
     "suggestEdit": true
   },
   "footerSocials": {
-    "twitter": "https://x.com/OpenInterpreter",
-    "youtube": "https://www.youtube.com/@OpenInterpreter",
-    "linkedin": "https://www.linkedin.com/company/openinterpreter"
+    "twitter": "https://x.com/Probe",
+    "youtube": "https://www.youtube.com/@Probe",
+    "linkedin": "https://www.linkedin.com/company/probe"
   }
 }

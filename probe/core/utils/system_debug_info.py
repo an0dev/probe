@@ -19,19 +19,20 @@ def get_pip_version():
     return pip_version
 
 
-def get_oi_version():
+def get_probe_version():
     try:
-        oi_version_cmd = subprocess.check_output(
-            ["interpreter", "--version"], text=True
-        )
+        probe_version_cmd = subprocess.check_output([
+            "probe",
+            "--version",
+        ], text=True)
     except Exception as e:
-        oi_version_cmd = str(e)
+        probe_version_cmd = str(e)
     try:
         pkg_ver = version("probe")
     except PackageNotFoundError:
         pkg_ver = None
-    oi_version = oi_version_cmd, pkg_ver
-    return oi_version
+    probe_version = probe_version_cmd, pkg_ver
+    return probe_version
 
 
 def get_os_version():
@@ -78,18 +79,18 @@ def get_package_mismatches(file_path="pyproject.toml"):
     return "\n" + "\n".join(mismatches)
 
 
-def interpreter_info(interpreter):
+def probe_info(probe):
     try:
-        if interpreter.offline and interpreter.llm.api_base:
+        if probe.offline and probe.llm.api_base:
             try:
-                curl = subprocess.check_output(f"curl {interpreter.llm.api_base}")
+                curl = subprocess.check_output(f"curl {probe.llm.api_base}")
             except Exception as e:
                 curl = str(e)
         else:
             curl = "Not local"
 
         messages_to_display = []
-        for message in interpreter.messages:
+        for message in probe.messages:
             message = str(message.copy())
             try:
                 if len(message) > 2000:
@@ -100,43 +101,43 @@ def interpreter_info(interpreter):
 
         return f"""
 
-        # Interpreter Info
+        # Probe Info
         
-        Vision: {interpreter.llm.supports_vision}
-        Model: {interpreter.llm.model}
-        Function calling: {interpreter.llm.supports_functions}
-        Context window: {interpreter.llm.context_window}
-        Max tokens: {interpreter.llm.max_tokens}
-        Computer API: {interpreter.computer.import_computer_api}
+        Vision: {probe.llm.supports_vision}
+        Model: {probe.llm.model}
+        Function calling: {probe.llm.supports_functions}
+        Context window: {probe.llm.context_window}
+        Max tokens: {probe.llm.max_tokens}
+        Computer API: {probe.computer.import_computer_api}
 
-        Auto run: {interpreter.auto_run}
-        API base: {interpreter.llm.api_base}
-        Offline: {interpreter.offline}
+        Auto run: {probe.auto_run}
+        API base: {probe.llm.api_base}
+        Offline: {probe.offline}
 
         Curl output: {curl}
 
         # Messages
 
-        System Message: {interpreter.system_message}
+        System Message: {probe.system_message}
 
         """ + "\n\n".join(
             [str(m) for m in messages_to_display]
         )
     except:
-        return "Error, couldn't get interpreter info"
+        return "Error, couldn't get probe info"
 
 
-def system_info(interpreter):
-    oi_version = get_oi_version()
+def system_info(probe):
+    probe_version = get_probe_version()
     print(
         f"""
         Python Version: {get_python_version()}
         Pip Version: {get_pip_version()}
-        Open-interpreter Version: cmd: {oi_version[0]}, pkg: {oi_version[1]}
+        Probe Version: cmd: {probe_version[0]}, pkg: {probe_version[1]}
         OS Version and Architecture: {get_os_version()}
         CPU Info: {get_cpu_info()}
         RAM Info: {get_ram_info()}
-        {interpreter_info(interpreter)}
+        {probe_info(probe)}
     """
     )
 

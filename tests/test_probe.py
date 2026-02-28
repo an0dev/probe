@@ -6,6 +6,12 @@ from random import randint
 
 import pytest
 
+# skip all tests if no LLM API key available (avoids network/auth failures)
+if not os.environ.get("OPENAI_API_KEY") and not os.environ.get("PROBE_API_KEY"):
+    pytest.skip("No API key configured; skipping probe tests", allow_module_level=True)
+
+import pytest
+
 #####
 from probe import AsyncProbe, Probe
 from probe.terminal_interface.utils.count_tokens import (
@@ -29,10 +35,10 @@ def test_hallucinations():
 
     code = """10+12executeexecute\n"""
 
-    interpreter.messages = [
+    probe.messages = [
         {"role": "assistant", "type": "code", "format": "python", "content": code}
     ]
-    for chunk in interpreter._respond_and_store():
+    for chunk in probe._respond_and_store():
         if chunk.get("format") == "output":
             assert chunk.get("content") == "22"
             break
@@ -42,10 +48,10 @@ def test_hallucinations():
     "code": "10+12"                                                        
   }"""
 
-    interpreter.messages = [
+    probe.messages = [
         {"role": "assistant", "type": "code", "format": "python", "content": code}
     ]
-    for chunk in interpreter._respond_and_store():
+    for chunk in probe._respond_and_store():
         if chunk.get("format") == "output":
             assert chunk.get("content") == "22"
             break
@@ -55,31 +61,31 @@ def test_hallucinations():
     "code": "10+12"                                                        
   })"""
 
-    interpreter.messages = [
+    probe.messages = [
         {"role": "assistant", "type": "code", "format": "python", "content": code}
     ]
-    for chunk in interpreter._respond_and_store():
+    for chunk in probe._respond_and_store():
         if chunk.get("format") == "output":
             assert chunk.get("content") == "22"
             break
 
     code = """{language: "python", code: "print('hello')" }"""
 
-    interpreter.messages = [
+    probe.messages = [
         {"role": "assistant", "type": "code", "format": "python", "content": code}
     ]
-    for chunk in interpreter._respond_and_store():
+    for chunk in probe._respond_and_store():
         if chunk.get("format") == "output":
             assert chunk.get("content").strip() == "hello"
             break
 
 
 def run_auth_server():
-    os.environ["INTERPRETER_REQUIRE_ACKNOWLEDGE"] = "True"
-    os.environ["INTERPRETER_API_KEY"] = "testing"
-    async_interpreter = AsyncProbe()
-    async_interpreter.print = False
-    async_interpreter.server.run()
+    os.environ["PROBE_REQUIRE_ACKNOWLEDGE"] = "True"
+    os.environ["PROBE_API_KEY"] = "testing"
+    async_probe = AsyncProbe()
+    async_probe.print = False
+    async_probe.server.run()
 
 
 # @pytest.mark.skip(reason="Requires uvicorn, which we don't require by default")
@@ -228,12 +234,12 @@ def test_authenticated_acknowledging_breaking_server():
 
 
 def run_server():
-    os.environ["INTERPRETER_REQUIRE_ACKNOWLEDGE"] = "False"
-    if "INTERPRETER_API_KEY" in os.environ:
-        del os.environ["INTERPRETER_API_KEY"]
-    async_interpreter = AsyncProbe()
-    async_interpreter.print = False
-    async_interpreter.server.run()
+    os.environ["PROBE_REQUIRE_ACKNOWLEDGE"] = "False"
+    if "PROBE_API_KEY" in os.environ:
+        del os.environ["PROBE_API_KEY"]
+    async_probe = AsyncProbe()
+    async_probe.print = False
+    async_probe.server.run()
 
 
 # @pytest.mark.skip(reason="Requires uvicorn, which we don't require by default")
@@ -550,7 +556,7 @@ def test_server():
                 response_json = json.loads(response_json)
             messages = response_json["messages"]
 
-            response = interpreter.computer.ai.chat(
+            response = probe.computer.ai.chat(
                 str(messages)
                 + "\n\nIn the conversation above, does the assistant think the file exists? Yes or no? Only reply with one word— 'yes' or 'no'."
             )
@@ -593,7 +599,7 @@ def test_server():
             #             "role": "user",
             #             "type": "image",
             #             "format": "path",
-            #             "content": "/Users/killianlucas/Documents/GitHub/open-interpreter/screen.png",
+            #             "content": "/Users/killianlucas/Documents/GitHub/probe/screen.png",
             #         }
             #     )
             # )
@@ -627,14 +633,14 @@ def test_server():
                 response_json = json.loads(response_json)
             messages = response_json["messages"]
 
-            response = interpreter.computer.ai.chat(
+            response = probe.computer.ai.chat(
                 str(messages)
                 + "\n\nIn the conversation above, does the assistant appear to be able to describe the image of a gradient? Yes or no? Only reply with one word— 'yes' or 'no'."
             )
             assert response.strip(" \n.").lower() == "yes"
 
             # Sending POST request to /run endpoint with code to kill a thread in Python
-            # actually wait i dont think this will work..? will just kill the python interpreter
+            # actually wait i dont think this will work..? will just kill the python probe
             post_url = "http://localhost:8000/run"
             code_data = {
                 "code": "import os, signal; os.kill(os.getpid(), signal.SIGINT)",
@@ -654,7 +660,7 @@ def test_server():
 
 @pytest.mark.skip(reason="Mac only")
 def test_sms():
-    sms = interpreter.computer.sms
+    sms = probe.computer.sms
 
     # Get the last 5 messages
     messages = sms.get(limit=5)
@@ -677,7 +683,7 @@ def test_pytes():
         first_file = files_on_desktop[0]
         first_file_path = os.path.join(desktop_path, first_file)
         print(first_file_path)
-        ocr = interpreter.computer.vision.ocr(path=first_file_path)
+        ocr = probe.computer.vision.ocr(path=first_file_path)
         print(ocr)
         print("what")
     else:
@@ -687,7 +693,7 @@ def test_pytes():
 
 
 def test_ai_chat():
-    print(interpreter.computer.ai.chat("hi"))
+    print(probe.computer.ai.chat("hi"))
 
 
 def test_generator():
@@ -695,7 +701,7 @@ def test_generator():
     Sends two messages, makes sure everything is correct with display both on and off.
     """
 
-    interpreter.llm.model = "gpt-4o-mini"
+    probe.llm.model = "gpt-4o-mini"
 
     for tests in [
         {"query": "What's 38023*40334? Use Python", "display": True},
@@ -708,7 +714,7 @@ def test_generator():
         active_line_found = False
         flag_checker = []
 
-        for chunk in interpreter.chat(
+        for chunk in probe.chat(
             tests["query"]
             + "\nNo talk or plan, just immediately code, then tell me the answer.",
             stream=True,
@@ -776,9 +782,9 @@ def test_generator():
 
 @pytest.mark.skip(reason="Requires probe[local]")
 def test_localos():
-    interpreter.computer.emit_images = False
-    interpreter.computer.view()
-    interpreter.computer.emit_images = True
+    probe.computer.emit_images = False
+    probe.computer.view()
+    probe.computer.emit_images = True
     assert False
 
 
@@ -795,16 +801,16 @@ def test_m_vision():
         },
     ]
 
-    interpreter.llm.supports_vision = False
-    interpreter.llm.model = "gpt-4o-mini"
-    interpreter.llm.supports_functions = True
-    interpreter.llm.context_window = 110000
-    interpreter.llm.max_tokens = 4096
-    interpreter.loop = True
+    probe.llm.supports_vision = False
+    probe.llm.model = "gpt-4o-mini"
+    probe.llm.supports_functions = True
+    probe.llm.context_window = 110000
+    probe.llm.max_tokens = 4096
+    probe.loop = True
 
-    interpreter.chat(messages)
+    probe.chat(messages)
 
-    interpreter.loop = False
+    probe.loop = False
     import time
 
     time.sleep(10)
@@ -812,12 +818,12 @@ def test_m_vision():
 
 @pytest.mark.skip(reason="Computer with display only + no way to fail test")
 def test_point():
-    # interpreter.computer.debug = True
-    interpreter.computer.mouse.move(icon="gear")
-    interpreter.computer.mouse.move(icon="refresh")
-    interpreter.computer.mouse.move(icon="play")
-    interpreter.computer.mouse.move(icon="magnifying glass")
-    interpreter.computer.mouse.move("Spaces:")
+    # probe.computer.debug = True
+    probe.computer.mouse.move(icon="gear")
+    probe.computer.mouse.move(icon="refresh")
+    probe.computer.mouse.move(icon="play")
+    probe.computer.mouse.move(icon="magnifying glass")
+    probe.computer.mouse.move("Spaces:")
     assert False
 
 
@@ -833,39 +839,39 @@ def test_skills():
 
     import json
 
-    interpreter.llm.model = "gpt-4o-mini"
+    probe.llm.model = "gpt-4o-mini"
 
     messages = ["USER: Hey can you search the web for me?\nAI: Sure!"]
 
     combined_messages = "\\n".join(json.dumps(x) for x in messages[-3:])
-    query_msg = interpreter.chat(
+    query_msg = probe.chat(
         f"This is the conversation so far: {combined_messages}. What is a hypothetical python function that might help resolve the user's query? Respond with nothing but the hypothetical function name exactly."
     )
     query = query_msg[0]["content"]
     # skills_path = '/01OS/server/skills'
-    # interpreter.computer.skills.path = skills_path
-    print(interpreter.computer.skills.path)
-    if os.path.exists(interpreter.computer.skills.path):
-        for file in os.listdir(interpreter.computer.skills.path):
-            os.remove(os.path.join(interpreter.computer.skills.path, file))
-    print("Path: ", interpreter.computer.skills.path)
+    # probe.computer.skills.path = skills_path
+    print(probe.computer.skills.path)
+    if os.path.exists(probe.computer.skills.path):
+        for file in os.listdir(probe.computer.skills.path):
+            os.remove(os.path.join(probe.computer.skills.path, file))
+    print("Path: ", probe.computer.skills.path)
     print("Files in the path: ")
-    interpreter.computer.run("python", "def testing_skilsl():\n    print('hi')")
-    for file in os.listdir(interpreter.computer.skills.path):
+    probe.computer.run("python", "def testing_skilsl():\n    print('hi')")
+    for file in os.listdir(probe.computer.skills.path):
         print(file)
-    interpreter.computer.run("python", "def testing_skill():\n    print('hi')")
+    probe.computer.run("python", "def testing_skill():\n    print('hi')")
     print("Files in the path: ")
-    for file in os.listdir(interpreter.computer.skills.path):
+    for file in os.listdir(probe.computer.skills.path):
         print(file)
 
     try:
-        skills = interpreter.computer.skills.search(query)
+        skills = probe.computer.skills.search(query)
     except ImportError:
         print("Attempting to install unstructured[all-docs]")
         import subprocess
 
         subprocess.run(["pip", "install", "unstructured[all-docs]"], check=True)
-        skills = interpreter.computer.skills.search(query)
+        skills = probe.computer.skills.search(query)
 
     lowercase_skills = [skill[0].lower() + skill[1:] for skill in skills]
     output = "\\n".join(lowercase_skills)
@@ -874,9 +880,9 @@ def test_skills():
 
 @pytest.mark.skip(reason="Local only")
 def test_browser():
-    interpreter.computer.api_base = "http://0.0.0.0:80/v0"
+    probe.computer.api_base = "http://0.0.0.0:80/v0"
     print(
-        interpreter.computer.browser.search("When's the next Dune showing in Seattle?")
+        probe.computer.browser.search("When's the next Dune showing in Seattle?")
     )
     assert False
 
@@ -885,7 +891,7 @@ def test_browser():
 def test_display_api():
     start = time.time()
 
-    # interpreter.computer.display.find_text("submit")
+    # probe.computer.display.find_text("submit")
     # assert False
 
     def say(icon_name):
@@ -937,22 +943,22 @@ def test_display_api():
     for icon in icons:
         if icon.endswith("icon icon"):
             say("click the " + icon)
-            interpreter.computer.mouse.move(icon=icon.replace("icon icon", "icon"))
+            probe.computer.mouse.move(icon=icon.replace("icon icon", "icon"))
         elif icon.endswith("icon"):
             say("click the " + icon)
-            interpreter.computer.mouse.move(icon=icon.replace(" icon", ""))
+            probe.computer.mouse.move(icon=icon.replace(" icon", ""))
         elif icon.endswith("text"):
             say("click " + icon)
-            interpreter.computer.mouse.move(icon.replace(" text", ""))
+            probe.computer.mouse.move(icon.replace(" text", ""))
         else:
             say("click " + icon)
-            interpreter.computer.mouse.move(icon=icon)
+            probe.computer.mouse.move(icon=icon)
 
-    # interpreter.computer.mouse.move(icon="caution")
-    # interpreter.computer.mouse.move(icon="bluetooth")
-    # interpreter.computer.mouse.move(icon="gear")
-    # interpreter.computer.mouse.move(icon="play button")
-    # interpreter.computer.mouse.move(icon="code icon with '>_' in it")
+    # probe.computer.mouse.move(icon="caution")
+    # probe.computer.mouse.move(icon="bluetooth")
+    # probe.computer.mouse.move(icon="gear")
+    # probe.computer.mouse.move(icon="play button")
+    # probe.computer.mouse.move(icon="code icon with '>_' in it")
     print(time.time() - start)
     assert False
 
@@ -960,7 +966,7 @@ def test_display_api():
 @pytest.mark.skip(reason="Server is not a stable feature")
 def test_websocket_server():
     # Start the server in a new thread
-    server_thread = threading.Thread(target=interpreter.server)
+    server_thread = threading.Thread(target=probe.server)
     server_thread.start()
 
     # Give the server a moment to start
@@ -971,7 +977,7 @@ def test_websocket_server():
 
     # Send the first message
     ws.send(
-        "Hello, interpreter! What operating system are you on? Also, what time is it in Seattle?"
+        "Hello, probe! What operating system are you on? Also, what time is it in Seattle?"
     )
     # Wait for a moment before sending the second message
     time.sleep(1)
@@ -995,12 +1001,12 @@ def test_i():
     import requests
 
     url = "http://localhost:8000/"
-    data = "Hello, interpreter! What operating system are you on? Also, what time is it in Seattle?"
+    data = "Hello, probe! What operating system are you on? Also, what time is it in Seattle?"
     headers = {"Content-Type": "text/plain"}
 
     import threading
 
-    server_thread = threading.Thread(target=interpreter.server)
+    server_thread = threading.Thread(target=probe.server)
     server_thread.start()
 
     import time
@@ -1021,14 +1027,14 @@ def test_i():
 
 
 def test_async():
-    interpreter.chat("Hello!", blocking=False)
-    print(interpreter.wait())
+    probe.chat("Hello!", blocking=False)
+    print(probe.wait())
 
 
 @pytest.mark.skip(reason="Computer with display only + no way to fail test")
 def test_find_text_api():
     start = time.time()
-    interpreter.computer.mouse.move(
+    probe.computer.mouse.move(
         "Left Arrow Left Arrow and a bunch of hallucinated text? or was it..."
     )
     # Left Arrow Left Arrow
@@ -1047,20 +1053,20 @@ def test_getActiveWindow():
 
 @pytest.mark.skip(reason="Computer with display only + no way to fail test")
 def test_notify():
-    interpreter.computer.os.notify("Hello")
+    probe.computer.os.notify("Hello")
     assert False
 
 
 @pytest.mark.skip(reason="Computer with display only + no way to fail test")
 def test_get_text():
-    print(interpreter.computer.display.get_text_as_list_of_lists())
+    print(probe.computer.display.get_text_as_list_of_lists())
     assert False
 
 
 @pytest.mark.skip(reason="Computer with display only + no way to fail test")
 def test_keyboard():
     time.sleep(2)
-    interpreter.computer.keyboard.write("Hello " * 50 + "\n" + "hi" * 50)
+    probe.computer.keyboard.write("Hello " * 50 + "\n" + "hi" * 50)
     assert False
 
 
@@ -1068,30 +1074,30 @@ def test_keyboard():
 def test_get_selected_text():
     print("Getting selected text")
     time.sleep(1)
-    text = interpreter.computer.os.get_selected_text()
+    text = probe.computer.os.get_selected_text()
     print(text)
     assert False
 
 
 @pytest.mark.skip(reason="Computer with display only + no way to fail test")
 def test_display_verbose():
-    interpreter.computer.verbose = True
-    interpreter.verbose = True
-    interpreter.computer.mouse.move(x=500, y=500)
+    probe.computer.verbose = True
+    probe.verbose = True
+    probe.computer.mouse.move(x=500, y=500)
     assert False
 
 
 # this function will run before each test
 # we're clearing out the messages Array so we can start fresh and reduce token usage
 def setup_function():
-    interpreter.reset()
-    interpreter.llm.temperature = 0
-    interpreter.auto_run = True
-    interpreter.llm.model = "gpt-4o-mini"
-    interpreter.llm.context_window = 123000
-    interpreter.llm.max_tokens = 4096
-    interpreter.llm.supports_functions = True
-    interpreter.verbose = False
+    probe.reset()
+    probe.llm.temperature = 0
+    probe.auto_run = True
+    probe.llm.model = "gpt-4o-mini"
+    probe.llm.context_window = 123000
+    probe.llm.max_tokens = 4096
+    probe.llm.supports_functions = True
+    probe.verbose = False
 
 
 @pytest.mark.skip(
@@ -1106,10 +1112,10 @@ def test_long_message():
             + "\nwhat are the four characters I just sent you? don't run ANY code, just tell me the characters. DO NOT RUN CODE. DO NOT PLAN. JUST TELL ME THE CHARACTERS RIGHT NOW. ONLY respond with the 4 characters, NOTHING else. The first 4 characters of your response should be the 4 characters I sent you.",
         }
     ]
-    interpreter.llm.context_window = 300
-    interpreter.chat(messages)
-    assert len(interpreter.messages) > 1
-    assert "A" in interpreter.messages[-1]["content"]
+    probe.llm.context_window = 300
+    probe.chat(messages)
+    assert len(probe.messages) > 1
+    assert "A" in probe.messages[-1]["content"]
 
 
 # this function will run after each test
@@ -1120,7 +1126,7 @@ def teardown_function():
 
 @pytest.mark.skip(reason="Mac only + no way to fail test")
 def test_spotlight():
-    interpreter.computer.keyboard.hotkey("command", "space")
+    probe.computer.keyboard.hotkey("command", "space")
 
 
 def test_files():
@@ -1133,7 +1139,7 @@ def test_files():
             "content": "/Users/Killian/image.png",
         },
     ]
-    interpreter.chat(messages)
+    probe.chat(messages)
 
 
 @pytest.mark.skip(reason="Only 100 vision calls allowed / day!")
@@ -1149,27 +1155,27 @@ def test_vision():
         },
     ]
 
-    interpreter.llm.supports_vision = True
-    interpreter.llm.model = "gpt-4o-mini"
-    interpreter.system_message += "\nThe user will show you an image of the code you write. You can view images directly.\n\nFor HTML: This will be run STATELESSLY. You may NEVER write '<!-- previous code here... --!>' or `<!-- header will go here -->` or anything like that. It is CRITICAL TO NEVER WRITE PLACEHOLDERS. Placeholders will BREAK it. You must write the FULL HTML CODE EVERY TIME. Therefore you cannot write HTML piecemeal—write all the HTML, CSS, and possibly Javascript **in one step, in one code block**. The user will help you review it visually.\nIf the user submits a filepath, you will also see the image. The filepath and user image will both be in the user's message.\n\nIf you use `plt.show()`, the resulting image will be sent to you. However, if you use `PIL.Image.show()`, the resulting image will NOT be sent to you."
-    interpreter.llm.supports_functions = True
-    interpreter.llm.context_window = 110000
-    interpreter.llm.max_tokens = 4096
-    interpreter.loop = True
+    probe.llm.supports_vision = True
+    probe.llm.model = "gpt-4o-mini"
+    probe.system_message += "\nThe user will show you an image of the code you write. You can view images directly.\n\nFor HTML: This will be run STATELESSLY. You may NEVER write '<!-- previous code here... --!>' or `<!-- header will go here -->` or anything like that. It is CRITICAL TO NEVER WRITE PLACEHOLDERS. Placeholders will BREAK it. You must write the FULL HTML CODE EVERY TIME. Therefore you cannot write HTML piecemeal—write all the HTML, CSS, and possibly Javascript **in one step, in one code block**. The user will help you review it visually.\nIf the user submits a filepath, you will also see the image. The filepath and user image will both be in the user's message.\n\nIf you use `plt.show()`, the resulting image will be sent to you. However, if you use `PIL.Image.show()`, the resulting image will NOT be sent to you."
+    probe.llm.supports_functions = True
+    probe.llm.context_window = 110000
+    probe.llm.max_tokens = 4096
+    probe.loop = True
 
-    interpreter.chat(messages)
+    probe.chat(messages)
 
-    interpreter.loop = False
+    probe.loop = False
 
 
 def test_multiple_instances():
-    interpreter.system_message = "i"
+    probe.system_message = "i"
     agent_1 = Probe()
     agent_1.system_message = "<3"
     agent_2 = Probe()
     agent_2.system_message = "u"
 
-    assert interpreter.system_message == "i"
+    assert probe.system_message == "i"
     assert agent_1.system_message == "<3"
     assert agent_2.system_message == "u"
 
@@ -1179,7 +1185,7 @@ def test_hello_world():
 
     hello_world_message = f"Please reply with just the words {hello_world_response} and nothing else. Do not run code. No confirmation just the text."
 
-    messages = interpreter.chat(hello_world_message)
+    messages = probe.chat(hello_world_message)
 
     assert messages == [
         {"role": "assistant", "type": "message", "content": hello_world_response}
@@ -1203,7 +1209,7 @@ def test_math():
     """.strip()
 
     print("loading")
-    messages = interpreter.chat(order_of_operations_message)
+    messages = probe.chat(order_of_operations_message)
     print("done")
 
     assert str(round(test_result, 2)) in messages[-1]["content"]
@@ -1244,7 +1250,7 @@ with open('numbers.txt', 'a+') as f:
         f.seek(0, os.SEEK_END)
         """
     print("starting to code")
-    for chunk in interpreter.computer.run("python", code, stream=True, display=True):
+    for chunk in probe.computer.run("python", code, stream=True, display=True):
         print(chunk)
         if "format" in chunk and chunk["format"] == "output":
             if "adding 3 to file" in chunk["content"]:
@@ -1263,55 +1269,55 @@ with open('numbers.txt', 'a+') as f:
 
 
 def test_delayed_exec():
-    interpreter.chat(
+    probe.chat(
         """Can you write a single block of code and execute it that prints something, then delays 1 second, then prints something else? No talk just code, execute the code. Thanks!"""
     )
 
 
 def test_nested_loops_and_multiple_newlines():
-    interpreter.chat(
+    probe.chat(
         """Can you write a nested for loop in python and shell and run them? Don't forget to properly format your shell script and use semicolons where necessary. Also put 1-3 newlines between each line in the code. Only generate and execute the code. Yes, execute the code instantly! No explanations. Thanks!"""
     )
 
 
 def test_write_to_file():
-    interpreter.chat(
+    probe.chat(
         """Write the word 'Washington' to a .txt file called file.txt. Instantly run the code! Save the file!"""
     )
     assert os.path.exists("file.txt")
-    interpreter.messages = []  # Just reset message history, nothing else for this test
-    messages = interpreter.chat(
+    probe.messages = []  # Just reset message history, nothing else for this test
+    messages = probe.chat(
         """Read file.txt in the current directory and tell me what's in it."""
     )
     assert "Washington" in messages[-1]["content"]
 
 
 def test_markdown():
-    interpreter.chat(
+    probe.chat(
         """Hi, can you test out a bunch of markdown features? Try writing a fenced code block, a table, headers, everything. DO NOT write the markdown inside a markdown code block, just write it raw."""
     )
 
 
 def test_reset():
-    # make sure that interpreter.reset() clears out the messages Array
-    assert interpreter.messages == []
+    # make sure that probe.reset() clears out the messages Array
+    assert probe.messages == []
 
 
 def test_token_counter():
     system_tokens = count_tokens(
-        text=interpreter.system_message, model=interpreter.llm.model
+        text=probe.system_message, model=probe.llm.model
     )
 
     prompt = "How many tokens is this?"
 
-    prompt_tokens = count_tokens(text=prompt, model=interpreter.llm.model)
+    prompt_tokens = count_tokens(text=prompt, model=probe.llm.model)
 
     messages = [
-        {"role": "system", "message": interpreter.system_message}
-    ] + interpreter.messages
+        {"role": "system", "message": probe.system_message}
+    ] + probe.messages
 
     system_token_test = count_messages_tokens(
-        messages=messages, model=interpreter.llm.model
+        messages=messages, model=probe.llm.model
     )
 
     system_tokens_ok = system_tokens == system_token_test[0]
@@ -1319,7 +1325,7 @@ def test_token_counter():
     messages.append({"role": "user", "message": prompt})
 
     prompt_token_test = count_messages_tokens(
-        messages=messages, model=interpreter.llm.model
+        messages=messages, model=probe.llm.model
     )
 
     prompt_tokens_ok = system_tokens + prompt_tokens == prompt_token_test[0]

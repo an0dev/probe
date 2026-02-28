@@ -7,17 +7,17 @@ To use Probe with a model from AWS Sagemaker, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model sagemaker/<model-name>
+probe --model sagemaker/<model-name>
 ```
 
 ```python Python
 # Sagemaker requires boto3 to be installed on your machine:
 !pip install boto3
 
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "sagemaker/<model-name>"
-interpreter.chat()
+probe.llm.model = "sagemaker/<model-name>"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -37,23 +37,23 @@ We support the following completion models from AWS Sagemaker:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b
-interpreter --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b-f
-interpreter --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-13b
-interpreter --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-13b-f
-interpreter --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-70b
-interpreter --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-70b-b-f
-interpreter --model sagemaker/<your-huggingface-deployment-name>
+probe --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b
+probe --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b-f
+probe --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-13b
+probe --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-13b-f
+probe --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-70b
+probe --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-70b-b-f
+probe --model sagemaker/<your-huggingface-deployment-name>
 ```
 
 ```python Python
-interpreter.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b"
-interpreter.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b-f"
-interpreter.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-13b"
-interpreter.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-13b-f"
-interpreter.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-70b"
-interpreter.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-70b-b-f"
-interpreter.llm.model = "sagemaker/<your-huggingface-deployment-name>"
+probe.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b"
+probe.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b-f"
+probe.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-13b"
+probe.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-13b-f"
+probe.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-70b"
+probe.llm.model = "sagemaker/jumpstart-dft-meta-textgeneration-llama-2-70b-b-f"
+probe.llm.model = "sagemaker/<your-huggingface-deployment-name>"
 ```
 
 </CodeGroup>

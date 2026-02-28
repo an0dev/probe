@@ -6,7 +6,7 @@ import re
 import subprocess
 from pathlib import Path
 
-from ....terminal_interface.utils.oi_dir import oi_dir
+from ....terminal_interface.utils.probe_dir import probe_dir as oi_dir
 from ...utils.lazy_import import lazy_import
 from ..utils.recipient_utils import format_to_recipient
 
@@ -129,7 +129,7 @@ class Skills:
             with open(file, "r") as f:
                 code_to_run += f.read() + "\n"
 
-        if self.computer.interpreter.debug:
+        if self.computer.probe.debug:
             print("IMPORTING SKILLS:\n", code_to_run)
 
         output = self.computer.run("python", code_to_run)
@@ -140,7 +140,7 @@ class Skills:
                 with open(file, "r") as f:
                     code_to_run = f.read() + "\n"
 
-                if self.computer.interpreter.debug:
+                if self.computer.probe.debug:
                     print(self.path)
                     print("IMPORTING SKILL:\n", code_to_run)
 

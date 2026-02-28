@@ -12,7 +12,7 @@ from ..terminal_interface.local_setup import local_setup
 from ..terminal_interface.terminal_interface import terminal_interface
 from ..terminal_interface.utils.display_markdown_message import display_markdown_message
 from ..terminal_interface.utils.local_storage_path import get_storage_path
-from ..terminal_interface.utils.oi_dir import oi_dir
+from ..terminal_interface.utils.probe_dir import probe_dir as oi_dir
 from .computer.computer import Computer
 from .default_system_message import default_system_message
 from .llm.llm import Llm
@@ -216,7 +216,7 @@ class Probe:
 
     def _streaming_chat(self, message=None, display=True):
         # Sometimes a little more code -> a much better experience!
-        # Display mode actually runs interpreter.chat(display=False, stream=True) from within the terminal_interface.
+        # Display mode actually runs probe.chat(display=False, stream=True) from within the terminal_interface.
         # wraps the vanilla .chat(display=False) generator in a display.
         # Quite different from the plain generator stuff. So redirect to that
         if display:
@@ -252,7 +252,7 @@ class Probe:
             #     for message in self.messages:
             #         if message["type"] == "image":
             #             raise Exception(
-            #                 "Use a multimodal model and set `interpreter.llm.supports_vision` to True to handle image messages."
+            #                 "Use a multimodal model and set `probe.llm.supports_vision` to True to handle image messages."
             #             )
 
             # This is where it all happens!
@@ -291,7 +291,7 @@ class Probe:
             return
 
         raise Exception(
-            "`interpreter.chat()` requires a display. Set `display=True` or pass a message into `interpreter.chat(message)`."
+            "`probe.chat()` requires a display. Set `display=True` or pass a message into `probe.chat(message)`."
         )
 
     def _respond_and_store(self):

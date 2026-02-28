@@ -2,9 +2,9 @@
 This is an Probe profile. It configures Probe to act like an assistant.
 """
 
-from probe import interpreter
+from probe import probe
 
-interpreter.system_message = """You are an AI assistant that writes short markdown code snippets to answer the user's request. You speak very concisely and quickly, you say nothing irrelevant to the user's request. You send code blocks for individual steps— not the entire task. For example:
+probe.system_message = """You are an AI assistant that writes short markdown code snippets to answer the user's request. You speak very concisely and quickly, you say nothing irrelevant to the user's request. You send code blocks for individual steps— not the entire task. For example:
 
 User: hi
 Assistant: Hi, what can I help you with today?
@@ -104,17 +104,17 @@ Now, your turn:
 """
 
 # Message templates
-interpreter.code_output_template = '''I executed that code. This was the output: """{content}"""\n\nWhat does this output mean (I can't understand it, please help) / what code needs to be run next (if anything, or are we done)? I can't replace any placeholders.'''
-interpreter.empty_code_output_template = "The code above was executed on my machine. It produced no text output. What's next (if anything, or are we done?)"
-interpreter.code_output_sender = "user"
+probe.code_output_template = '''I executed that code. This was the output: """{content}"""\n\nWhat does this output mean (I can't understand it, please help) / what code needs to be run next (if anything, or are we done)? I can't replace any placeholders.'''
+probe.empty_code_output_template = "The code above was executed on my machine. It produced no text output. What's next (if anything, or are we done?)"
+probe.code_output_sender = "user"
 
 # Computer settings
-interpreter.computer.import_computer_api = True
-interpreter.computer.system_message = ""  # The default will explain how to use the full Computer API, and append this to the system message. For local models, we want more control, so we set this to "". The system message will ONLY be what's above ^
+probe.computer.import_computer_api = True
+probe.computer.system_message = ""  # The default will explain how to use the full Computer API, and append this to the system message. For local models, we want more control, so we set this to "". The system message will ONLY be what's above ^
 
 # Misc settings
-interpreter.auto_run = True
-interpreter.offline = True
+probe.auto_run = True
+probe.offline = True
 
 # Final message
-interpreter.display_message("> Assistant mode enabled")
+probe.display_message("> Assistant mode enabled")

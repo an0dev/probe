@@ -13,7 +13,7 @@ import requests
 import send2trash
 import yaml
 
-from ..utils.oi_dir import oi_dir
+from ..utils.probe_dir import probe_dir as oi_dir
 from .historical_profiles import historical_profiles
 
 profile_dir = os.path.join(oi_dir, "profiles")
@@ -28,7 +28,7 @@ default_profiles_names = [os.path.basename(path) for path in default_profiles_pa
 OI_VERSION = "0.2.5"
 
 
-def profile(interpreter, filename_or_url):
+def profile(probe, filename_or_url):
     # See if they're doing shorthand for a default profile
     filename_without_extension = os.path.splitext(filename_or_url)[0]
     for profile in default_profiles_names:
@@ -61,16 +61,16 @@ def profile(interpreter, filename_or_url):
             else:
                 raise
 
-    return apply_profile(interpreter, profile, profile_path)
+    return apply_profile(probe, profile, profile_path)
 
 
 def get_profile(filename_or_url, profile_path):
-    # i.com/ is a shortcut for openinterpreter.com/profiles/
+    # i.com/ is a shortcut for probe.com/profiles/
     shortcuts = ["i.com/", "www.i.com/", "https://i.com/", "http://i.com/"]
     for shortcut in shortcuts:
         if filename_or_url.startswith(shortcut):
             filename_or_url = filename_or_url.replace(
-                shortcut, "https://openinterpreter.com/profiles/"
+                shortcut, "https://probe.com/profiles/"
             )
             if "." not in filename_or_url.split("/")[-1]:
                 extensions = [".json", ".py", ".yaml"]
@@ -93,9 +93,9 @@ def get_profile(filename_or_url, profile_path):
             if extension == ".py":
                 python_script = file.read()
 
-                # Remove `from probe import interpreter` and `probe = Probe()`, because we handle that before the script
+                # Remove `from probe import probe` and `probe = Probe()`, because we handle that before the script
                 tree = ast.parse(python_script)
-                tree = RemoveInterpreter().visit(tree)
+                tree = RemoveProbe().visit(tree)
                 python_script = ast.unparse(tree)
 
                 return {
@@ -120,20 +120,20 @@ def get_profile(filename_or_url, profile_path):
     raise Exception(f"Profile '{filename_or_url}' not found.")
 
 
-class RemoveInterpreter(ast.NodeTransformer):
-    """Remove `from probe import interpreter` and `probe = Probe()`"""
+class RemoveProbe(ast.NodeTransformer):
+    """Remove `from probe import probe` and `probe = Probe()`"""
 
     def visit_ImportFrom(self, node):
-        if node.module == "interpreter":
+        if node.module == "probe":
             for alias in node.names:
-                if alias.name == "interpreter":
+                if alias.name == "probe":
                     return None
         return node
 
     def visit_Assign(self, node):
         if (
             isinstance(node.targets[0], ast.Name)
-            and node.targets[0].id == "interpreter"
+            and node.targets[0].id == "probe"
             and isinstance(node.value, ast.Call)
             and isinstance(node.value.func, ast.Name)
             and node.value.func.id == "Probe"
@@ -142,9 +142,9 @@ class RemoveInterpreter(ast.NodeTransformer):
         return node  # return node otherwise to keep it in the AST
 
 
-def apply_profile(interpreter, profile, profile_path):
+def apply_profile(probe, profile, profile_path):
     if "start_script" in profile:
-        scope = {"interpreter": interpreter}
+        scope = {"probe": probe}
         exec(profile["start_script"], scope, scope)
 
     if (
@@ -190,27 +190,27 @@ def apply_profile(interpreter, profile, profile_path):
                     file.write(
                         f"\nversion: {OI_VERSION}  # Profile version (do not modify)"
                     )
-            return interpreter
+            return probe
 
     if "system_message" in profile:
-        interpreter.display_message(
-            "\n**FYI:** A `system_message` was found in your profile.\n\nBecause we frequently improve our default system message, we highly recommend removing the `system_message` parameter in your profile (which overrides the default system message) or simply resetting your profile.\n\n**To reset your profile, run `interpreter --reset_profile`.**\n"
+        probe.display_message(
+            "\n**FYI:** A `system_message` was found in your profile.\n\nBecause we frequently improve our default system message, we highly recommend removing the `system_message` parameter in your profile (which overrides the default system message) or simply resetting your profile.\n\n**To reset your profile, run `probe --reset_profile`.**\n"
         )
         time.sleep(2)
-        interpreter.display_message("---")
+        probe.display_message("---")
 
     if "computer" in profile and "languages" in profile["computer"]:
         # this is handled specially
-        interpreter.computer.languages = [
+        probe.computer.languages = [
             i
-            for i in interpreter.computer.languages
+            for i in probe.computer.languages
             if i.name.lower() in [l.lower() for l in profile["computer"]["languages"]]
         ]
         del profile["computer.languages"]
 
-    apply_profile_to_object(interpreter, profile)
+    apply_profile_to_object(probe, profile)
 
-    return interpreter
+    return probe
 
 
 def migrate_profile(old_path, new_path):
@@ -504,7 +504,7 @@ You are capable of **any** task.""",
 
     # Wrap it in comments and the version at the bottom
     comment_wrapper = """
-### OPEN INTERPRETER PROFILE
+### PROBE PROFILE
 
 {old_profile}
 
@@ -664,9 +664,9 @@ def get_default_profile(specific_default_profile):
             if extension == ".py":
                 python_script = file.read()
 
-                # Remove `from probe import interpreter` and `probe = Probe()`, because we handle that before the script
+                # Remove `from probe import probe` and `probe = Probe()`, because we handle that before the script
                 tree = ast.parse(python_script)
-                tree = RemoveInterpreter().visit(tree)
+                tree = RemoveProbe().visit(tree)
                 python_script = ast.unparse(tree)
 
                 return {
@@ -738,7 +738,7 @@ def migrate_app_directory(old_dir, new_dir, profile_dir):
         new_file_path = os.path.join(profiles_new_path, "default.yaml")
         migrate_profile(config_old_path, new_file_path)
 
-    # After all migrations have taken place, every yaml file should have a version listed. Sometimes, if the user does not have a default.yaml file from 0.2.0, it will not add the version to the file, causing the migration message to show every time interpreter is launched. This code loops through all yaml files post migration, and ensures they have a version number, to prevent the migration message from showing.
+    # After all migrations have taken place, every yaml file should have a version listed. Sometimes, if the user does not have a default.yaml file from 0.2.0, it will not add the version to the file, causing the migration message to show every time probe is launched. This code loops through all yaml files post migration, and ensures they have a version number, to prevent the migration message from showing.
     for filename in os.listdir(profiles_new_path):
         if filename.endswith(".yaml"):
             file_path = os.path.join(profiles_new_path, filename)

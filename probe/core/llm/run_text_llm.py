@@ -18,7 +18,7 @@ def run_text_llm(llm, params):
     language = None
 
     for chunk in llm.completions(**params):
-        if llm.interpreter.verbose:
+        if llm.probe.verbose:
             print("Chunk in coding_llm", chunk)
 
         if "choices" not in chunk or len(chunk["choices"]) == 0:
@@ -53,9 +53,9 @@ def run_text_llm(llm, params):
 
                 # Default to python if not specified
                 if language == "":
-                    if llm.interpreter.os == False:
+                    if llm.probe.os == False:
                         language = "python"
-                    elif llm.interpreter.os == False:
+                    elif llm.probe.os == False:
                         # OS mode does this frequently. Takes notes with markdown code blocks
                         language = "text"
                 else:

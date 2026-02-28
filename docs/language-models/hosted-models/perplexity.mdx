@@ -7,14 +7,14 @@ To use Probe with the Perplexity API, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model perplexity/<perplexity-model>
+probe --model perplexity/<perplexity-model>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "perplexity/<perplexity-model>"
-interpreter.chat()
+probe.llm.model = "perplexity/<perplexity-model>"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -39,33 +39,33 @@ We support the following completion models from the Perplexity API:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model perplexity/pplx-7b-chat
-interpreter --model perplexity/pplx-70b-chat
-interpreter --model perplexity/pplx-7b-online
-interpreter --model perplexity/pplx-70b-online
-interpreter --model perplexity/codellama-34b-instruct
-interpreter --model perplexity/llama-2-13b-chat
-interpreter --model perplexity/llama-2-70b-chat
-interpreter --model perplexity/mistral-7b-instruct
-interpreter --model perplexity/openhermes-2-mistral-7b
-interpreter --model perplexity/openhermes-2.5-mistral-7b
-interpreter --model perplexity/pplx-7b-chat-alpha
-interpreter --model perplexity/pplx-70b-chat-alpha
+probe --model perplexity/pplx-7b-chat
+probe --model perplexity/pplx-70b-chat
+probe --model perplexity/pplx-7b-online
+probe --model perplexity/pplx-70b-online
+probe --model perplexity/codellama-34b-instruct
+probe --model perplexity/llama-2-13b-chat
+probe --model perplexity/llama-2-70b-chat
+probe --model perplexity/mistral-7b-instruct
+probe --model perplexity/openhermes-2-mistral-7b
+probe --model perplexity/openhermes-2.5-mistral-7b
+probe --model perplexity/pplx-7b-chat-alpha
+probe --model perplexity/pplx-70b-chat-alpha
 ```
 
 ```python Python
-interpreter.llm.model = "perplexity/pplx-7b-chat"
-interpreter.llm.model = "perplexity/pplx-70b-chat"
-interpreter.llm.model = "perplexity/pplx-7b-online"
-interpreter.llm.model = "perplexity/pplx-70b-online"
-interpreter.llm.model = "perplexity/codellama-34b-instruct"
-interpreter.llm.model = "perplexity/llama-2-13b-chat"
-interpreter.llm.model = "perplexity/llama-2-70b-chat"
-interpreter.llm.model = "perplexity/mistral-7b-instruct"
-interpreter.llm.model = "perplexity/openhermes-2-mistral-7b"
-interpreter.llm.model = "perplexity/openhermes-2.5-mistral-7b"
-interpreter.llm.model = "perplexity/pplx-7b-chat-alpha"
-interpreter.llm.model = "perplexity/pplx-70b-chat-alpha"
+probe.llm.model = "perplexity/pplx-7b-chat"
+probe.llm.model = "perplexity/pplx-70b-chat"
+probe.llm.model = "perplexity/pplx-7b-online"
+probe.llm.model = "perplexity/pplx-70b-online"
+probe.llm.model = "perplexity/codellama-34b-instruct"
+probe.llm.model = "perplexity/llama-2-13b-chat"
+probe.llm.model = "perplexity/llama-2-70b-chat"
+probe.llm.model = "perplexity/mistral-7b-instruct"
+probe.llm.model = "perplexity/openhermes-2-mistral-7b"
+probe.llm.model = "perplexity/openhermes-2.5-mistral-7b"
+probe.llm.model = "perplexity/pplx-7b-chat-alpha"
+probe.llm.model = "perplexity/pplx-70b-chat-alpha"
 ```
 
 </CodeGroup>

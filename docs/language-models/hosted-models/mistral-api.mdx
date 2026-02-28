@@ -7,14 +7,14 @@ To use Probe with the Mistral API, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model mistral/<mistral-model>
+probe --model mistral/<mistral-model>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "mistral/<mistral-model>"
-interpreter.chat()
+probe.llm.model = "mistral/<mistral-model>"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -30,15 +30,15 @@ We support the following completion models from the Mistral API:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model mistral/mistral-tiny
-interpreter --model mistral/mistral-small
-interpreter --model mistral/mistral-medium
+probe --model mistral/mistral-tiny
+probe --model mistral/mistral-small
+probe --model mistral/mistral-medium
 ```
 
 ```python Python
-interpreter.llm.model = "mistral/mistral-tiny"
-interpreter.llm.model = "mistral/mistral-small"
-interpreter.llm.model = "mistral/mistral-medium"
+probe.llm.model = "mistral/mistral-tiny"
+probe.llm.model = "mistral/mistral-small"
+probe.llm.model = "mistral/mistral-medium"
 ```
 
 </CodeGroup>

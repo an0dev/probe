@@ -1,12 +1,12 @@
-To create multiple instances, use the base class, `OpenInterpreter`:
+To create multiple instances, use the base class, `Probe`:
 
 ```python
-from interpreter import OpenInterpreter
+from probe import Probe
 
-agent_1 = OpenInterpreter()
+agent_1 = Probe()
 agent_1.system_message = "This is a separate instance."
 
-agent_2 = OpenInterpreter()
+agent_2 = Probe()
 agent_2.system_message = "This is yet another instance."
 ```
 

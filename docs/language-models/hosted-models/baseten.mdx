@@ -7,14 +7,14 @@ To use Probe with Baseten, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model baseten/<baseten-model>
+probe --model baseten/<baseten-model>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "baseten/<baseten-model>"
-interpreter.chat()
+probe.llm.model = "baseten/<baseten-model>"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -30,15 +30,15 @@ We support the following completion models from Baseten:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model baseten/qvv0xeq
-interpreter --model baseten/q841o8w
-interpreter --model baseten/31dxrj3
+probe --model baseten/qvv0xeq
+probe --model baseten/q841o8w
+probe --model baseten/31dxrj3
 ```
 
 ```python Python
-interpreter.llm.model = "baseten/qvv0xeq"
-interpreter.llm.model = "baseten/q841o8w"
-interpreter.llm.model = "baseten/31dxrj3"
+probe.llm.model = "baseten/qvv0xeq"
+probe.llm.model = "baseten/q841o8w"
+probe.llm.model = "baseten/31dxrj3"
 ```
 
 </CodeGroup>

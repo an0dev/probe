@@ -11,7 +11,7 @@ from ..terminal_interface.utils.display_markdown_message import display_markdown
 from .render_message import render_message
 
 
-def respond(interpreter):
+def respond(probe):
     """
     Yields chunks.
     Responds until it decides not to run any more code or say anything else.
@@ -23,33 +23,33 @@ def respond(interpreter):
     while True:
         ## RENDER SYSTEM MESSAGE ##
 
-        system_message = interpreter.system_message
+        system_message = probe.system_message
 
         # Add language-specific system messages
-        for language in interpreter.computer.terminal.languages:
+        for language in probe.computer.terminal.languages:
             if hasattr(language, "system_message"):
                 system_message += "\n\n" + language.system_message
 
         # Add custom instructions
-        if interpreter.custom_instructions:
-            system_message += "\n\n" + interpreter.custom_instructions
+        if probe.custom_instructions:
+            system_message += "\n\n" + probe.custom_instructions
 
         # Add computer API system message
-        if interpreter.computer.import_computer_api:
-            if interpreter.computer.system_message not in system_message:
+        if probe.computer.import_computer_api:
+            if probe.computer.system_message not in system_message:
                 system_message = (
-                    system_message + "\n\n" + interpreter.computer.system_message
+                    system_message + "\n\n" + probe.computer.system_message
                 )
 
-        # Storing the messages so they're accessible in the interpreter's computer
+        # Storing the messages so they're accessible in the probe's computer
         # no... this is a huge time sink.....
-        # if interpreter.sync_computer:
-        #     output = interpreter.computer.run(
-        #         "python", f"messages={interpreter.messages}"
+        # if probe.sync_computer:
+        #     output = probe.computer.run(
+        #         "python", f"messages={probe.messages}"
         #     )
 
         ## Rendering ↓
-        rendered_system_message = render_message(interpreter, system_message)
+        rendered_system_message = render_message(probe, system_message)
         ## Rendering ↑
 
         rendered_system_message = {
@@ -59,7 +59,7 @@ def respond(interpreter):
         }
 
         # Create the version of messages that we'll send to the LLM
-        messages_for_llm = interpreter.messages.copy()
+        messages_for_llm = probe.messages.copy()
         messages_for_llm = [rendered_system_message] + messages_for_llm
 
         if insert_loop_message:
@@ -77,24 +77,24 @@ def respond(interpreter):
         ### RUN THE LLM ###
 
         assert (
-            len(interpreter.messages) > 0
+            len(probe.messages) > 0
         ), "User message was not passed in. You need to pass in at least one message."
 
         if (
-            interpreter.messages[-1]["type"] != "code"
+            probe.messages[-1]["type"] != "code"
         ):  # If it is, we should run the code (we do below)
             try:
-                for chunk in interpreter.llm.run(messages_for_llm):
+                for chunk in probe.llm.run(messages_for_llm):
                     yield {"role": "assistant", **chunk}
 
             except litellm.exceptions.BudgetExceededError:
-                interpreter.display_message(
+                probe.display_message(
                     f"""> Max budget exceeded
 
                     **Session spend:** ${litellm._current_cost}
-                    **Max budget:** ${interpreter.max_budget}
+                    **Max budget:** ${probe.max_budget}
 
-                    Press CTRL-C then run `interpreter --max_budget [higher USD amount]` to proceed.
+                    Press CTRL-C then run `probe --max_budget [higher USD amount]` to proceed.
                 """
                 )
                 break
@@ -102,7 +102,7 @@ def respond(interpreter):
             except Exception as e:
                 error_message = str(e).lower()
                 if (
-                    interpreter.offline == False
+                    probe.offline == False
                     and ("auth" in error_message or
                          "api key" in error_message)
                 ):
@@ -123,23 +123,23 @@ def respond(interpreter):
 
                         To check your current usage and billing details, visit the [OpenAI billing page](https://platform.openai.com/settings/organization/billing/overview).
 
-                        You can also use `interpreter --max_budget [higher USD amount]` to set a budget for your sessions.
+                        You can also use `probe --max_budget [higher USD amount]` to set a budget for your sessions.
                         """
                     )
 
                 elif (
-                    interpreter.offline == False and "not have access" in str(e).lower()
+                    probe.offline == False and "not have access" in str(e).lower()
                 ):
                     # Check for invalid model in error message and then fallback.
                     if (
                         "invalid model" in error_message
                         or "model does not exist" in error_message
                     ):
-                        provider_message = f"\n\nThe model '{interpreter.llm.model}' does not exist or is invalid. Please check the model name and try again.\n\nWould you like to try Probe's hosted `i` model instead? (y/n)\n\n  "
+                        provider_message = f"\n\nThe model '{probe.llm.model}' does not exist or is invalid. Please check the model name and try again.\n\nWould you like to try Probe's hosted `i` model instead? (y/n)\n\n  "
                     elif "groq" in error_message:
-                        provider_message = f"\n\nYou do not have access to {interpreter.llm.model}. Please check with Groq for more details.\n\nWould you like to try Probe's hosted `i` model instead? (y/n)\n\n  "
+                        provider_message = f"\n\nYou do not have access to {probe.llm.model}. Please check with Groq for more details.\n\nWould you like to try Probe's hosted `i` model instead? (y/n)\n\n  "
                     else:
-                        provider_message = f"\n\nYou do not have access to {interpreter.llm.model}. If you are using an OpenAI model, you may need to add a payment method and purchase credits for the OpenAI API billing page (this is different from ChatGPT Plus).\n\nhttps://platform.openai.com/account/billing/overview\n\nWould you like to try Probe's hosted `i` model instead? (y/n)\n\n"
+                        provider_message = f"\n\nYou do not have access to {probe.llm.model}. If you are using an OpenAI model, you may need to add a payment method and purchase credits for the OpenAI API billing page (this is different from ChatGPT Plus).\n\nhttps://platform.openai.com/account/billing/overview\n\nWould you like to try Probe's hosted `i` model instead? (y/n)\n\n"
 
                     print(provider_message)
 
@@ -147,35 +147,35 @@ def respond(interpreter):
                     print("")  # <- Aesthetic choice
 
                     if response.strip().lower() == "y":
-                        interpreter.llm.model = "i"
-                        interpreter.display_message(f"> Model set to `i`")
-                        interpreter.display_message(
+                        probe.llm.model = "i"
+                        probe.display_message(f"> Model set to `i`")
+                        probe.display_message(
                             "***Note:*** *Conversations with this model will be used to train our open-source model.*\n"
                         )
 
                     else:
                         raise
-                elif interpreter.offline and not interpreter.os:
+                elif probe.offline and not probe.os:
                     raise
                 else:
                     raise
 
         ### RUN CODE (if it's there) ###
 
-        if interpreter.messages[-1]["type"] == "code":
-            if interpreter.verbose:
-                print("Running code:", interpreter.messages[-1])
+        if probe.messages[-1]["type"] == "code":
+            if probe.verbose:
+                print("Running code:", probe.messages[-1])
 
             try:
                 # What language/code do you want to run?
-                language = interpreter.messages[-1]["format"].lower().strip()
-                code = interpreter.messages[-1]["content"]
+                language = probe.messages[-1]["format"].lower().strip()
+                code = probe.messages[-1]["content"]
 
                 if code.startswith("`\n"):
                     code = code[2:].strip()
-                    if interpreter.verbose:
+                    if probe.verbose:
                         print("Removing `\n")
-                    interpreter.messages[-1]["content"] = code  # So the LLM can see it.
+                    probe.messages[-1]["content"] = code  # So the LLM can see it.
 
                 # A common hallucination
                 if code.startswith("functions.execute("):
@@ -184,10 +184,10 @@ def respond(interpreter):
                         code_dict = json.loads(edited_code)
                         language = code_dict.get("language", language)
                         code = code_dict.get("code", code)
-                        interpreter.messages[-1][
+                        probe.messages[-1][
                             "content"
                         ] = code  # So the LLM can see it.
-                        interpreter.messages[-1][
+                        probe.messages[-1][
                             "format"
                         ] = language  # So the LLM can see it.
                     except:
@@ -200,7 +200,7 @@ def respond(interpreter):
                 if code.strip().endswith("executeexecute"):
                     code = code.replace("executeexecute", "")
                     try:
-                        interpreter.messages[-1][
+                        probe.messages[-1][
                             "content"
                         ] = code  # So the LLM can see it.
                     except:
@@ -212,10 +212,10 @@ def respond(interpreter):
                         if set(code_dict.keys()) == {"language", "code"}:
                             language = code_dict["language"]
                             code = code_dict["code"]
-                            interpreter.messages[-1][
+                            probe.messages[-1][
                                 "content"
                             ] = code  # So the LLM can see it.
-                            interpreter.messages[-1][
+                            probe.messages[-1][
                                 "format"
                             ] = language  # So the LLM can see it.
                     except:
@@ -230,10 +230,10 @@ def respond(interpreter):
                         if set(code_dict.keys()) == {"language", "code"}:
                             language = code_dict["language"]
                             code = code_dict["code"]
-                            interpreter.messages[-1][
+                            probe.messages[-1][
                                 "content"
                             ] = code  # So the LLM can see it.
-                            interpreter.messages[-1][
+                            probe.messages[-1][
                                 "format"
                             ] = language  # So the LLM can see it.
                     except:
@@ -246,8 +246,8 @@ def respond(interpreter):
                 ):
                     # It does this sometimes just to take notes. Let it, it's useful.
                     # In the future we should probably not detect this behavior as code at all.
-                    real_content = interpreter.messages[-1]["content"]
-                    interpreter.messages[-1] = {
+                    real_content = probe.messages[-1]["content"]
+                    probe.messages[-1] = {
                         "role": "assistant",
                         "type": "message",
                         "content": f"```\n{real_content}\n```",
@@ -255,7 +255,7 @@ def respond(interpreter):
                     continue
 
                 # Is this language enabled/supported?
-                if interpreter.computer.terminal.get_language(language) is None:
+                if probe.computer.terminal.get_language(language) is None:
                     output = f"`{language}` disabled or not supported."
 
                     yield {
@@ -300,12 +300,12 @@ def respond(interpreter):
                     break
 
                 # They may have edited the code! Grab it again
-                code = [m for m in interpreter.messages if m["type"] == "code"][-1][
+                code = [m for m in probe.messages if m["type"] == "code"][-1][
                     "content"
                 ]
 
                 # don't let it import computer — we handle that!
-                if interpreter.computer.import_computer_api and language == "python":
+                if probe.computer.import_computer_api and language == "python":
                     code = code.replace("import computer\n", "pass\n")
                     code = re.sub(
                         r"import computer\.(\w+) as (\w+)", r"\2 = computer.\1", code
@@ -332,40 +332,40 @@ def respond(interpreter):
                         code = code + "\npass"
 
                 # sync up some things (is this how we want to do this?)
-                interpreter.computer.verbose = interpreter.verbose
-                interpreter.computer.debug = interpreter.debug
-                interpreter.computer.emit_images = interpreter.llm.supports_vision
-                interpreter.computer.max_output = interpreter.max_output
+                probe.computer.verbose = probe.verbose
+                probe.computer.debug = probe.debug
+                probe.computer.emit_images = probe.llm.supports_vision
+                probe.computer.max_output = probe.max_output
 
-                # sync up the interpreter's computer with your computer
+                # sync up the probe's computer with your computer
                 try:
-                    if interpreter.sync_computer and language == "python":
-                        computer_dict = interpreter.computer.to_dict()
+                    if probe.sync_computer and language == "python":
+                        computer_dict = probe.computer.to_dict()
                         if "_hashes" in computer_dict:
                             computer_dict.pop("_hashes")
                         if "system_message" in computer_dict:
                             computer_dict.pop("system_message")
                         computer_json = json.dumps(computer_dict)
                         sync_code = f"""import json\ncomputer.load_dict(json.loads('''{computer_json}'''))"""
-                        interpreter.computer.run("python", sync_code)
+                        probe.computer.run("python", sync_code)
                 except Exception as e:
-                    if interpreter.debug:
+                    if probe.debug:
                         raise
                     print(str(e))
                     print("Failed to sync iComputer with your Computer. Continuing...")
 
                 ## ↓ CODE IS RUN HERE
 
-                for line in interpreter.computer.run(language, code, stream=True):
+                for line in probe.computer.run(language, code, stream=True):
                     yield {"role": "computer", **line}
 
                 ## ↑ CODE IS RUN HERE
 
-                # sync up your computer with the interpreter's computer
+                # sync up your computer with the probe's computer
                 try:
-                    if interpreter.sync_computer and language == "python":
-                        # sync up the interpreter's computer with your computer
-                        result = interpreter.computer.run(
+                    if probe.sync_computer and language == "python":
+                        # sync up the probe's computer with your computer
+                        result = probe.computer.run(
                             "python",
                             """
                             import json
@@ -378,11 +378,11 @@ def respond(interpreter):
                             """,
                         )
                         result = result[-1]["content"]
-                        interpreter.computer.load_dict(
+                        probe.computer.load_dict(
                             json.loads(result.strip('"').strip("'"))
                         )
                 except Exception as e:
-                    if interpreter.debug:
+                    if probe.debug:
                         raise
                     print(str(e))
                     print("Failed to sync your Computer with iComputer. Continuing.")
@@ -410,32 +410,32 @@ def respond(interpreter):
             ## LOOP MESSAGE
             # This makes it utter specific phrases if it doesn't want to be told to "Proceed."
 
-            loop_message = interpreter.loop_message
-            if interpreter.os:
+            loop_message = probe.loop_message
+            if probe.os:
                 loop_message = loop_message.replace(
                     "If the entire task I asked for is done,",
                     "If the entire task I asked for is done, take a screenshot to verify it's complete, or if you've already taken a screenshot and verified it's complete,",
                 )
-            loop_breakers = interpreter.loop_breakers
+            loop_breakers = probe.loop_breakers
 
             if (
-                interpreter.loop
-                and interpreter.messages
-                and interpreter.messages[-1].get("role", "") == "assistant"
+                probe.loop
+                and probe.messages
+                and probe.messages[-1].get("role", "") == "assistant"
                 and not any(
-                    task_status in interpreter.messages[-1].get("content", "")
+                    task_status in probe.messages[-1].get("content", "")
                     for task_status in loop_breakers
                 )
             ):
                 # Remove past loop_message messages
-                interpreter.messages = [
+                probe.messages = [
                     message
-                    for message in interpreter.messages
+                    for message in probe.messages
                     if message.get("content", "") != loop_message
                 ]
                 # Combine adjacent assistant messages, so hopefully it learns to just keep going!
                 combined_messages = []
-                for message in interpreter.messages:
+                for message in probe.messages:
                     if (
                         combined_messages
                         and message["role"] == "assistant"
@@ -446,7 +446,7 @@ def respond(interpreter):
                         combined_messages[-1]["content"] += "\n" + message["content"]
                     else:
                         combined_messages.append(message)
-                interpreter.messages = combined_messages
+                probe.messages = combined_messages
 
                 # Send model the loop_message:
                 insert_loop_message = True

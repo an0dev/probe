@@ -18,24 +18,29 @@ from .core import Probe
 
 last_start_time = 0
 
+# Server dependencies are not required by the main package.
+# We import janus separately because it may be optional; failure should not
+# prevent the FastAPI/uvicorn imports which are needed by the test suite.
 try:
     import janus
-    import uvicorn
-    from fastapi import (
-        APIRouter,
-        FastAPI,
-        File,
-        Form,
-        HTTPException,
-        Request,
-        UploadFile,
-        WebSocket,
-    )
-    from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse
-    from starlette.status import HTTP_403_FORBIDDEN
-except:
-    # Server dependencies are not required by the main package.
-    pass
+except ImportError:
+    janus = None
+
+# uvicorn and fastapi are more widely required when the server is used; if
+# they are missing we'll let the ImportError propagate so the user knows.
+import uvicorn
+from fastapi import (
+    APIRouter,
+    FastAPI,
+    File,
+    Form,
+    HTTPException,
+    Request,
+    UploadFile,
+    WebSocket,
+)
+from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse
+from starlette.status import HTTP_403_FORBIDDEN
 
 
 complete_message = {"role": "server", "type": "status", "content": "complete"}
@@ -49,11 +54,11 @@ class AsyncProbe(Probe):
         self.stop_event = threading.Event()
         self.output_queue = None
         self.unsent_messages = deque()
-        self.id = os.getenv("INTERPRETER_ID", datetime.now().timestamp())
+        self.id = os.getenv("PROBE_ID", datetime.now().timestamp())
         self.print = False  # Will print output
 
         self.require_acknowledge = (
-            os.getenv("INTERPRETER_REQUIRE_ACKNOWLEDGE", "False").lower() == "true"
+            os.getenv("PROBE_REQUIRE_ACKNOWLEDGE", "False").lower() == "true"
         )
         self.acknowledged_outputs = []
 
@@ -64,12 +69,12 @@ class AsyncProbe(Probe):
 
     async def input(self, chunk):
         """
-        Accumulates LMC chunks onto interpreter.messages.
-        When it hits an "end" flag, calls interpreter.respond().
+        Accumulates LMC chunks onto probe.messages.
+        When it hits an "end" flag, calls probe.respond().
         """
 
         if "start" in chunk:
-            # If the user is starting something, the interpreter should stop.
+            # If the user is starting something, the probe should stop.
             if self.respond_thread is not None and self.respond_thread.is_alive():
                 self.stop_event.set()
                 self.respond_thread.join()
@@ -77,7 +82,7 @@ class AsyncProbe(Probe):
         elif "content" in chunk:
             self.accumulate(chunk)
         elif "end" in chunk:
-            # If the user is done talking, the interpreter should respond.
+            # If the user is done talking, the probe should respond.
 
             run_code = None  # Will later default to auto_run unless the user makes a command here
 
@@ -154,7 +159,7 @@ class AsyncProbe(Probe):
                                 print(content, end="", flush=True)
 
                     if self.debug:
-                        print("Interpreter produced this chunk:", chunk)
+                        print("Probe produced this chunk:", chunk)
 
                     self.output_queue.sync_q.put(chunk)
                     sent_chunks = True
@@ -208,7 +213,7 @@ class AsyncProbe(Probe):
 
     def accumulate(self, chunk):
         """
-        Accumulates LMC chunks onto interpreter.messages.
+        Accumulates LMC chunks onto probe.messages.
         """
         if type(chunk) == str:
             chunk = json.loads(chunk)
@@ -283,7 +288,7 @@ def authenticate_function(key):
     Returns True if the key is valid, False otherwise.
     """
     # Fetch the API key from the environment variables. If it's not set, return True.
-    api_key = os.getenv("INTERPRETER_API_KEY", None)
+    api_key = os.getenv("PROBE_API_KEY", None)
 
     # If the API key is not set in the environment variables, return True.
     # Otherwise, check if the provided key matches the fetched API key.
@@ -294,7 +299,7 @@ def authenticate_function(key):
         return key == api_key
 
 
-def create_router(async_interpreter):
+def create_router(async_probe):
     router = APIRouter()
 
     @router.get("/heartbeat")
@@ -320,9 +325,9 @@ def create_router(async_interpreter):
                 <div id="messages"></div>
                 <script>
                     var ws = new WebSocket("ws://"""
-            + async_interpreter.server.host
+            + async_probe.server.host
             + ":"
-            + str(async_interpreter.server.port)
+            + str(async_probe.server.port)
             + """/");
                     var lastMessageElement = null;
 
@@ -341,7 +346,7 @@ def create_router(async_interpreter):
                         ws.send(JSON.stringify(acknowledge_message));
 
                         """
-                if async_interpreter.require_acknowledge
+                if async_probe.require_acknowledge
                 else ""
             )
             + """
@@ -450,12 +455,12 @@ def create_router(async_interpreter):
 
                         if (
                             not authenticated
-                            and os.getenv("INTERPRETER_REQUIRE_AUTH") != "False"
+                            and os.getenv("PROBE_REQUIRE_AUTH") != "False"
                         ):
                             if "text" in data:
                                 data = json.loads(data["text"])
                                 if "auth" in data:
-                                    if async_interpreter.server.authenticate(
+                                    if async_probe.server.authenticate(
                                         data["auth"]
                                     ):
                                         authenticated = True
@@ -470,16 +475,16 @@ def create_router(async_interpreter):
                             if "text" in data:
                                 data = json.loads(data["text"])
                                 if (
-                                    async_interpreter.require_acknowledge
+                                    async_probe.require_acknowledge
                                     and "ack" in data
                                 ):
-                                    async_interpreter.acknowledged_outputs.append(
+                                    async_probe.acknowledged_outputs.append(
                                         data["ack"]
                                     )
                                     continue
                             elif "bytes" in data:
                                 data = data["bytes"]
-                            await async_interpreter.input(data)
+                            await async_probe.input(data)
                         elif data.get("type") == "websocket.disconnect":
                             print("Client wants to disconnect, that's fine..")
                             return
@@ -511,22 +516,22 @@ def create_router(async_interpreter):
                         return
                     try:
                         # First, try to send any unsent messages
-                        while async_interpreter.unsent_messages:
-                            output = async_interpreter.unsent_messages[0]
-                            if async_interpreter.debug:
+                        while async_probe.unsent_messages:
+                            output = async_probe.unsent_messages[0]
+                            if async_probe.debug:
                                 print("This was unsent, sending it again:", output)
 
                             success = await send_message(output)
                             if success:
-                                async_interpreter.unsent_messages.popleft()
+                                async_probe.unsent_messages.popleft()
 
                         # If we've sent all unsent messages, get a new output
-                        if not async_interpreter.unsent_messages:
-                            output = await async_interpreter.output()
+                        if not async_probe.unsent_messages:
+                            output = await async_probe.output()
                             success = await send_message(output)
                             if not success:
-                                async_interpreter.unsent_messages.append(output)
-                                if async_interpreter.debug:
+                                async_probe.unsent_messages.append(output)
+                                if async_probe.debug:
                                     print(
                                         f"Added message to unsent_messages queue after failed attempts: {output}"
                                     )
@@ -538,8 +543,8 @@ def create_router(async_interpreter):
                             "type": "error",
                             "content": error,
                         }
-                        async_interpreter.unsent_messages.append(error_message)
-                        async_interpreter.unsent_messages.append(complete_message)
+                        async_probe.unsent_messages.append(error_message)
+                        async_probe.unsent_messages.append(complete_message)
                         print("\n\n--- ERROR (will be sent when possible): ---\n\n")
                         print(error)
                         print(
@@ -553,7 +558,7 @@ def create_router(async_interpreter):
                     id = shortuuid.uuid()
                     if (
                         isinstance(output, dict)
-                        and async_interpreter.require_acknowledge
+                        and async_probe.require_acknowledge
                     ):
                         output["id"] = id
 
@@ -570,19 +575,19 @@ def create_router(async_interpreter):
                             await websocket.send_bytes(output)
                             return True  # Haven't set up ack for this
                         else:
-                            if async_interpreter.require_acknowledge:
+                            if async_probe.require_acknowledge:
                                 output["id"] = id
-                            if async_interpreter.debug:
+                            if async_probe.debug:
                                 print("Sending this over the websocket:", output)
                             await websocket.send_text(json.dumps(output))
 
-                        if async_interpreter.require_acknowledge:
+                        if async_probe.require_acknowledge:
                             acknowledged = False
                             for _ in range(100):
-                                if id in async_interpreter.acknowledged_outputs:
-                                    async_interpreter.acknowledged_outputs.remove(id)
+                                if id in async_probe.acknowledged_outputs:
+                                    async_probe.acknowledged_outputs.remove(id)
                                     acknowledged = True
-                                    if async_interpreter.debug:
+                                    if async_probe.debug:
                                         print("This output was acknowledged:", output)
                                     break
                                 await asyncio.sleep(0.0001)
@@ -590,7 +595,7 @@ def create_router(async_interpreter):
                             if acknowledged:
                                 return True
                             else:
-                                if async_interpreter.debug:
+                                if async_probe.debug:
                                     print("Acknowledgement not received for:", output)
                                 return False
                         else:
@@ -605,7 +610,7 @@ def create_router(async_interpreter):
                         await asyncio.sleep(0.01)
 
                 # If we've reached this point, we've failed to send after 100 attempts
-                if output not in async_interpreter.unsent_messages:
+                if output not in async_probe.unsent_messages:
                     print("Failed to send message:", output)
                 else:
                     print(
@@ -624,8 +629,8 @@ def create_router(async_interpreter):
                 "type": "error",
                 "content": error,
             }
-            async_interpreter.unsent_messages.append(error_message)
-            async_interpreter.unsent_messages.append(complete_message)
+            async_probe.unsent_messages.append(error_message)
+            async_probe.unsent_messages.append(complete_message)
             print("\n\n--- ERROR (will be sent when possible): ---\n\n")
             print(error)
             print("\n\n--- (ERROR ABOVE WILL BE SENT WHEN POSSIBLE) ---\n\n")
@@ -634,7 +639,7 @@ def create_router(async_interpreter):
     @router.post("/")
     async def post_input(payload: Dict[str, Any]):
         try:
-            async_interpreter.input(payload)
+            async_probe.input(payload)
             return {"status": "success"}
         except Exception as e:
             return {"error": str(e)}, 500
@@ -649,18 +654,18 @@ def create_router(async_interpreter):
                     return {
                         "error": f"The setting {key} is not modifiable through the server due to security constraints."
                     }, 403
-                if hasattr(async_interpreter, key):
+                if hasattr(async_probe, key):
                     for sub_key, sub_value in value.items():
-                        if hasattr(getattr(async_interpreter, key), sub_key):
-                            setattr(getattr(async_interpreter, key), sub_key, sub_value)
+                        if hasattr(getattr(async_probe, key), sub_key):
+                            setattr(getattr(async_probe, key), sub_key, sub_value)
                         else:
                             return {
                                 "error": f"Sub-setting {sub_key} not found in {key}"
                             }, 404
                 else:
                     return {"error": f"Setting {key} not found"}, 404
-            elif hasattr(async_interpreter, key):
-                setattr(async_interpreter, key, value)
+            elif hasattr(async_probe, key):
+                setattr(async_probe, key, value)
             else:
                 return {"error": f"Setting {key} not found"}, 404
 
@@ -668,8 +673,8 @@ def create_router(async_interpreter):
 
     @router.get("/settings/{setting}")
     async def get_setting(setting: str):
-        if hasattr(async_interpreter, setting):
-            setting_value = getattr(async_interpreter, setting)
+        if hasattr(async_probe, setting):
+            setting_value = getattr(async_probe, setting)
             try:
                 return json.dumps({setting: setting_value})
             except TypeError:
@@ -677,7 +682,7 @@ def create_router(async_interpreter):
         else:
             return json.dumps({"error": "Setting not found"}), 404
 
-    if os.getenv("INTERPRETER_INSECURE_ROUTES", "").lower() == "true":
+    if os.getenv("PROBE_INSECURE_ROUTES", "").lower() == "true":
 
         @router.post("/run")
         async def run_code(payload: Dict[str, Any]):
@@ -686,7 +691,7 @@ def create_router(async_interpreter):
                 return {"error": "Both 'language' and 'code' are required."}, 400
             try:
                 print(f"Running {language}:", code)
-                output = async_interpreter.computer.run(language, code)
+                output = async_probe.computer.run(language, code)
                 print("Output:", output)
                 return {"output": output}
             except Exception as e:
@@ -726,7 +731,7 @@ def create_router(async_interpreter):
     async def openai_compatible_generator(run_code):
         if run_code:
             print("Running code.\n")
-            for i, chunk in enumerate(async_interpreter._respond_and_store()):
+            for i, chunk in enumerate(async_probe._respond_and_store()):
                 if "content" in chunk:
                     print(chunk["content"], end="")  # Sorry! Shitty display for now
                 if "start" in chunk:
@@ -767,14 +772,14 @@ def create_router(async_interpreter):
             "Please reply.",
         ]:
             for i, chunk in enumerate(
-                async_interpreter.chat(message=message, stream=True, display=True)
+                async_probe.chat(message=message, stream=True, display=True)
             ):
                 await asyncio.sleep(0)  # Yield control to the event loop
                 made_chunk = True
 
                 if (
                     chunk["type"] == "confirmation"
-                    and async_interpreter.auto_run == False
+                    and async_probe.auto_run == False
                 ):
                     await asyncio.sleep(0)
                     output_content = "Do you want to run this code?"
@@ -788,7 +793,7 @@ def create_router(async_interpreter):
                     yield f"data: {json.dumps(output_chunk)}\n\n"
                     break
 
-                if async_interpreter.stop_event.is_set():
+                if async_probe.stop_event.is_set():
                     break
 
                 output_content = None
@@ -828,36 +833,36 @@ def create_router(async_interpreter):
 
         if last_message.content == "{STOP}":
             # Handle special STOP token
-            async_interpreter.stop_event.set()
+            async_probe.stop_event.set()
             time.sleep(5)
-            async_interpreter.stop_event.clear()
+            async_probe.stop_event.clear()
             return
 
         if last_message.content in ["{CONTEXT_MODE_ON}", "{REQUIRE_START_ON}"]:
-            async_interpreter.context_mode = True
+            async_probe.context_mode = True
             return
 
         if last_message.content in ["{CONTEXT_MODE_OFF}", "{REQUIRE_START_OFF}"]:
-            async_interpreter.context_mode = False
+            async_probe.context_mode = False
             return
 
         if last_message.content == "{AUTO_RUN_ON}":
-            async_interpreter.auto_run = True
+            async_probe.auto_run = True
             return
 
         if last_message.content == "{AUTO_RUN_OFF}":
-            async_interpreter.auto_run = False
+            async_probe.auto_run = False
             return
 
         run_code = False
         if (
-            async_interpreter.messages
-            and async_interpreter.messages[-1]["type"] == "code"
+            async_probe.messages
+            and async_probe.messages[-1]["type"] == "code"
             and last_message.content.lower().strip(".!?").strip() == "yes"
         ):
             run_code = True
         elif type(last_message.content) == str:
-            async_interpreter.messages.append(
+            async_probe.messages.append(
                 {
                     "role": "user",
                     "type": "message",
@@ -868,7 +873,7 @@ def create_router(async_interpreter):
         elif type(last_message.content) == list:
             for content in last_message.content:
                 if content["type"] == "text":
-                    async_interpreter.messages.append(
+                    async_probe.messages.append(
                         {"role": "user", "type": "message", "content": str(content)}
                     )
                     print(">", content)
@@ -886,7 +891,7 @@ def create_router(async_interpreter):
 
                     data = url.split("base64,")[1]
                     format = "base64." + url.split(";")[0].split("/")[1]
-                    async_interpreter.messages.append(
+                    async_probe.messages.append(
                         {
                             "role": "user",
                             "type": "image",
@@ -896,17 +901,17 @@ def create_router(async_interpreter):
                     )
 
         else:
-            if async_interpreter.context_mode:
+            if async_probe.context_mode:
                 # In context mode, we only respond if we received a {START} message
                 # Otherwise, we're just accumulating context
                 if last_message.content == "{START}":
-                    if async_interpreter.messages[-1]["content"] == "{START}":
+                    if async_probe.messages[-1]["content"] == "{START}":
                         # Remove that {START} message that would have just been added
-                        async_interpreter.messages = async_interpreter.messages[:-1]
+                        async_probe.messages = async_probe.messages[:-1]
                     last_start_time = time.time()
                     if (
-                        async_interpreter.messages
-                        and async_interpreter.messages[-1].get("role") != "user"
+                        async_probe.messages
+                        and async_probe.messages[-1].get("role") != "user"
                     ):
                         return
                 else:
@@ -923,19 +928,19 @@ def create_router(async_interpreter):
                 if last_message.content == "{START}":
                     # This just sometimes happens I guess
                     # Remove that {START} message that would have just been added
-                    async_interpreter.messages = async_interpreter.messages[:-1]
+                    async_probe.messages = async_probe.messages[:-1]
                     return
 
-        async_interpreter.stop_event.set()
+        async_probe.stop_event.set()
         time.sleep(0.1)
-        async_interpreter.stop_event.clear()
+        async_probe.stop_event.clear()
 
         if request.stream:
             return StreamingResponse(
                 openai_compatible_generator(run_code), media_type="application/x-ndjson"
             )
         else:
-            messages = async_interpreter.chat(message=".", stream=False, display=True)
+            messages = async_probe.chat(message=".", stream=False, display=True)
             content = messages[-1]["content"]
             return {
                 "id": "200",
@@ -952,9 +957,9 @@ class Server:
     DEFAULT_HOST = "127.0.0.1"
     DEFAULT_PORT = 8000
 
-    def __init__(self, async_interpreter, host=None, port=None):
+    def __init__(self, async_probe, host=None, port=None):
         self.app = FastAPI()
-        router = create_router(async_interpreter)
+        router = create_router(async_probe)
         self.authenticate = authenticate_function
 
         # Add authentication middleware
@@ -975,8 +980,8 @@ class Server:
                 )
 
         self.app.include_router(router)
-        h = host or os.getenv("INTERPRETER_HOST", Server.DEFAULT_HOST)
-        p = port or int(os.getenv("INTERPRETER_PORT", Server.DEFAULT_PORT))
+        h = host or os.getenv("PROBE_HOST", Server.DEFAULT_HOST)
+        p = port or int(os.getenv("PROBE_PORT", Server.DEFAULT_PORT))
         self.config = uvicorn.Config(app=self.app, host=h, port=p)
         self.uvicorn_server = uvicorn.Server(self.config)
 

@@ -8,7 +8,7 @@ uvicorn = lazy_import("uvicorn")
 fastapi = lazy_import("fastapi")
 
 
-def server(interpreter, host="0.0.0.0", port=8000):
+def server(probe, host="0.0.0.0", port=8000):
     FastAPI, Request, Response, WebSocket = (
         fastapi.FastAPI,
         fastapi.Request,
@@ -23,7 +23,7 @@ def server(interpreter, host="0.0.0.0", port=8000):
     async def stream_endpoint(request: Request) -> Response:
         async def event_stream() -> Generator[str, None, None]:
             data = await request.json()
-            for response in interpreter.chat(message=data["message"], stream=True):
+            for response in probe.chat(message=data["message"], stream=True):
                 yield response
 
         return Response(event_stream(), media_type="text/event-stream")
@@ -35,7 +35,7 @@ def server(interpreter, host="0.0.0.0", port=8000):
     #     message = message.decode("utf-8")  # Convert bytes to string
 
     #     async def event_stream() -> Generator[str, None, None]:
-    #         for response in interpreter.chat(
+    #         for response in probe.chat(
     #             message=message, stream=True, display=False
     #         ):
     #             if (
@@ -118,7 +118,7 @@ def server(interpreter, host="0.0.0.0", port=8000):
                 except json.JSONDecodeError:
                     pass
 
-                for response in interpreter.chat(
+                for response in probe.chat(
                     message=data, stream=True, display=False
                 ):
                     if task.done():
@@ -145,7 +145,7 @@ def server(interpreter, host="0.0.0.0", port=8000):
                     )  # Wait for the next message if it hasn't arrived yet
 
     print(
-        "\nOpening a simple `interpreter.chat(data)` POST endpoint at http://localhost:8000/chat."
+        "\nOpening a simple `probe.chat(data)` POST endpoint at http://localhost:8000/chat."
     )
     print(
         "Opening an `i.protocol` compatible WebSocket endpoint at http://localhost:8000/."

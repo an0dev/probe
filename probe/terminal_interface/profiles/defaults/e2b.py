@@ -4,7 +4,7 @@ This is an Probe profile.
 
 import e2b
 
-from probe import interpreter
+from probe import probe
 
 
 class PythonE2B:
@@ -54,7 +54,7 @@ class PythonE2B:
 
 
 # (Tip: Do this before adding/removing languages, otherwise OI might retain the state of previous languages:)
-interpreter.computer.terminate()
+probe.computer.terminate()
 
 # Give Probe its languages. This will only let it run PythonE2B:
-interpreter.computer.languages = [PythonE2B]
+probe.computer.languages = [PythonE2B]

@@ -12,11 +12,11 @@ If you prefer to opt out of telemetry, you can do this in two ways.
 
 ### Python
 
-Set `disable_telemetry` to `true` on the `interpreter` object:
+Set `disable_telemetry` to `true` on the `probe` object:
 
 ```python
-from interpreter import interpreter
-interpreter.disable_telemetry = True
+from probe import probe
+probe.disable_telemetry = True
 ```
 
 ### Terminal
@@ -24,7 +24,7 @@ interpreter.disable_telemetry = True
 Use the `--disable_telemetry` flag:
 
 ```shell
-interpreter --disable_telemetry
+probe --disable_telemetry
 ```
 
 ### Profile
@@ -50,12 +50,12 @@ DISABLE_TELEMETRY=true
 We will only track usage details that help us make product decisions, specifically:
 
 - Probe version and environment (i.e whether or not it's running in Python / a terminal)
-- When interpreter.chat is run, in what mode (e.g `--os` mode), and the type of the message being passed in (e.g `None`, `str`, or `list`)
+- When probe.chat is run, in what mode (e.g `--os` mode), and the type of the message being passed in (e.g `None`, `str`, or `list`)
 - Exceptions that occur within Probe (not tracebacks)
 
 We **do not** collect personally-identifiable or sensitive information, such as: usernames, hostnames, file names, environment variables, or hostnames of systems being tested.
 
-To view the list of events we track, you may reference the **[code](https://github.com/OpenInterpreter/probe/tree/main/interpreter/core)**
+To view the list of events we track, you may reference the **[code](https://github.com/Probe/probe/tree/main/probe/core)**
 
 ## Where is telemetry information stored?
 

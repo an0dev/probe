@@ -32,7 +32,7 @@ Enables vision mode for multimodal models. Defaults to GPT-4-turbo.
 
 <CodeGroup>
 ```bash Terminal
-interpreter --vision
+probe --vision
 ```
 
 ```yaml Config
@@ -48,7 +48,7 @@ Enables OS mode for multimodal models. Defaults to GPT-4-turbo.
 <CodeGroup>
     
     ```bash Terminal
-    interpreter --os
+    probe --os
     ```
 
     ```yaml Config
@@ -63,12 +63,12 @@ Enables OS mode for multimodal models. Defaults to GPT-4-turbo.
 
 #### `--model` or `-m`
 
-Specifies which language model to use. Check out the [models](https://docs.openinterpreter.com/language-model-setup/introduction) section for a list of available models.
+Specifies which language model to use. Check out the [models](https://docs.openprobe.com/language-model-setup/introduction) section for a list of available models.
 
 <CodeGroup>
     
 ```bash Terminal
-interpreter --model "gpt-3.5-turbo"
+probe --model "gpt-3.5-turbo"
 ```
 
 ```yaml Config
@@ -83,7 +83,7 @@ Sets the model to gpt-3.5-turbo.
 
 <CodeGroup>
 ```bash Terminal
-interpreter --fast
+probe --fast
 ```
 
 ```yaml Config
@@ -99,7 +99,7 @@ Run the model locally. Check the [models page](/language-model-setup/introductio
 <CodeGroup>
 
 ```bash Terminal
-interpreter --local
+probe --local
 ```
 
 ```yaml Config
@@ -115,7 +115,7 @@ Sets the randomness level of the model's output.
 <CodeGroup>
     
 ```bash Terminal
-interpreter --temperature 0.7
+probe --temperature 0.7
 ```
 
 ```yaml Config
@@ -131,7 +131,7 @@ Manually set the context window size in tokens for the model.
 <CodeGroup>
 
 ```bash Terminal
-interpreter --context_window 16000
+probe --context_window 16000
 ```
 
 ```yaml Config
@@ -147,7 +147,7 @@ Sets the maximum number of tokens that the model can generate in a single respon
 <CodeGroup>
 
 ```bash Terminal
-interpreter --max_tokens 100
+probe --max_tokens 100
 ```
 
 ```yaml Config
@@ -162,7 +162,7 @@ Set the maximum number of characters for code outputs.
 
 <CodeGroup>
 ```bash Terminal
-interpreter --max_output 1000
+probe --max_output 1000
 ```
 
 ```yaml Config
@@ -177,7 +177,7 @@ If you are using a custom API, specify its base URL with this argument.
 <CodeGroup>
 
 ```bash Terminal
-interpreter --api_base "https://api.example.com"
+probe --api_base "https://api.example.com"
 ```
 
 ```yaml Config
@@ -193,7 +193,7 @@ Set your API key for authentication when making API calls.
 <CodeGroup>
 
 ```bash Terminal
-interpreter --api_key "your_api_key_here"
+probe --api_key "your_api_key_here"
 ```
 
 ```yaml Config
@@ -208,7 +208,7 @@ Optionally set the API version to use with your selected model. (This will overr
 
 <CodeGroup>
 ```bash Terminal
-interpreter --api_version 2.0.2
+probe --api_version 2.0.2
 ```
 
 ```yaml Config
@@ -222,7 +222,7 @@ Inform Probe that the language model you're using supports function calling.
 
 <CodeGroup>
 ```bash Terminal
-interpreter --llm_supports_functions
+probe --llm_supports_functions
 ```
 
 ```yaml Config
@@ -235,7 +235,7 @@ llm_supports_functions: true
 Inform Probe that the language model you're using does not support function calling.
 
 <CodeGroup>
-  ```bash Terminal interpreter --no-llm_supports_functions ```
+  ```bash Terminal probe --no-llm_supports_functions ```
 </CodeGroup>
 
 #### `--llm_supports_vision` or `-lsv`
@@ -244,7 +244,7 @@ Inform Probe that the language model you're using supports vision.
 
 <CodeGroup>
 ```bash Terminal
-interpreter --llm_supports_vision
+probe --llm_supports_vision
 ```
 
 ```yaml Config
@@ -263,7 +263,7 @@ Opens the directory containing all profiles. They can be edited in your default 
 
 <CodeGroup>
 ```bash Terminal
-interpreter --profilees
+probe --profilees
 ```
 
 </CodeGroup>
@@ -274,7 +274,7 @@ Optionally set a profile to use.
 
 <CodeGroup>
 ```bash Terminal
-interpreter --profile "default.yaml"
+probe --profile "default.yaml"
 ```
 
 </CodeGroup>
@@ -285,7 +285,7 @@ Appends custom instructions to the system message. This is useful for adding inf
 
 <CodeGroup>
 ```bash Terminal
-interpreter --custom_instructions "This is a custom instruction."
+probe --custom_instructions "This is a custom instruction."
 ```
 
 ```yaml Config
@@ -300,7 +300,7 @@ We don't recommend modifying the system message, as doing so opts you out of fut
 
 <CodeGroup>
 ```bash Terminal
-interpreter --system_message "You are Probe..."
+probe --system_message "You are Probe..."
 ```
 
 ```yaml Config
@@ -316,7 +316,7 @@ Enable or disable experimental safety mechanisms like code scanning. Valid optio
 <CodeGroup>
 
 ```bash Terminal
-interpreter --safe_mode ask
+probe --safe_mode ask
 ```
 
 ```yaml Config
@@ -327,12 +327,12 @@ safe_mode: ask
 
 #### `--auto_run` or `-y`
 
-Automatically run the interpreter without requiring user confirmation.
+Automatically run the probe without requiring user confirmation.
 
 <CodeGroup>
 
 ```bash Terminal
-interpreter --auto_run
+probe --auto_run
 ```
 
 ```yaml Config
@@ -347,7 +347,7 @@ Runs Probe in a loop, requiring it to admit to completing or failing every task.
 
 <CodeGroup>
 ```bash Terminal
-interpreter --loop
+probe --loop
 ```
 
 ```yaml Config
@@ -358,12 +358,12 @@ loop: true
 
 #### `--verbose` or `-v`
 
-Run the interpreter in verbose mode. Debug information will be printed at each step to help diagnose issues.
+Run the probe in verbose mode. Debug information will be printed at each step to help diagnose issues.
 
 <CodeGroup>
 
 ```bash Terminal
-interpreter --verbose
+probe --verbose
 ```
 
 ```yaml Config
@@ -379,7 +379,7 @@ Sets the maximum budget limit for the session in USD.
 <CodeGroup>
 
 ```bash Terminal
-interpreter --max_budget 0.01
+probe --max_budget 0.01
 ```
 
 ```yaml Config
@@ -394,7 +394,7 @@ max_budget: 0.01
 
 <CodeGroup>
 ```bash Terminal
-interpreter --speak_messages
+probe --speak_messages
 ```
 
 ```yaml Config
@@ -409,7 +409,7 @@ Enable multi-line inputs starting and ending with ` ``` `
 
 <CodeGroup>
 ```bash Terminal
-interpreter --multi_line
+probe --multi_line
 ```
 
 ```yaml Config
@@ -426,7 +426,7 @@ multi_line: true
 
 Get the current installed version number of Probe.
 
-<CodeGroup>```bash Terminal interpreter --version ```</CodeGroup>
+<CodeGroup>```bash Terminal probe --version ```</CodeGroup>
 
 #### `--help` or `-h`
 
@@ -434,7 +434,7 @@ Display all available terminal arguments.
 
 <CodeGroup>
 ```bash Terminal
-interpreter --help
+probe --help
 ```
 
 </CodeGroup>

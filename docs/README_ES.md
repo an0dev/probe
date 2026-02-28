@@ -10,16 +10,16 @@
     <a href="../LICENSE"><img src="https://img.shields.io/static/v1?label=license&message=AGPL&color=white&style=flat" alt="License"/></a>
     <br>
     <br>
-    <br><a href="https://0ggfznkwh4j.typeform.com/to/G21i9lJ2">Obtenga acceso temprano a la aplicación de escritorio</a>‎ ‎ |‎ ‎ <a href="https://docs.openinterpreter.com/">Documentación</a><br>
+    <br><a href="https://0ggfznkwh4j.typeform.com/to/G21i9lJ2">Obtenga acceso temprano a la aplicación de escritorio</a>‎ ‎ |‎ ‎ <a href="https://docs.probe.com/">Documentación</a><br>
 </p>
 
 <br>
 
-![poster](https://github.com/OpenInterpreter/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
+![poster](https://github.com/Probe/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
 
 <br>
 <p align="center">
-<strong>La Nueva Actualización del Computador</strong> presenta <strong><code>--os</code></strong> y una nueva <strong>API de Computadora</strong>. <a href="https://changes.openinterpreter.com/log/the-new-computer-update">Lea más →</a>
+<strong>La Nueva Actualización del Computador</strong> presenta <strong><code>--os</code></strong> y una nueva <strong>API de Computadora</strong>. <a href="https://changes.probe.com/log/the-new-computer-update">Lea más →</a>
 </p>
 <br>
 
@@ -27,10 +27,10 @@
 pip install probe
 ```
 
-> ¿No funciona? Lea nuestra [guía de configuración](https://docs.openinterpreter.com/getting-started/setup).
+> ¿No funciona? Lea nuestra [guía de configuración](https://docs.probe.com/getting-started/setup).
 
 ```shell
-interpreter
+probe
 ```
 
 <br>
@@ -50,7 +50,7 @@ Esto proporciona una interfaz de lenguaje natural para las capacidades generales
 
 ## Demo
 
-https://github.com/OpenInterpreter/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
+https://github.com/Probe/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
 
 #### También hay disponible una demo interactiva en Google Colab:
 
@@ -68,19 +68,19 @@ pip install probe
 
 ### Terminal
 
-Después de la instalación, simplemente ejecute `interpreter`:
+Después de la instalación, simplemente ejecute `probe`:
 
 ```shell
-interpreter
+probe
 ```
 
 ### Python
 
 ```python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.chat("Plot AAPL and META's normalized stock prices") # Ejecuta un comando sencillo
-interpreter.chat() # Inicia una sesión de chat interactiva
+probe.chat("Plot AAPL and META's normalized stock prices") # Ejecuta un comando sencillo
+probe.chat() # Inicia una sesión de chat interactiva
 ```
 
 ### GitHub Codespaces
@@ -89,12 +89,12 @@ Presione la tecla `,` en la página de GitHub de este repositorio para crear un 
 
 ## Comparación con el Intérprete de Código de ChatGPT
 
-El lanzamiento de [Intérprete de Código](https://openai.com/blog/chatgpt-plugins#code-interpreter) de OpenAI con GPT-4 presenta una oportunidad fantástica para realizar tareas del mundo real con ChatGPT.
+El lanzamiento de [Intérprete de Código](https://openai.com/blog/chatgpt-plugins#code-probe) de OpenAI con GPT-4 presenta una oportunidad fantástica para realizar tareas del mundo real con ChatGPT.
 
 Sin embargo, el servicio de OpenAI está alojado, su codigo es cerrado y está fuertemente restringido:
 
 - No hay acceso a Internet.
-- [Conjunto limitado de paquetes preinstalados](https://wfhbrian.com/mastering-chatgpts-code-interpreter-list-of-python-packages/).
+- [Conjunto limitado de paquetes preinstalados](https://wfhbrian.com/mastering-chatgpts-code-probe-list-of-python-packages/).
 - Límite de 100 MB de carga, límite de tiempo de 120.0 segundos.
 - El estado se elimina (junto con cualquier archivo generado o enlace) cuando el entorno se cierra.
 
@@ -111,22 +111,22 @@ Esto combina el poder del Intérprete de Código de GPT-4 con la flexibilidad de
 ```python
 message = "¿Qué sistema operativo estamos utilizando?"
 
-for chunk in interpreter.chat(message, display=False, stream=True):
+for chunk in probe.chat(message, display=False, stream=True):
     print(chunk)
 ```
 
 ### Chat Interactivo
 
-Para iniciar una sesión de chat interactiva en su terminal, puede ejecutar `interpreter` desde la línea de comandos:
+Para iniciar una sesión de chat interactiva en su terminal, puede ejecutar `probe` desde la línea de comandos:
 
 ```shell
-interpreter
+probe
 ```
 
-O `interpreter.chat()` desde un archivo `.py`:
+O `probe.chat()` desde un archivo `.py`:
 
 ```python
-interpreter.chat()
+probe.chat()
 ```
 
 **Puede también transmitir cada trozo:**
@@ -134,7 +134,7 @@ interpreter.chat()
 ```python
 message = "¿Qué sistema operativo estamos utilizando?"
 
-for chunk in interpreter.chat(message, display=False, stream=True):
+for chunk in probe.chat(message, display=False, stream=True):
     print(chunk)
 ```
 
@@ -143,11 +143,11 @@ for chunk in interpreter.chat(message, display=False, stream=True):
 Para un control más preciso, puede pasar mensajes directamente a `.chat(message)`:
 
 ```python
-interpreter.chat("Añade subtítulos a todos los videos en /videos.")
+probe.chat("Añade subtítulos a todos los videos en /videos.")
 
 # ... Transmite salida a su terminal, completa tarea ...
 
-interpreter.chat("Estos se ven bien, pero ¿pueden hacer los subtítulos más grandes?")
+probe.chat("Estos se ven bien, pero ¿pueden hacer los subtítulos más grandes?")
 
 # ...
 ```
@@ -157,18 +157,18 @@ interpreter.chat("Estos se ven bien, pero ¿pueden hacer los subtítulos más gr
 En Python, Intérprete Abierto recuerda el historial de conversación. Si desea empezar de nuevo, puede resetearlo:
 
 ```python
-interpreter.messages = []
+probe.messages = []
 ```
 
 ### Guardar y Restaurar Chats
 
-`interpreter.chat()` devuelve una lista de mensajes, que puede utilizar para reanudar una conversación con `interpreter.messages = messages`:
+`probe.chat()` devuelve una lista de mensajes, que puede utilizar para reanudar una conversación con `probe.messages = messages`:
 
 ```python
-messages = interpreter.chat("Mi nombre es Killian.") # Guarda mensajes en 'messages'
-interpreter.messages = [] # Resetear Intérprete ("Killian" será olvidado)
+messages = probe.chat("Mi nombre es Killian.") # Guarda mensajes en 'messages'
+probe.messages = [] # Resetear Intérprete ("Killian" será olvidado)
 
-interpreter.messages = messages # Reanuda chat desde 'messages' ("Killian" será recordado)
+probe.messages = messages # Reanuda chat desde 'messages' ("Killian" será recordado)
 ```
 
 ### Personalizar el Mensaje del Sistema
@@ -176,10 +176,10 @@ interpreter.messages = messages # Reanuda chat desde 'messages' ("Killian" será
 Puede inspeccionar y configurar el mensaje del sistema de Intérprete Abierto para extender su funcionalidad, modificar permisos o darle más contexto.
 
 ```python
-interpreter.system_message += """
+probe.system_message += """
 Ejecute comandos de shell con -y para que el usuario no tenga que confirmarlos.
 """
-print(interpreter.system_message)
+print(probe.system_message)
 ```
 
 ### Cambiar el Modelo de Lenguaje
@@ -189,15 +189,15 @@ Intérprete Abierto utiliza [LiteLLM](https://docs.litellm.ai/docs/providers/) p
 Puede cambiar el modelo estableciendo el parámetro de modelo:
 
 ```shell
-interpreter --model gpt-3.5-turbo
-interpreter --model claude-2
-interpreter --model command-nightly
+probe --model gpt-3.5-turbo
+probe --model claude-2
+probe --model command-nightly
 ```
 
 En Python, establezca el modelo en el objeto:
 
 ```python
-interpreter.llm.model = "gpt-3.5-turbo"
+probe.llm.model = "gpt-3.5-turbo"
 ```
 
 [Encuentre la cadena adecuada para su modelo de lenguaje aquí.](https://docs.litellm.ai/docs/providers/)
@@ -208,16 +208,16 @@ interpreter.llm.model = "gpt-3.5-turbo"
 
 Intérprete Abierto puede utilizar un servidor de OpenAI compatible para ejecutar modelos localmente. (LM Studio, jan.ai, ollama, etc.)
 
-Simplemente ejecute `interpreter` con la URL de base de API de su servidor de inferencia (por defecto, `http://localhost:1234/v1` para LM Studio):
+Simplemente ejecute `probe` con la URL de base de API de su servidor de inferencia (por defecto, `http://localhost:1234/v1` para LM Studio):
 
 ```shell
-interpreter --api_base "http://localhost:1234/v1" --api_key "fake_key"
+probe --api_base "http://localhost:1234/v1" --api_key "fake_key"
 ```
 
 O puede utilizar Llamafile sin instalar software adicional simplemente ejecutando:
 
 ```shell
-interpreter --local
+probe --local
 ```
 
 Para una guía mas detallada, consulte [este video de Mike Bird](https://www.youtube.com/watch?v=CEs51hGWuGU?si=cN7f6QhfT4edfG5H)
@@ -238,14 +238,14 @@ Una vez que el servidor esté funcionando, puede empezar su conversación con In
 Nuestro paquete de Python le da más control sobre cada ajuste. Para replicar y conectarse a LM Studio, utilice estos ajustes:
 
 ```python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.offline = True # Desactiva las características en línea como Procedimientos Abiertos
-interpreter.llm.model = "openai/x" # Indica a OI que envíe mensajes en el formato de OpenAI
-interpreter.llm.api_key = "fake_key" # LiteLLM, que utilizamos para hablar con LM Studio, requiere esto
-interpreter.llm.api_base = "http://localhost:1234/v1" # Apunta esto a cualquier servidor compatible con OpenAI
+probe.offline = True # Desactiva las características en línea como Procedimientos Abiertos
+probe.llm.model = "openai/x" # Indica a OI que envíe mensajes en el formato de OpenAI
+probe.llm.api_key = "fake_key" # LiteLLM, que utilizamos para hablar con LM Studio, requiere esto
+probe.llm.api_base = "http://localhost:1234/v1" # Apunta esto a cualquier servidor compatible con OpenAI
 
-interpreter.chat()
+probe.chat()
 ```
 
 #### Ventana de Contexto, Tokens Máximos
@@ -255,17 +255,17 @@ Puede modificar los `max_tokens` y `context_window` (en tokens) de los modelos l
 Para el modo local, ventanas de contexto más cortas utilizarán menos RAM, así que recomendamos intentar una ventana mucho más corta (~1000) si falla o si es lenta. Asegúrese de que `max_tokens` sea menor que `context_window`.
 
 ```shell
-interpreter --local --max_tokens 1000 --context_window 3000
+probe --local --max_tokens 1000 --context_window 3000
 ```
 
 ### Modo Detallado
 
 Para ayudarle a inspeccionar Intérprete Abierto, tenemos un modo `--verbose` para depuración.
 
-Puede activar el modo detallado utilizando el parámetro (`interpreter --verbose`), o en plena sesión:
+Puede activar el modo detallado utilizando el parámetro (`probe --verbose`), o en plena sesión:
 
 ```shell
-$ interpreter
+$ probe
 ...
 > %verbose true <- Activa el modo detallado
 
@@ -294,7 +294,7 @@ Esto proporciona una forma flexible de configurar el intérprete sin cambiar los
 Ejecutar el siguiente comando para abrir el directorio de perfiles:
 
 ```
-interpreter --profiles
+probe --profiles
 ```
 
 Puede agregar archivos `yaml` allí. El perfil predeterminado se llama `default.yaml`.
@@ -304,7 +304,7 @@ Puede agregar archivos `yaml` allí. El perfil predeterminado se llama `default.
 Intérprete Abierto admite múltiples archivos `yaml`, lo que permite cambiar fácilmente entre configuraciones:
 
 ```
-interpreter --profile my_profile.yaml
+probe --profile my_profile.yaml
 ```
 
 ## Servidor de FastAPI de ejemplo
@@ -316,21 +316,21 @@ El generador actualiza permite controlar Intérprete Abierto a través de puntos
 
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
-from interpreter import interpreter
+from probe import probe
 
 app = FastAPI()
 
 @app.get("/chat")
 def chat_endpoint(message: str):
     def event_stream():
-        for result in interpreter.chat(message, stream=True):
+        for result in probe.chat(message, stream=True):
             yield f"data: {result}\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
 @app.get("/history")
 def history_endpoint():
-    return interpreter.messages
+    return probe.messages
 ```
 
 ```shell
@@ -338,7 +338,7 @@ pip install fastapi uvicorn
 uvicorn server:app --reload
 ```
 
-Puede iniciar un servidor idéntico al anterior simplemente ejecutando `interpreter.server()`.
+Puede iniciar un servidor idéntico al anterior simplemente ejecutando `probe.server()`.
 
 ## Android
 
@@ -350,7 +350,7 @@ Ya que el código generado se ejecuta en su entorno local, puede interactuar con
 
 **⚠️ Intérprete Abierto le pedirá que apruebe el código antes de ejecutarlo.**
 
-Puede ejecutar `interpreter -y` o establecer `interpreter.auto_run = True` para evitar esta confirmación, en cuyo caso:
+Puede ejecutar `probe -y` o establecer `probe.auto_run = True` para evitar esta confirmación, en cuyo caso:
 
 - Sea cuidadoso al solicitar comandos que modifican archivos o configuraciones del sistema.
 - Vigile Intérprete Abierto como si fuera un coche autónomo y esté preparado para terminar el proceso cerrando su terminal.
@@ -400,11 +400,11 @@ Por favor, consulte nuestras [directrices de contribución](docs/CONTRIBUTING.md
 
 # Roadmap
 
-Visite [nuestro roadmap](https://github.com/OpenInterpreter/probe/blob/main/docs/ROADMAP.md) para ver el futuro de Intérprete Abierto.
+Visite [nuestro roadmap](https://github.com/Probe/probe/blob/main/docs/ROADMAP.md) para ver el futuro de Intérprete Abierto.
 
 **Nota:** Este software no está afiliado con OpenAI.
 
-![thumbnail-ncu](https://github.com/OpenInterpreter/probe/assets/63927363/1b19a5db-b486-41fd-a7a1-fe2028031686)
+![thumbnail-ncu](https://github.com/Probe/probe/assets/63927363/1b19a5db-b486-41fd-a7a1-fe2028031686)
 
 > Tener acceso a un programador junior trabajando a la velocidad de su dedos... puede hacer que los nuevos flujos de trabajo sean sencillos y eficientes, además de abrir los beneficios de la programación a nuevas audiencias.
 >

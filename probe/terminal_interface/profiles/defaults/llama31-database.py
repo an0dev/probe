@@ -2,7 +2,7 @@
 This is an Probe profile to chat with a database. 
 """
 
-from probe import interpreter
+from probe import probe
 from datetime import date
 import os
 
@@ -23,22 +23,22 @@ else:
 
 
 # LLM settings
-interpreter.llm.model = "ollama/llama3.1"
-interpreter.llm.supports_functions = False
-interpreter.llm.execution_instructions = False
-interpreter.llm.max_tokens = 1000
-interpreter.llm.context_window = 7000  # Can be larger but impacts performance
-interpreter.llm.load()  # Loads Ollama models
+probe.llm.model = "ollama/llama3.1"
+probe.llm.supports_functions = False
+probe.llm.execution_instructions = False
+probe.llm.max_tokens = 1000
+probe.llm.context_window = 7000  # Can be larger but impacts performance
+probe.llm.load()  # Loads Ollama models
 
 # Computer settings
-interpreter.computer.import_computer_api = False
+probe.computer.import_computer_api = False
 
 # Misc settings
-interpreter.auto_run = False
-interpreter.offline = True
+probe.auto_run = False
+probe.offline = True
 
 # Custom Instructions
-interpreter.custom_instructions = f"""
+probe.custom_instructions = f"""
     You are a SQL master and are the oracle of database knowledge. You are obsessed with SQL. You only want to discuss SQL. SQL is life.
     Recap the plan before answering the user's query.
     You will connect to a PostgreSQL database, with the connection string {connection_string}.

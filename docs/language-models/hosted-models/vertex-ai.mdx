@@ -13,16 +13,16 @@ To use Probe with Google's Vertex AI API, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model gemini-pro
-interpreter --model gemini-pro-vision
+probe --model gemini-pro
+probe --model gemini-pro-vision
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "gemini-pro"
-interpreter.llm.model = "gemini-pro-vision"
-interpreter.chat()
+probe.llm.model = "gemini-pro"
+probe.llm.model = "gemini-pro-vision"
+probe.chat()
 ```
 
 </CodeGroup>

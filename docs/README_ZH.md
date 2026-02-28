@@ -11,12 +11,12 @@
     <br>
     <b>让语言模型在您的计算机上运行代码。</b><br>
     在本地实现的开源OpenAI的代码解释器。<br>
-    <br><a href="https://openinterpreter.com">登记以提前获取Probe（开放解释器）桌面应用程序</a>‎ ‎ |‎ ‎ <b><a href="https://docs.openinterpreter.com/">阅读新文档</a></b><br>
+    <br><a href="https://probe.com">登记以提前获取Probe（开放解释器）桌面应用程序</a>‎ ‎ |‎ ‎ <b><a href="https://docs.probe.com/">阅读新文档</a></b><br>
 </p>
 
 <br>
 
-![poster](https://github.com/OpenInterpreter/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
+![poster](https://github.com/Probe/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
 
 <br>
 
@@ -25,12 +25,12 @@ pip install probe
 ```
 
 ```shell
-interpreter
+probe
 ```
 
 <br>
 
-**Probe（开放解释器）** 可以让大语言模型（LLMs）在本地运行代码（比如 Python、JavaScript、Shell 等）。安装后，在终端上运行 `$ interpreter` 即可通过类似 ChatGPT 的界面与 Probe 聊天。
+**Probe（开放解释器）** 可以让大语言模型（LLMs）在本地运行代码（比如 Python、JavaScript、Shell 等）。安装后，在终端上运行 `$ probe` 即可通过类似 ChatGPT 的界面与 Probe 聊天。
 
 本软件为计算机的通用功能提供了一个自然语言界面，比如：
 
@@ -45,7 +45,7 @@ interpreter
 
 ## 演示
 
-https://github.com/OpenInterpreter/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
+https://github.com/Probe/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
 
 #### Google Colab 上也提供了交互式演示：
 
@@ -59,29 +59,29 @@ pip install probe
 
 ### 终端
 
-安装后，运行 `interpreter`：
+安装后，运行 `probe`：
 
 ```shell
-interpreter
+probe
 ```
 
 ### Python
 
 ```python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.chat("Plot AAPL and META's normalized stock prices") # 执行单一命令
-interpreter.chat() # 开始交互式聊天
+probe.chat("Plot AAPL and META's normalized stock prices") # 执行单一命令
+probe.chat() # 开始交互式聊天
 ```
 
 ## 与 ChatGPT 的代码解释器比较
 
-OpenAI 发布的 [Code Interpreter](https://openai.com/blog/chatgpt-plugins#code-interpreter) 和 GPT-4 提供了一个与 ChatGPT 完成实际任务的绝佳机会。
+OpenAI 发布的 [Code Probe](https://openai.com/blog/chatgpt-plugins#code-probe) 和 GPT-4 提供了一个与 ChatGPT 完成实际任务的绝佳机会。
 
 但是，OpenAI 的服务是托管的，闭源的，并且受到严格限制：
 
 - 无法访问互联网。
-- [预装软件包数量有限](https://wfhbrian.com/mastering-chatgpts-code-interpreter-list-of-python-packages/)。
+- [预装软件包数量有限](https://wfhbrian.com/mastering-chatgpts-code-probe-list-of-python-packages/)。
 - 允许的最大上传为 100 MB，且最大运行时间限制为 120.0 秒
 - 当运行环境中途结束时，之前的状态会被清除（包括任何生成的文件或链接）。
 
@@ -95,16 +95,16 @@ Probe（开放解释器）通过在本地环境中运行克服了这些限制。
 
 ### 交互式聊天
 
-要在终端中开始交互式聊天，从命令行运行 `interpreter`：
+要在终端中开始交互式聊天，从命令行运行 `probe`：
 
 ```shell
-interpreter
+probe
 ```
 
-或者从.py 文件中运行 `interpreter.chat()`：
+或者从.py 文件中运行 `probe.chat()`：
 
 ```python
-interpreter.chat()
+probe.chat()
 ```
 
 ### 程序化聊天
@@ -112,11 +112,11 @@ interpreter.chat()
 为了更精确的控制，您可以通过 `.chat(message)` 直接传递消息 ：
 
 ```python
-interpreter.chat("Add subtitles to all videos in /videos.")
+probe.chat("Add subtitles to all videos in /videos.")
 
 # ... Streams output to your terminal, completes task ...
 
-interpreter.chat("These look great but can you make the subtitles bigger?")
+probe.chat("These look great but can you make the subtitles bigger?")
 
 # ...
 ```
@@ -126,16 +126,16 @@ interpreter.chat("These look great but can you make the subtitles bigger?")
 在 Python 中，Probe 会记录历史对话。如果你想从头开始，可以进行重置：
 
 ```python
-interpreter.messages = []
+probe.messages = []
 ```
 
 ### 保存和恢复聊天
 
 ```python
-messages = interpreter.chat("My name is Killian.") # 保存消息到 'messages'
-interpreter.messages = [] # 重置解释器 ("Killian" 将被遗忘)
+messages = probe.chat("My name is Killian.") # 保存消息到 'messages'
+probe.messages = [] # 重置解释器 ("Killian" 将被遗忘)
 
-interpreter.messages = messages # 从 'messages' 恢复聊天 ("Killian" 将被记住)
+probe.messages = messages # 从 'messages' 恢复聊天 ("Killian" 将被记住)
 ```
 
 ### 自定义系统消息
@@ -143,10 +143,10 @@ interpreter.messages = messages # 从 'messages' 恢复聊天 ("Killian" 将被�
 你可以检查和配置 Probe 的系统信息，以扩展其功能、修改权限或赋予其更多上下文。
 
 ```python
-interpreter.system_message += """
+probe.system_message += """
 使用 -y 运行 shell 命令，这样用户就不必确认它们。
 """
-print(interpreter.system_message)
+print(probe.system_message)
 ```
 
 ### 更改模型
@@ -156,31 +156,31 @@ Probe 使用[LiteLLM](https://docs.litellm.ai/docs/providers/)连接到语言模
 您可以通过设置模型参数来更改模型：
 
 ```shell
-interpreter --model gpt-3.5-turbo
-interpreter --model claude-2
-interpreter --model command-nightly
+probe --model gpt-3.5-turbo
+probe --model claude-2
+probe --model command-nightly
 ```
 
 在 Python 环境下，您需要手动设置模型：
 
 ```python
-interpreter.llm.model = "gpt-3.5-turbo"
+probe.llm.model = "gpt-3.5-turbo"
 ```
 
 ### 在本地运行 Probe（开放解释器）
 
 ```shell
-interpreter --local
+probe --local
 ```
 
 ### 调试模式
 
 为了帮助贡献者检查和调试 Probe，`--verbose` 模式提供了详细的日志。
 
-您可以使用 `interpreter --verbose` 来激活调试模式，或者直接在终端输入：
+您可以使用 `probe --verbose` 来激活调试模式，或者直接在终端输入：
 
 ```shell
-$ interpreter
+$ probe
 ...
 > %verbose true <- 开启调试模式
 
@@ -193,7 +193,7 @@ $ interpreter
 
 **⚠️ 所以在执行任何代码之前，Probe 都会询问用户是否运行。**
 
-您可以运行 `interpreter -y` 或设置 `interpreter.auto_run = True` 来绕过此确认，此时：
+您可以运行 `probe -y` 或设置 `probe.auto_run = True` 来绕过此确认，此时：
 
 - 在运行请求修改本地文件或系统设置的命令时要谨慎。
 - 请像驾驶自动驾驶汽车一直握着方向盘一样留意 Probe，并随时做好通过关闭终端来结束进程的准备。
@@ -213,8 +213,8 @@ Probe 为[函数调用语言模型](https://platform.openai.com/docs/guides/gpt/
 
 ## 规划图
 
-若要预览 Probe 的未来，请查看[我们的路线图](https://github.com/OpenInterpreter/probe/blob/main/docs/ROADMAP.md) 。
+若要预览 Probe 的未来，请查看[我们的路线图](https://github.com/Probe/probe/blob/main/docs/ROADMAP.md) 。
 
 **请注意**：此软件与 OpenAI 无关。
 
-![thumbnail-ncu](https://github.com/OpenInterpreter/probe/assets/63927363/1b19a5db-b486-41fd-a7a1-fe2028031686)
+![thumbnail-ncu](https://github.com/Probe/probe/assets/63927363/1b19a5db-b486-41fd-a7a1-fe2028031686)

@@ -47,7 +47,7 @@ def preprocess_shell(code):
     # if it's multiline, just skip this. soon we should make it work with multiline
     if (
         not has_multiline_commands(code)
-        and os.environ.get("INTERPRETER_ACTIVE_LINE_DETECTION", "True").lower()
+        and os.environ.get("PROBE_ACTIVE_LINE_DETECTION", "True").lower()
         == "true"
     ):
         code = add_active_line_prints(code)

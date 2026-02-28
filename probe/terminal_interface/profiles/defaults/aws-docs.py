@@ -3,14 +3,14 @@ This is an Probe profile. It is specialized for searching AWS documentation and 
 """
 
 # Configure Probe
-from probe import interpreter
+from probe import probe
 
-interpreter.llm.model = "claude-3-5-sonnet-20240620"
-interpreter.computer.import_computer_api = True
-interpreter.llm.supports_functions = True
-interpreter.llm.supports_vision = True
-interpreter.llm.context_window = 100000
-interpreter.llm.max_tokens = 4096
+probe.llm.model = "claude-3-5-sonnet-20240620"
+probe.computer.import_computer_api = True
+probe.llm.supports_functions = True
+probe.llm.supports_vision = True
+probe.llm.context_window = 100000
+probe.llm.max_tokens = 4096
 
 AWS_DOCS_SEARCH_URL = "https://docs.aws.amazon.com/search/doc-search.html?searchPath=documentation&searchQuery=<query>"
 
@@ -61,9 +61,9 @@ def search_aws_docs(query):
 """
 
 
-interpreter.computer.run("python", custom_tool)
+probe.computer.run("python", custom_tool)
 
-interpreter.custom_instructions = f"""
+probe.custom_instructions = f"""
 You have access to a special function imported inside your python environment, to be executed in python, called `search_aws_docs(query)` which lets you search the AWS docs. 
 Use it frequently to ground your usage of AWS products. 
 Use it often!

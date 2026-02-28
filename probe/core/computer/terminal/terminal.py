@@ -20,13 +20,13 @@ from .languages.shell import Shell
 
 import_computer_api_code = """
 import os
-os.environ["INTERPRETER_COMPUTER_API"] = "False" # To prevent infinite recurring import of the computer API
+os.environ["PROBE_COMPUTER_API"] = "False" # To prevent infinite recurring import of the computer API
 
 import time
 import datetime
-from probe import interpreter
+from probe import probe
 
-computer = interpreter.computer
+computer = probe.computer
 """.strip()
 
 
@@ -93,7 +93,7 @@ class Terminal:
                 self.computer.import_computer_api
                 and not self.computer._has_imported_computer_api
                 and "computer" in code
-                and os.getenv("INTERPRETER_COMPUTER_API", "True") != "False"
+                and os.getenv("PROBE_COMPUTER_API", "True") != "False"
             ):
                 self.computer._has_imported_computer_api = True
                 # Give it access to the computer via Python
@@ -108,7 +108,7 @@ class Terminal:
                 self.computer._has_imported_skills = True
                 self.computer.skills.import_skills()
 
-            # This won't work because truncated code is stored in interpreter.messages :/
+            # This won't work because truncated code is stored in probe.messages :/
             # If the full code was stored, we could do this:
             if False and "get_last_output()" in code:
                 if "# We wouldn't want to have maximum recursion depth!" in code:
@@ -117,7 +117,7 @@ class Terminal:
                 else:
                     code_outputs = [
                         m
-                        for m in self.computer.interpreter.messages
+                        for m in self.computer.probe.messages
                         if m["role"] == "computer"
                         and "content" in m
                         and m["content"] != ""

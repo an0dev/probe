@@ -1,22 +1,22 @@
-from probe import interpreter
+from probe import probe
 
 # This is an Probe compatible profile.
-# Visit https://01.openinterpreter.com/profile for all options.
+# Visit https://01.probe.com/profile for all options.
 
 # 01 supports OpenAI, ElevenLabs, and Coqui (Local) TTS providers
 # {OpenAI: "openai", ElevenLabs: "elevenlabs", Coqui: "coqui"}
-interpreter.tts = "openai"
+probe.tts = "openai"
 
 # Connect your 01 to a language model
-interpreter.llm.model = "claude-3.5"
-# interpreter.llm.model = "gpt-4o-mini"
-interpreter.llm.context_window = 100000
-interpreter.llm.max_tokens = 4096
-# interpreter.llm.api_key = "<your_openai_api_key_here>"
+probe.llm.model = "claude-3.5"
+# probe.llm.model = "gpt-4o-mini"
+probe.llm.context_window = 100000
+probe.llm.max_tokens = 4096
+# probe.llm.api_key = "<your_openai_api_key_here>"
 
 # Tell your 01 where to find and save skills
 skill_path = "./skills"
-interpreter.computer.skills.path = skill_path
+probe.computer.skills.path = skill_path
 
 setup_code = f"""from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -25,24 +25,24 @@ computer.skills.path = '{skill_path}'
 computer"""
 
 # Extra settings
-interpreter.computer.import_computer_api = True
-interpreter.computer.import_skills = True
-interpreter.computer.system_message = ""
-output = interpreter.computer.run(
+probe.computer.import_computer_api = True
+probe.computer.import_skills = True
+probe.computer.system_message = ""
+output = probe.computer.run(
     "python", setup_code
 )  # This will trigger those imports
-interpreter.auto_run = True
-interpreter.loop = True
-# interpreter.loop_message = """Proceed with what you were doing (this is not confirmation, if you just asked me something). You CAN run code on my machine. If you want to run code, start your message with "```"! If the entire task is done, say exactly 'The task is done.' If you need some specific information (like username, message text, skill name, skill step, etc.) say EXACTLY 'Please provide more information.' If it's impossible, say 'The task is impossible.' (If I haven't provided a task, say exactly 'Let me know what you'd like to do next.') Otherwise keep going. CRITICAL: REMEMBER TO FOLLOW ALL PREVIOUS INSTRUCTIONS. If I'm teaching you something, remember to run the related `computer.skills.new_skill` function."""
-interpreter.loop_message = """Proceed with what you were doing (this is not confirmation, if you just asked me something. Say "Please provide more information." if you're looking for confirmation about something!). You CAN run code on my machine. If the entire task is done, say exactly 'The task is done.' AND NOTHING ELSE. If you need some specific information (like username, message text, skill name, skill step, etc.) say EXACTLY 'Please provide more information.' AND NOTHING ELSE. If it's impossible, say 'The task is impossible.' AND NOTHING ELSE. (If I haven't provided a task, say exactly 'Let me know what you'd like to do next.' AND NOTHING ELSE) Otherwise keep going. CRITICAL: REMEMBER TO FOLLOW ALL PREVIOUS INSTRUCTIONS. If I'm teaching you something, remember to run the related `computer.skills.new_skill` function. (Psst: If you appear to be caught in a loop, break out of it! Execute the code you intended to execute.)"""
-interpreter.loop_breakers = [
+probe.auto_run = True
+probe.loop = True
+# probe.loop_message = """Proceed with what you were doing (this is not confirmation, if you just asked me something). You CAN run code on my machine. If you want to run code, start your message with "```"! If the entire task is done, say exactly 'The task is done.' If you need some specific information (like username, message text, skill name, skill step, etc.) say EXACTLY 'Please provide more information.' If it's impossible, say 'The task is impossible.' (If I haven't provided a task, say exactly 'Let me know what you'd like to do next.') Otherwise keep going. CRITICAL: REMEMBER TO FOLLOW ALL PREVIOUS INSTRUCTIONS. If I'm teaching you something, remember to run the related `computer.skills.new_skill` function."""
+probe.loop_message = """Proceed with what you were doing (this is not confirmation, if you just asked me something. Say "Please provide more information." if you're looking for confirmation about something!). You CAN run code on my machine. If the entire task is done, say exactly 'The task is done.' AND NOTHING ELSE. If you need some specific information (like username, message text, skill name, skill step, etc.) say EXACTLY 'Please provide more information.' AND NOTHING ELSE. If it's impossible, say 'The task is impossible.' AND NOTHING ELSE. (If I haven't provided a task, say exactly 'Let me know what you'd like to do next.' AND NOTHING ELSE) Otherwise keep going. CRITICAL: REMEMBER TO FOLLOW ALL PREVIOUS INSTRUCTIONS. If I'm teaching you something, remember to run the related `computer.skills.new_skill` function. (Psst: If you appear to be caught in a loop, break out of it! Execute the code you intended to execute.)"""
+probe.loop_breakers = [
     "The task is done.",
     "The task is impossible.",
     "Let me know what you'd like to do next.",
     "Please provide more information.",
 ]
 
-interpreter.system_message = r"""
+probe.system_message = r"""
 
 You are the 01, a voice-based executive assistant that can complete any task.
 When you execute code, it will be executed on the user's machine. The user has given you full and complete permission to execute any code necessary to complete the task.

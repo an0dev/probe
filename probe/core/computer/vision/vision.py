@@ -39,10 +39,10 @@ class Vision:
 
                 if self.computer.debug:
                     print(
-                        "Probe will use Moondream (tiny vision model) to describe images to the language model. Set `interpreter.llm.vision_renderer = None` to disable this behavior."
+                        "Probe will use Moondream (tiny vision model) to describe images to the language model. Set `probe.llm.vision_renderer = None` to disable this behavior."
                     )
                     print(
-                        "Alternatively, you can use a vision-supporting LLM and set `interpreter.llm.supports_vision = True`."
+                        "Alternatively, you can use a vision-supporting LLM and set `probe.llm.supports_vision = True`."
                     )
                 model_id = "vikhyatk/moondream2"
                 revision = "2024-04-02"

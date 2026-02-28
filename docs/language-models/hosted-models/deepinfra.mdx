@@ -7,14 +7,14 @@ To use Probe with DeepInfra, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model deepinfra/<deepinfra-model>
+probe --model deepinfra/<deepinfra-model>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "deepinfra/<deepinfra-model>"
-interpreter.chat()
+probe.llm.model = "deepinfra/<deepinfra-model>"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -33,21 +33,21 @@ We support the following completion models from DeepInfra:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model deepinfra/meta-llama/Llama-2-70b-chat-hf
-interpreter --model deepinfra/meta-llama/Llama-2-7b-chat-hf
-interpreter --model deepinfra/meta-llama/Llama-2-13b-chat-hf
-interpreter --model deepinfra/codellama/CodeLlama-34b-Instruct-hf
-interpreter --model deepinfra/mistral/mistral-7b-instruct-v0.1
-interpreter --model deepinfra/jondurbin/airoboros-l2-70b-gpt4-1.4.1
+probe --model deepinfra/meta-llama/Llama-2-70b-chat-hf
+probe --model deepinfra/meta-llama/Llama-2-7b-chat-hf
+probe --model deepinfra/meta-llama/Llama-2-13b-chat-hf
+probe --model deepinfra/codellama/CodeLlama-34b-Instruct-hf
+probe --model deepinfra/mistral/mistral-7b-instruct-v0.1
+probe --model deepinfra/jondurbin/airoboros-l2-70b-gpt4-1.4.1
 ```
 
 ```python Python
-interpreter.llm.model = "deepinfra/meta-llama/Llama-2-70b-chat-hf"
-interpreter.llm.model = "deepinfra/meta-llama/Llama-2-7b-chat-hf"
-interpreter.llm.model = "deepinfra/meta-llama/Llama-2-13b-chat-hf"
-interpreter.llm.model = "deepinfra/codellama/CodeLlama-34b-Instruct-hf"
-interpreter.llm.model = "deepinfra/mistral-7b-instruct-v0.1"
-interpreter.llm.model = "deepinfra/jondurbin/airoboros-l2-70b-gpt4-1.4.1"
+probe.llm.model = "deepinfra/meta-llama/Llama-2-70b-chat-hf"
+probe.llm.model = "deepinfra/meta-llama/Llama-2-7b-chat-hf"
+probe.llm.model = "deepinfra/meta-llama/Llama-2-13b-chat-hf"
+probe.llm.model = "deepinfra/codellama/CodeLlama-34b-Instruct-hf"
+probe.llm.model = "deepinfra/mistral-7b-instruct-v0.1"
+probe.llm.model = "deepinfra/jondurbin/airoboros-l2-70b-gpt4-1.4.1"
 ```
 
 </CodeGroup>

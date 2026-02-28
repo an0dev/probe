@@ -1,11 +1,30 @@
-GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3, 19 November 2007
+Probe License 1.0
+================
 
-Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
-Everyone is permitted to copy and distribute verbatim copies
-of this license document, but changing it is not allowed.
+Copyright (c) 2026 Probe Contributors
 
-        Preamble
+This license grants you permission to use, copy, modify and distribute
+Probe. The following conditions must be met:
+
+1. **Non-commercial restriction:** You may **not sell** Probe or any
+   derivative works. Redistribution is allowed only at no charge.
+2. **Source integrity:** You must retain all copyright notices and
+   this license text in any copies or substantial portions of the
+   software. You may not tamper with, obfuscate, remove, or hide the
+   source code or these notices.
+3. **Derivatives:** If you modify the software, the modified work must
+   also comply with these terms and carry prominent notices stating
+   that you changed the files and the date of any change.
+4. **Warranty disclaimer:** Probe is provided "AS IS", without any
+   warranty of any kind. In no event shall the authors or copyright
+   holders be liable for any claim, damages or other liability,
+   whether in an action of contract, tort or otherwise, arising from,
+   out of or in connection with the software or the use or other
+   dealings in the software.
+
+By using or distributing this software, you agree to these terms.
+
+End of Probe License
 
 The GNU Affero General Public License is a free, copyleft license for
 software and other kinds of works, specifically designed to ensure
@@ -117,7 +136,7 @@ implementation is available to the public in source code form. A
 "Major Component", in this context, means a major essential component
 (kernel, window system, and so on) of the specific operating system
 (if any) on which the executable work runs, or a compiler used to
-produce the work, or an object code interpreter used to run it.
+produce the work, or an object code probe used to run it.
 
 The "Corresponding Source" for a work in object code form means all
 the source code needed to generate, install, and (for an executable

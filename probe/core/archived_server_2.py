@@ -1,4 +1,4 @@
-# This is a websocket interpreter, TTS and STT disabled.
+# This is a websocket probe, TTS and STT disabled.
 # It makes a websocket on a port that sends/receives LMC messages in *streaming* format.
 
 ### You MUST send a start and end flag with each message! For example: ###
@@ -33,17 +33,17 @@ class Settings(BaseModel):
 
 
 class AsyncProbe:
-    def __init__(self, interpreter):
-        self.probe = interpreter
+    def __init__(self, probe):
+        self.probe = probe
 
         # STT
         # self.stt = AudioToTextRecorder(use_microphone=False)
         # self.stt.stop() # It needs this for some reason
 
         # TTS
-        # if self.interpreter.tts == "coqui":
+        # if self.probe.tts == "coqui":
         #     engine = CoquiEngine()
-        # elif self.interpreter.tts == "openai":
+        # elif self.probe.tts == "openai":
         #     engine = OpenAIEngine()
         # self.tts = TextToAudioStream(engine)
 
@@ -61,7 +61,7 @@ class AsyncProbe:
         self._output_queue = asyncio.Queue()  # Queue to put output chunks into
         self._last_lmc_start_flag = None  # Unix time of last LMC start flag received
         self._in_keyboard_write_block = (
-            False  # Tracks whether interpreter is trying to use the keyboard
+            False  # Tracks whether probe is trying to use the keyboard
         )
 
         # self.loop = asyncio.get_event_loop()
@@ -96,8 +96,8 @@ class AsyncProbe:
             if "start" in chunk:
                 # self.stt.start()
                 self._last_lmc_start_flag = time.time()
-                self.interpreter.computer.terminate()
-                # Stop any code execution... maybe we should make interpreter.stop()?
+                self.probe.computer.terminate()
+                # Stop any code execution... maybe we should make probe.stop()?
             elif "end" in chunk:
                 asyncio.create_task(self.run())
             else:
@@ -124,10 +124,10 @@ class AsyncProbe:
 
         def generate(message):
             last_lmc_start_flag = self._last_lmc_start_flag
-            # interpreter.messages = self.active_chat_messages
-            # print("🍀🍀🍀🍀GENERATING, using these messages: ", self.interpreter.messages)
+            # probe.messages = self.active_chat_messages
+            # print("🍀🍀🍀🍀GENERATING, using these messages: ", self.probe.messages)
             print("passing this in:", message)
-            for chunk in self.interpreter.chat(message, display=False, stream=True):
+            for chunk in self.probe.chat(message, display=False, stream=True):
                 if self._last_lmc_start_flag != last_lmc_start_flag:
                     # self.beeper.stop()
                     break
@@ -158,7 +158,7 @@ class AsyncProbe:
 
                     # Experimental: If the AI wants to type, we should type immediately
                     # if (
-                    #     self.interpreter.messages[-1]
+                    #     self.probe.messages[-1]
                     #     .get("content", "")
                     #     .startswith("computer.keyboard.write(")
                     # ):
@@ -167,12 +167,12 @@ class AsyncProbe:
                     # if "end" in chunk and self._in_keyboard_write_block:
                     #     self._in_keyboard_write_block = False
                     #     # (This will make it so it doesn't type twice when the block executes)
-                    #     if self.interpreter.messages[-1]["content"].startswith(
+                    #     if self.probe.messages[-1]["content"].startswith(
                     #         "computer.keyboard.write("
                     #     ):
-                    #         self.interpreter.messages[-1]["content"] = (
+                    #         self.probe.messages[-1]["content"] = (
                     #             "dummy_variable = ("
-                    #             + self.interpreter.messages[-1]["content"][
+                    #             + self.probe.messages[-1]["content"][
                     #                 len("computer.keyboard.write(") :
                     #             ]
                     #         )
@@ -192,8 +192,8 @@ class AsyncProbe:
         return await self._output_queue.get()
 
 
-def server(interpreter, port=8000):  # Default port is 8000 if not specified
-    async_interpreter = AsyncProbe(interpreter)
+def server(probe, port=8000):  # Default port is 8000 if not specified
+    async_probe = AsyncProbe(probe)
 
     app = FastAPI()
     app.add_middleware(
@@ -207,13 +207,13 @@ def server(interpreter, port=8000):  # Default port is 8000 if not specified
     @app.post("/settings")
     async def settings(payload: Dict[str, Any]):
         for key, value in payload.items():
-            print("Updating interpreter settings with the following:")
+            print("Updating probe settings with the following:")
             print(key, value)
             if key == "llm" and isinstance(value, dict):
                 for sub_key, sub_value in value.items():
-                    setattr(async_interpreter.interpreter, sub_key, sub_value)
+                    setattr(async_probe.probe, sub_key, sub_value)
             else:
-                setattr(async_interpreter.interpreter, key, value)
+                setattr(async_probe.probe, key, value)
 
         return {"status": "success"}
 
@@ -227,16 +227,16 @@ def server(interpreter, port=8000):  # Default port is 8000 if not specified
                     data = await websocket.receive()
                     print(data)
                     if isinstance(data, bytes):
-                        await async_interpreter.input(data)
+                        await async_probe.input(data)
                     elif "text" in data:
-                        await async_interpreter.input(data["text"])
+                        await async_probe.input(data["text"])
                     elif data == {"type": "websocket.disconnect", "code": 1000}:
                         print("Websocket disconnected with code 1000.")
                         break
 
             async def send_output():
                 while True:
-                    output = await async_interpreter.output()
+                    output = await async_probe.output()
                     if isinstance(output, bytes):
                         # await websocket.send_bytes(output)
                         # we don't send out bytes rn, no TTS
@@ -252,5 +252,5 @@ def server(interpreter, port=8000):  # Default port is 8000 if not specified
             await websocket.close()
 
     config = Config(app, host="0.0.0.0", port=port)
-    interpreter.uvicorn_server = Server(config)
-    interpreter.uvicorn_server.run()
+    probe.uvicorn_server = Server(config)
+    probe.uvicorn_server.run()

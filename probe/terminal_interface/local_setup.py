@@ -12,8 +12,8 @@ import requests
 import wget
 
 
-def local_setup(interpreter, provider=None, model=None):
-    def download_model(models_dir, models, interpreter):
+def local_setup(probe, provider=None, model=None):
+    def download_model(models_dir, models, probe):
         # Get RAM and disk information
         total_ram = psutil.virtual_memory().total / (
             1024 * 1024 * 1024
@@ -23,24 +23,24 @@ def local_setup(interpreter, provider=None, model=None):
         )  # Convert bytes to GB
 
         # Display the users hardware specs
-        interpreter.display_message(
+        probe.display_message(
             f"Your machine has `{total_ram:.2f}GB` of RAM, and `{free_disk_space:.2f}GB` of free storage space."
         )
 
         if total_ram < 10:
-            interpreter.display_message(
+            probe.display_message(
                 f"\nYour computer realistically can only run smaller models less than 4GB, Phi-2 might be the best model for your computer.\n"
             )
         elif 10 <= total_ram < 30:
-            interpreter.display_message(
+            probe.display_message(
                 f"\nYour computer could handle a mid-sized model (4-10GB), Mistral-7B might be the best model for your computer.\n"
             )
         else:
-            interpreter.display_message(
+            probe.display_message(
                 f"\nYour computer should have enough RAM to run any model below.\n"
             )
 
-        interpreter.display_message(
+        probe.display_message(
             f"In general, the larger the model, the better the performance, but choose a model that best fits your computer's hardware. \nOnly models you have the storage space to download are shown:\n"
         )
 
@@ -170,8 +170,8 @@ def local_setup(interpreter, provider=None, model=None):
 
                 print(f"\nModel '{selected_model['name']}' downloaded successfully.\n")
 
-                interpreter.display_message(
-                    "To view or delete downloaded local models, run `interpreter --local_models`\n\n"
+                probe.display_message(
+                    "To view or delete downloaded local models, run `probe --local_models`\n\n"
                 )
 
                 return model_path
@@ -188,7 +188,7 @@ def local_setup(interpreter, provider=None, model=None):
             return None
 
     # START OF LOCAL MODEL PROVIDER LOGIC
-    interpreter.display_message(
+    probe.display_message(
         "\n**Probe** supports multiple local model providers.\n"
     )
 
@@ -216,7 +216,7 @@ def local_setup(interpreter, provider=None, model=None):
     selected_model = answers["model"]
 
     if selected_model == "LM Studio":
-        interpreter.display_message(
+        probe.display_message(
             """
     To use Probe with **LM Studio**, you will need to run **LM Studio** in the background.
 
@@ -230,9 +230,9 @@ def local_setup(interpreter, provider=None, model=None):
 
     """
         )
-        interpreter.llm.supports_functions = False
-        interpreter.llm.api_base = "http://localhost:1234/v1"
-        interpreter.llm.api_key = "dummy"
+        probe.llm.supports_functions = False
+        probe.llm.api_base = "http://localhost:1234/v1"
+        probe.llm.api_key = "dummy"
 
     elif selected_model == "Ollama":
         try:
@@ -288,10 +288,10 @@ def local_setup(interpreter, provider=None, model=None):
 
             if "↓ Download " in selected_name:
                 model = selected_name.split(" ")[-1]
-                interpreter.display_message(f"\nDownloading {model}...\n")
+                probe.display_message(f"\nDownloading {model}...\n")
                 subprocess.run(["ollama", "pull", model], check=True)
             elif "Browse Models ↗" in selected_name:
-                interpreter.display_message(
+                probe.display_message(
                     "Opening [ollama.com/library](ollama.com/library)."
                 )
                 import webbrowser
@@ -302,34 +302,34 @@ def local_setup(interpreter, provider=None, model=None):
                 model = selected_name.strip()
 
             # Set the model to the selected model
-            interpreter.llm.model = f"ollama/{model}"
+            probe.llm.model = f"ollama/{model}"
 
             # Send a ping, which will actually load the model
 
-            old_max_tokens = interpreter.llm.max_tokens
-            old_context_window = interpreter.llm.context_window
-            interpreter.llm.max_tokens = 1
-            interpreter.llm.context_window = 100
+            old_max_tokens = probe.llm.max_tokens
+            old_context_window = probe.llm.context_window
+            probe.llm.max_tokens = 1
+            probe.llm.context_window = 100
 
-            interpreter.computer.ai.chat("ping")
+            probe.computer.ai.chat("ping")
 
-            interpreter.llm.max_tokens = old_max_tokens
-            interpreter.llm.context_window = old_context_window
+            probe.llm.max_tokens = old_max_tokens
+            probe.llm.context_window = old_context_window
 
-            interpreter.display_message(f"> Model set to `{model}`")
+            probe.display_message(f"> Model set to `{model}`")
 
         # If Ollama is not installed or not recognized as a command, prompt the user to download Ollama and try again
         except (subprocess.CalledProcessError, FileNotFoundError) as e:
             print("Ollama is not installed or not recognized as a command.")
             time.sleep(1)
-            interpreter.display_message(
+            probe.display_message(
                 f"\nPlease visit [https://ollama.com/](https://ollama.com/) to download Ollama and try again.\n"
             )
             time.sleep(2)
             sys.exit(1)
 
     elif selected_model == "Jan":
-        interpreter.display_message(
+        probe.display_message(
             """
     To use Probe with **Jan**, you will need to run **Jan** in the background.
 
@@ -343,11 +343,11 @@ def local_setup(interpreter, provider=None, model=None):
 
     """
         )
-        interpreter.llm.api_base = "http://localhost:1337/v1"
+        probe.llm.api_base = "http://localhost:1337/v1"
         # time.sleep(1)
 
         # Send a GET request to the Jan API to get the list of models
-        response = requests.get(f"{interpreter.llm.api_base}/models")
+        response = requests.get(f"{probe.llm.api_base}/models")
         models = response.json()["data"]
 
         # Extract the model ids from the response
@@ -371,9 +371,9 @@ def local_setup(interpreter, provider=None, model=None):
         if jan_model_name == ">> Type Custom Model ID":
             jan_model_name = input("Enter the custom model ID: ")
 
-        interpreter.llm.model = jan_model_name
-        interpreter.llm.api_key = "dummy"
-        interpreter.display_message(f"\nUsing Jan model: `{jan_model_name}` \n")
+        probe.llm.model = jan_model_name
+        probe.llm.api_key = "dummy"
+        probe.display_message(f"\nUsing Jan model: `{jan_model_name}` \n")
         # time.sleep(1)
 
     elif selected_model == "Llamafile":
@@ -382,7 +382,7 @@ def local_setup(interpreter, provider=None, model=None):
                 ["xcode-select", "-p"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
             )
             if result.returncode != 0:
-                interpreter.display_message(
+                probe.display_message(
                     "To use Llamafile, Probe requires Mac users to have Xcode installed. You can install Xcode from https://developer.apple.com/xcode/ .\n\nAlternatively, you can use `LM Studio`, `Jan.ai`, or `Ollama` to manage local language models. Learn more at https://github.com/an0dev/probe/guides/running-locally ."
                 )
                 time.sleep(3)
@@ -391,7 +391,7 @@ def local_setup(interpreter, provider=None, model=None):
                 )
 
         # Define the path to the models directory
-        models_dir = os.path.join(interpreter.get_oi_dir(), "models")
+        models_dir = os.path.join(probe.get_oi_dir(), "models")
 
         # Check and create the models directory if it doesn't exist
         if not os.path.exists(models_dir):
@@ -404,7 +404,7 @@ def local_setup(interpreter, provider=None, model=None):
             print(
                 "\nNo models currently downloaded. Please select a new model to download.\n"
             )
-            model_path = download_model(models_dir, models, interpreter)
+            model_path = download_model(models_dir, models, probe)
         else:
             # Prompt the user to select a downloaded model or download a new one
             model_choices = models + ["↓ Download new model"]
@@ -421,7 +421,7 @@ def local_setup(interpreter, provider=None, model=None):
                 exit()
 
             if answers["model"] == "↓ Download new model":
-                model_path = download_model(models_dir, models, interpreter)
+                model_path = download_model(models_dir, models, probe)
             else:
                 model_path = os.path.join(models_dir, answers["model"])
 
@@ -444,33 +444,33 @@ def local_setup(interpreter, provider=None, model=None):
                     print(e)
                     print("Model process terminated.")
 
-        # Set flags for Llamafile to work with interpreter
-        interpreter.llm.model = "openai/local"
-        interpreter.llm.api_key = "dummy"
-        interpreter.llm.temperature = 0
-        interpreter.llm.api_base = "http://localhost:8080/v1"
-        interpreter.llm.supports_functions = False
+        # Set flags for Llamafile to work with probe
+        probe.llm.model = "openai/local"
+        probe.llm.api_key = "dummy"
+        probe.llm.temperature = 0
+        probe.llm.api_base = "http://localhost:8080/v1"
+        probe.llm.supports_functions = False
 
         model_name = model_path.split("/")[-1]
-        interpreter.display_message(f"> Model set to `{model_name}`")
+        probe.display_message(f"> Model set to `{model_name}`")
 
     user_ram = psutil.virtual_memory().total / (
         1024 * 1024 * 1024
     )  # Convert bytes to GB
     # Set context window and max tokens for all local models based on the users available RAM
     if user_ram and user_ram > 9:
-        interpreter.llm.max_tokens = 1200
-        interpreter.llm.context_window = 8000
+        probe.llm.max_tokens = 1200
+        probe.llm.context_window = 8000
     else:
-        interpreter.llm.max_tokens = 1000
-        interpreter.llm.context_window = 3000
+        probe.llm.max_tokens = 1000
+        probe.llm.context_window = 3000
 
     # Display intro message
-    if interpreter.auto_run == False:
-        interpreter.display_message(
+    if probe.auto_run == False:
+        probe.display_message(
             "**Probe** will require approval before running code."
-            + "\n\nUse `interpreter -y` to bypass this."
+            + "\n\nUse `probe -y` to bypass this."
             + "\n\nPress `CTRL-C` to exit.\n"
         )
 
-    return interpreter
+    return probe

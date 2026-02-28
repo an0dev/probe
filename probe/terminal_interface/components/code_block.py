@@ -12,12 +12,12 @@ class CodeBlock(BaseBlock):
     Code Blocks display code and outputs in different languages. You can also set the active_line!
     """
 
-    def __init__(self, interpreter=None):
+    def __init__(self, probe=None):
         super().__init__()
 
         self.type = "code"
         self.highlight_active_line = (
-            interpreter.highlight_active_line if interpreter else None
+            probe.highlight_active_line if probe else None
         )
 
         # Define these for IDE auto-completion

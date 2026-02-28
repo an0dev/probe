@@ -3,7 +3,7 @@
 ## Documentation
 - [ ] Work with Mintlify to translate docs. How does Mintlify let us translate our documentation automatically? I know there's a way.
 - [ ] Better comments throughout the package (they're like docs for contributors)
-- [ ] Show how to replace interpreter.llm so you can use a custom llm
+- [ ] Show how to replace probe.llm so you can use a custom llm
 
 ## New features
 - [ ] Figure out how to get OI to answer to user input requests like python's `input()`. Do we somehow detect a delay in the output..? Is there some universal flag that TUIs emit when they expect user input? Should we do this semantically with embeddings, then ask OI to review it and respond..?
@@ -12,19 +12,19 @@
 - [x] Let people turn off the active line highlighting
 - [ ] Add a --plain flag which doesn't use rich, just prints stuff in plain text
 - [ ] Use iPython stuff to track the active line, instead of inserting print statements, which makes debugging weird (From ChatGPT: For deeper insights into what's happening behind the scenes, including which line of code is being executed, you can increase the logging level of the IPython kernel. You can configure the kernel's logger to a more verbose setting, which logs each execution request. However, this requires modifying the kernel's startup settings, which might involve changing logging configurations in the IPython kernel source or when launching the kernel.)
-- [ ] Let people edit the code OI writes. Could just open it in the user's preferred editor. Simple. [Full description of how to implement this here.](https://github.com/OpenInterpreter/probe/pull/830#issuecomment-1854989795)
+- [ ] Let people edit the code OI writes. Could just open it in the user's preferred editor. Simple. [Full description of how to implement this here.](https://github.com/Probe/probe/pull/830#issuecomment-1854989795)
 - [ ] Display images in the terminal interface
 - [ ] There should be a function that just renders messages to the terminal, so we can revive conversation navigator, and let people look at their conversations
 - [ ] ^ This function should also render the last like 5 messages once input() is about to be run, so we don't get those weird stuttering `rich` artifacts
-- [ ] Let OI use OI, add `interpreter.chat(async=True)` bool. OI can use this to open OI on a new thread
-  - [ ] Also add `interpreter.await()` which waits for `interpreter.running` (?) to = False, and `interpreter.result()` which returns the last assistant messages content.
-- [ ] Allow for limited functions (`interpreter.functions`) using regex
-  - [ ] If `interpreter.functions != []`:
-    - [ ] set `interpreter.computer.languages` to only use Python
+- [ ] Let OI use OI, add `probe.chat(async=True)` bool. OI can use this to open OI on a new thread
+  - [ ] Also add `probe.await()` which waits for `probe.running` (?) to = False, and `probe.result()` which returns the last assistant messages content.
+- [ ] Allow for limited functions (`probe.functions`) using regex
+  - [ ] If `probe.functions != []`:
+    - [ ] set `probe.computer.languages` to only use Python
     - [ ] Use regex to ensure the output of code blocks conforms to just using those functions + other python basics
-- [ ] (Maybe) Allow for a custom embedding function (`interpreter.embed` or `computer.ai.embed`) which will let us do semantic search
+- [ ] (Maybe) Allow for a custom embedding function (`probe.embed` or `computer.ai.embed`) which will let us do semantic search
 - [ ] (Maybe) if a git is detected, switch to a mode that's good for developers, like showing nested file structure in dynamic system message, searching for relevant functions (use computer.files.search)
-- [x] Allow for integrations somehow (you can replace interpreter.llm.completions with a wrapped completions endpoint for any kind of logging. need to document this tho)
+- [x] Allow for integrations somehow (you can replace probe.llm.completions with a wrapped completions endpoint for any kind of logging. need to document this tho)
   - [ ] Document this^
 - [ ] Expand "safe mode" to have proper, simple Docker support, or maybe Cosmopolitan LibC
 - [ ] Make it so core can be run elsewhere from terminal package — perhaps split over HTTP (this would make docker easier too)
@@ -41,7 +41,7 @@
   - [ ] (For the NCU) might be good to use a Google VM with a display
   - [ ] (Future future) Use GPT-4 to assess each result, explaining each failure. Summarize. Send it all to GPT-4 + our prompt. Let it redesign the prompt, given the failures, rinse and repeat
 - [ ] Stateless (as in, doesn't use the application directory) core python package. All `appdir` or `platformdirs` stuff should be only for the TUI
-  - [ ] `interpreter.__dict__` = a dict derived from config is how the python package should be set, and this should be from the TUI. `interpreter` should not know about the config
+  - [ ] `probe.__dict__` = a dict derived from config is how the python package should be set, and this should be from the TUI. `probe` should not know about the config
   - [ ] Move conversation storage out of the core and into the TUI. When we exit or error, save messages same as core currently does
 - [ ] Further split TUI from core (some utils still reach across)
 - [ ] Better storage of different model keys in TUI / config file. All keys, to multiple providers, should be stored in there. Easy switching

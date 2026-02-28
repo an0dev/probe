@@ -1,4 +1,4 @@
 # This is all you need to get started
-from probe import interpreter
+from probe import probe
 
-interpreter.chat()
+probe.chat()

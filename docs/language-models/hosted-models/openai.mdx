@@ -7,13 +7,13 @@ To use Probe with a model from OpenAI, simply run:
 <CodeGroup>
 
 ```bash Terminal
-interpreter
+probe
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.chat()
+probe.chat()
 ```
 
 </CodeGroup>
@@ -25,14 +25,14 @@ To run a specific model from OpenAI, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model gpt-3.5-turbo
+probe --model gpt-3.5-turbo
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "gpt-3.5-turbo"
-interpreter.chat()
+probe.llm.model = "gpt-3.5-turbo"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -44,11 +44,11 @@ We support any model on [OpenAI's models page:](https://platform.openai.com/docs
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model gpt-4o
+probe --model gpt-4o
 ```
 
 ```python Python
-interpreter.llm.model = "gpt-4o"
+probe.llm.model = "gpt-4o"
 ```
 
 </CodeGroup>

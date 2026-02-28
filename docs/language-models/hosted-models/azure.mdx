@@ -7,14 +7,14 @@ To use a model from Azure, set the `model` flag to begin with `azure/`:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model azure/<your_deployment_id>
+probe --model azure/<your_deployment_id>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "azure/<your_deployment_id>"
-interpreter.chat()
+probe.llm.model = "azure/<your_deployment_id>"
+probe.chat()
 ```
 
 </CodeGroup>

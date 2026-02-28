@@ -103,7 +103,7 @@ def run_tool_calling_llm(llm, request_params):
 
     # Add languages OI has access to
     tool_schema["function"]["parameters"]["properties"]["language"]["enum"] = [
-        i.name.lower() for i in llm.interpreter.computer.terminal.languages
+        i.name.lower() for i in llm.probe.computer.terminal.languages
     ]
     request_params["tools"] = [tool_schema]
 
@@ -302,10 +302,10 @@ def run_tool_calling_llm(llm, request_params):
                                 "content": code_delta,
                             }
                 else:
-                    if llm.interpreter.verbose:
+                    if llm.probe.verbose:
                         print("Arguments not a dict.")
 
-    if os.getenv("INTERPRETER_REQUIRE_AUTHENTICATION", "False").lower() == "true":
+    if os.getenv("PROBE_REQUIRE_AUTHENTICATION", "False").lower() == "true":
         print("function_call_detected", function_call_detected)
         print("accumulated_review", accumulated_review)
         if function_call_detected and not accumulated_review:

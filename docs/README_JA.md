@@ -11,17 +11,17 @@
     <br>
     <br>
     <b>自然言語で指示するだけでコードを書いて実行までしてくれる。</b><br>
-    ローカルに実装したOpenAI Code Interpreterのオープンソース版。<br>
-    <br><a href="https://openinterpreter.com">デスクトップアプリへの早期アクセス</a>‎ ‎ |‎ ‎ <a href="https://docs.openinterpreter.com/">ドキュメント</a><br>
+    ローカルに実装したOpenAI Code Probeのオープンソース版。<br>
+    <br><a href="https://probe.com">デスクトップアプリへの早期アクセス</a>‎ ‎ |‎ ‎ <a href="https://docs.probe.com/">ドキュメント</a><br>
 </p>
 
 <br>
 
-![poster](https://github.com/OpenInterpreter/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
+![poster](https://github.com/Probe/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
 
 <br>
 
-**Update:** ● 0.1.12 アップデートで `interpreter --vision` 機能が導入されました。([ドキュメント](https://docs.openinterpreter.com/usage/terminal/vision))
+**Update:** ● 0.1.12 アップデートで `probe --vision` 機能が導入されました。([ドキュメント](https://docs.probe.com/usage/terminal/vision))
 
 <br>
 
@@ -30,12 +30,12 @@ pip install probe
 ```
 
 ```shell
-interpreter
+probe
 ```
 
 <br>
 
-**Probe**は、言語モデルに指示し、コード（Python、Javascript、Shell など）をローカル環境で実行できるようにします。インストール後、`$ interpreter` を実行するとターミナル経由で ChatGPT のようなインターフェースを介し、Probe とチャットができます。
+**Probe**は、言語モデルに指示し、コード（Python、Javascript、Shell など）をローカル環境で実行できるようにします。インストール後、`$ probe` を実行するとターミナル経由で ChatGPT のようなインターフェースを介し、Probe とチャットができます。
 
 これにより、自然言語のインターフェースを通して、パソコンの一般的な機能が操作できます。
 
@@ -50,7 +50,7 @@ interpreter
 
 ## デモ
 
-https://github.com/OpenInterpreter/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
+https://github.com/Probe/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
 
 #### Google Colab でも対話形式のデモを利用できます:
 
@@ -68,29 +68,29 @@ pip install probe
 
 ### ターミナル
 
-インストール後、`interpreter` を実行するだけです:
+インストール後、`probe` を実行するだけです:
 
 ```shell
-interpreter
+probe
 ```
 
 ### Python
 
 ```python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.chat("AAPLとMETAの株価グラフを描いてください") # コマンドを実行
-interpreter.chat() # 対話形式のチャットを開始
+probe.chat("AAPLとMETAの株価グラフを描いてください") # コマンドを実行
+probe.chat() # 対話形式のチャットを開始
 ```
 
-## ChatGPT の Code Interpreter との違い
+## ChatGPT の Code Probe との違い
 
-GPT-4 で実装された OpenAI の [Code Interpreter](https://openai.com/blog/chatgpt-plugins#code-interpreter) は、実世界のタスクを ChatGPT で操作できる素晴らしい機会を提供しています。
+GPT-4 で実装された OpenAI の [Code Probe](https://openai.com/blog/chatgpt-plugins#code-probe) は、実世界のタスクを ChatGPT で操作できる素晴らしい機会を提供しています。
 
 しかし、OpenAI のサービスはホスティングされていてるクローズドな環境で、かなり制限がされています:
 
 - インターネットに接続できない。
-- [プリインストールされているパッケージが限られている](https://wfhbrian.com/mastering-chatgpts-code-interpreter-list-of-python-packages/)。
+- [プリインストールされているパッケージが限られている](https://wfhbrian.com/mastering-chatgpts-code-probe-list-of-python-packages/)。
 - 最大アップロードは 100MB で、120 秒という実行時間の制限も。
 - 生成されたファイルやリンクとともに状態がリセットされる。
 
@@ -98,7 +98,7 @@ GPT-4 で実装された OpenAI の [Code Interpreter](https://openai.com/blog/c
 
 Probe は、ローカル環境で操作することで、これらの制限を克服しています。インターネットにフルアクセスでき、時間やファイルサイズの制限を受けず、どんなパッケージやライブラリも利用できます。
 
-Open Interpter は、GPT-4 Code Interpreter のパワーとローカル開発環境の柔軟性を組み合わせたものです。
+Open Interpter は、GPT-4 Code Probe のパワーとローカル開発環境の柔軟性を組み合わせたものです。
 
 ## コマンド
 
@@ -107,22 +107,22 @@ Open Interpter は、GPT-4 Code Interpreter のパワーとローカル開発環
 ```python
 message = "どのオペレーティングシステムを使用していますか？"
 
-for chunk in interpreter.chat(message, display=False, stream=True):
+for chunk in probe.chat(message, display=False, stream=True):
   print(chunk)
 ```
 
 ### 対話型チャット
 
-ターミナルで対話形式のチャットを開始するには、コマンドラインから `interpreter` を実行します。
+ターミナルで対話形式のチャットを開始するには、コマンドラインから `probe` を実行します。
 
 ```shell
-interpreter
+probe
 ```
 
-または、.py ファイルから `interpreter.chat()` も利用できます。
+または、.py ファイルから `probe.chat()` も利用できます。
 
 ```python
-interpreter.chat()
+probe.chat()
 ```
 
 **ストリーミングすることで chunk 毎に処理することも可能です:**
@@ -130,7 +130,7 @@ interpreter.chat()
 ```python
 message = "What operating system are we on?"
 
-for chunk in interpreter.chat(message, display=False, stream=True):
+for chunk in probe.chat(message, display=False, stream=True):
   print(chunk)
 ```
 
@@ -139,11 +139,11 @@ for chunk in interpreter.chat(message, display=False, stream=True):
 より精確な制御のために、メッセージを直接`.chat(message)`に渡すことができます。
 
 ```python
-interpreter.chat("/videos フォルダにあるすべての動画に字幕を追加する。")
+probe.chat("/videos フォルダにあるすべての動画に字幕を追加する。")
 
 # ... ターミナルに出力をストリームし、タスクを完了 ...
 
-interpreter.chat("ついでに、字幕を大きくできますか？")
+probe.chat("ついでに、字幕を大きくできますか？")
 
 # ...
 ```
@@ -153,18 +153,18 @@ interpreter.chat("ついでに、字幕を大きくできますか？")
 プログラム的チャットで Probe は、会話の履歴を記憶しています。新しくやり直したい場合は、リセットすることができます:
 
 ```python
-interpreter.messages = []
+probe.messages = []
 ```
 
 ### チャットの保存と復元
 
-`interpreter.chat()` はメッセージのリストを返し, `interpreter.messages = messages` のように使用することで会話を再開することが可能です:
+`probe.chat()` はメッセージのリストを返し, `probe.messages = messages` のように使用することで会話を再開することが可能です:
 
 ```python
-messages = interpreter.chat("私の名前は田中です。") # 'messages'にメッセージを保存
-interpreter.messages = [] # インタープリタをリセット（"田中"は忘れられる）
+messages = probe.chat("私の名前は田中です。") # 'messages'にメッセージを保存
+probe.messages = [] # インタープリタをリセット（"田中"は忘れられる）
 
-interpreter.messages = messages # 'messages'からチャットを再開（"田中"は記憶される）
+probe.messages = messages # 'messages'からチャットを再開（"田中"は記憶される）
 ```
 
 ### システムメッセージのカスタマイズ
@@ -172,10 +172,10 @@ interpreter.messages = messages # 'messages'からチャットを再開（"田�
 Probe のシステムメッセージを確認し、設定することで、機能を拡張したり、権限を変更したり、またはより多くのコンテキストを与えたりすることができます。
 
 ```python
-interpreter.system_message += """
+probe.system_message += """
 シェルコマンドを '-y' フラグ付きで実行し、ユーザーが確認する必要がないようにする。
 """
-print(interpreter.system_message)
+print(probe.system_message)
 ```
 
 ### モデルの変更
@@ -185,15 +185,15 @@ Probe は、ホストされた言語モデルへの接続に [LiteLLM](https://d
 model パラメータを設定することで、モデルを変更することが可能です:
 
 ```shell
-interpreter --model gpt-3.5-turbo
-interpreter --model claude-2
-interpreter --model command-nightly
+probe --model gpt-3.5-turbo
+probe --model claude-2
+probe --model command-nightly
 ```
 
 Python では、オブジェクト上でモデルを設定します:
 
 ```python
-interpreter.llm.model = "gpt-3.5-turbo"
+probe.llm.model = "gpt-3.5-turbo"
 ```
 
 [適切な "model" の値はこちらから検索してください。](https://docs.litellm.ai/docs/providers/)
@@ -202,16 +202,16 @@ interpreter.llm.model = "gpt-3.5-turbo"
 
 Probe は、OpenAI 互換サーバーを使用してモデルをローカルで実行できます。 (LM Studio、jan.ai、ollam など)
 
-推論サーバーの api_base URL を指定して「interpreter」を実行するだけです (LM Studio の場合、デフォルトでは「http://localhost:1234/v1」です)。
+推論サーバーの api_base URL を指定して「probe」を実行するだけです (LM Studio の場合、デフォルトでは「http://localhost:1234/v1」です)。
 
 ```shell
-interpreter --api_base "http://localhost:1234/v1" --api_key "fake_key"
+probe --api_base "http://localhost:1234/v1" --api_key "fake_key"
 ```
 
 あるいは、サードパーティのソフトウェアをインストールせずに、単に実行するだけで Llamafile を使用することもできます。
 
 ```shell
-interpreter --local
+probe --local
 ```
 
 より詳細なガイドについては、[Mike Bird によるこのビデオ](https://www.youtube.com/watch?v=CEs51hGWuGU?si=cN7f6QhfT4edfG5H) をご覧ください。
@@ -234,17 +234,17 @@ interpreter --local
 ローカルモードでは、小さいコンテキストウィンドウは RAM を少なく使用するので、失敗する場合や遅い場合は、より短いウィンドウ（〜1000）を試すことをお勧めします。`max_tokens` が `context_window` より小さいことを確認してください。
 
 ```shell
-interpreter --local --max_tokens 1000 --context_window 3000
+probe --local --max_tokens 1000 --context_window 3000
 ```
 
 ### デバッグモード
 
 コントリビューターが Probe を調査するのを助けるために、`--verbose` モードは非常に便利です。
 
-デバッグモードは、フラグ（`interpreter --verbose`）を使用するか、またはチャットの中から有効にできます:
+デバッグモードは、フラグ（`probe --verbose`）を使用するか、またはチャットの中から有効にできます:
 
 ```shell
-$ interpreter
+$ probe
 ...
 > %verbose true # <- デバッグモードを有効にする
 
@@ -274,7 +274,7 @@ Probe では、`config.yaml` ファイルを使用してデフォルトの動作
 以下のコマンドを実行して設定ファイルを開きます:
 
 ```
-interpreter --config
+probe --config
 ```
 
 #### 設定ファイルの複数利用
@@ -286,13 +286,13 @@ Probe は複数の `config.yaml` ファイルをサポートしており、`--co
 新しい設定を作成または編集するには、次のコマンドを実行します:
 
 ```
-interpreter --config --config_file $config_path
+probe --config --config_file $config_path
 ```
 
 特定の設定ファイルをロードして Probe を実行するには、次のコマンドを実行します:
 
 ```
-interpreter --config_file $config_path
+probe --config_file $config_path
 ```
 
 **注意**: `$config_path` をあなたの設定ファイルの名前またはパスに置き換えてください。
@@ -301,12 +301,12 @@ interpreter --config_file $config_path
 
 1. 新しい `config.turbo.yaml` ファイルを作成します
    ```
-   interpreter --config --config_file config.turbo.yaml
+   probe --config --config_file config.turbo.yaml
    ```
 2. `config.turbo.yaml` ファイルを編集して、`model` を `gpt-3.5-turbo` に設定します
 3. `config.turbo.yaml` 設定で、Probe を実行します
    ```
-   interpreter --config_file config.turbo.yaml
+   probe --config_file config.turbo.yaml
    ```
 
 ##### Python での使用例
@@ -315,16 +315,16 @@ Python のスクリプトから Probe を呼び出すときにも設定ファイ
 
 ```python
 import os
-from interpreter import interpreter
+from probe import probe
 
 currentPath = os.path.dirname(os.path.abspath(__file__))
 config_path=os.path.join(currentPath, './config.test.yaml')
 
-interpreter.extend_config(config_path=config_path)
+probe.extend_config(config_path=config_path)
 
 message = "What operating system are we on?"
 
-for chunk in interpreter.chat(message, display=False, stream=True):
+for chunk in probe.chat(message, display=False, stream=True):
   print(chunk)
 ```
 
@@ -337,21 +337,21 @@ for chunk in interpreter.chat(message, display=False, stream=True):
 
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
-from interpreter import interpreter
+from probe import probe
 
 app = FastAPI()
 
 @app.get("/chat")
 def chat_endpoint(message: str):
     def event_stream():
-        for result in interpreter.chat(message, stream=True):
+        for result in probe.chat(message, stream=True):
             yield f"data: {result}\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
 @app.get("/history")
 def history_endpoint():
-    return interpreter.messages
+    return probe.messages
 ```
 
 ```shell
@@ -365,7 +365,7 @@ uvicorn server:app --reload
 
 **⚠️ Probe はコードを実行する前にユーザーの確認を求めます。**
 
-この確認を回避するには、`interpreter -y` を実行するか、`interpreter.auto_run = True` を設定します。その場合:
+この確認を回避するには、`probe -y` を実行するか、`probe.auto_run = True` を設定します。その場合:
 
 - ファイルやシステム設定を変更するコマンドを要求するときは注意してください。
 - Probe を自動運転車のように監視し、ターミナルを閉じてプロセスを終了できるように準備しておいてください。
@@ -387,12 +387,12 @@ Probe は、[関数が呼び出せる言語モデル](https://platform.openai.co
 
 # ロードマップ
 
-Probe の未来を一足先に見るために、[私たちのロードマップ](https://github.com/OpenInterpreter/probe/blob/main/docs/ROADMAP.md)をご覧ください。
+Probe の未来を一足先に見るために、[私たちのロードマップ](https://github.com/Probe/probe/blob/main/docs/ROADMAP.md)をご覧ください。
 
 **注意**: このソフトウェアは OpenAI とは関連していません。
 
 > あなたの指先のスピードで作業するジュニアプログラマーにアクセスすることで、… 新しいワークフローを楽で効率的なものにし、プログラミングの利点を新しいオーディエンスに開放することができます。
 >
-> — _OpenAI Code Interpreter リリース_
+> — _OpenAI Code Probe リリース_
 
 <br>

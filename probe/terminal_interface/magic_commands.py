@@ -56,7 +56,7 @@ def handle_help(self, arguments):
         "%load_message [path]": "Loads messages from a specified JSON path. If no path is provided, it defaults to 'messages.json'.",
         "%tokens [prompt]": "EXPERIMENTAL: Calculate the tokens used by the next request based on the current conversation's messages and estimate the cost of that request; optionally provide a prompt to also calculate the tokens used by that prompt and the total amount of tokens that will be sent with the next request",
         "%help": "Show this help message.",
-        "%info": "Show system and interpreter information",
+        "%info": "Show system and probe information",
         "%jupyter": "Export the conversation to a Jupyter notebook file",
         "%markdown [path]": "Export the conversation to a specified Markdown path. If no path is provided, it will be saved to the Downloads folder with a generated conversation name.",
     }
@@ -206,7 +206,7 @@ def handle_count_tokens(self, prompt):
         )
 
     outputs.append(
-        f"**Note**: This functionality is currently experimental and may not be accurate. Please report any issues you find to the [Probe GitHub repository](https://github.com/Probe/open-interpreter)."
+        f"**Note**: This functionality is currently experimental and may not be accurate. Please report any issues you find to the [Probe GitHub repository](https://github.com/Probe/open-probe)."
     )
 
     self.display_message("\n".join(outputs))
@@ -264,7 +264,7 @@ def jupyter(self, arguments):
     downloads = get_downloads_path()
     current_time = datetime.now()
     formatted_time = current_time.strftime("%m-%d-%y-%I%M%p")
-    filename = f"open-interpreter-{formatted_time}.ipynb"
+    filename = f"open-probe-{formatted_time}.ipynb"
     notebook_path = os.path.join(downloads, filename)
     nb = new_notebook()
     cells = []

@@ -1,4 +1,4 @@
-from probe import interpreter
+from probe import probe
 
 try:
     import pyautogui
@@ -8,23 +8,23 @@ except ImportError:
     )
 
 # Connect your 01 to a language model
-interpreter.llm.model = "gpt-4o"
-interpreter.llm.context_window = 100000
-interpreter.llm.max_tokens = 4096
+probe.llm.model = "gpt-4o"
+probe.llm.context_window = 100000
+probe.llm.max_tokens = 4096
 
 # Tell your 01 where to find and save skills
-interpreter.computer.skills.path = "./skills"
+probe.computer.skills.path = "./skills"
 
 # Extra settings
-interpreter.computer.import_computer_api = True
-interpreter.computer.import_skills = True
-interpreter.computer.run("python", "computer")  # This will trigger those imports
-interpreter.auto_run = True
-interpreter.print = True
-interpreter.loop = True
+probe.computer.import_computer_api = True
+probe.computer.import_skills = True
+probe.computer.run("python", "computer")  # This will trigger those imports
+probe.auto_run = True
+probe.print = True
+probe.loop = True
 
 # Set the identity and personality of your 01
-interpreter.system_message = """
+probe.system_message = """
 
 You are the 01, a screenless executive assistant that can complete any task.
 When you execute code, it will be executed on the user's machine. The user has given you full and complete permission to execute any code necessary to complete the task.
@@ -117,4 +117,4 @@ Try multiple methods before saying the task is impossible. **You can do it!**
 """.strip()
 
 # Final message
-interpreter.display_message("> Assistant mode enabled")
+probe.display_message("> Assistant mode enabled")

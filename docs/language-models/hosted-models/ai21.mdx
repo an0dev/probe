@@ -7,14 +7,14 @@ To use Probe with a model from AI21, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model j2-light
+probe --model j2-light
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "j2-light"
-interpreter.chat()
+probe.llm.model = "j2-light"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -26,15 +26,15 @@ We support any model from [AI21:](https://www.ai21.com/)
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model j2-light
-interpreter --model j2-mid
-interpreter --model j2-ultra
+probe --model j2-light
+probe --model j2-mid
+probe --model j2-ultra
 ```
 
 ```python Python
-interpreter.llm.model = "j2-light"
-interpreter.llm.model = "j2-mid"
-interpreter.llm.model = "j2-ultra"
+probe.llm.model = "j2-light"
+probe.llm.model = "j2-mid"
+probe.llm.model = "j2-ultra"
 ```
 
 </CodeGroup>

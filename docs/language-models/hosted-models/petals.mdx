@@ -7,14 +7,14 @@ To use Probe with a model from Petals, set the `model` flag to begin with `petal
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model petals/petals-team/StableBeluga2
+probe --model petals/petals-team/StableBeluga2
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "petals/petals-team/StableBeluga2"
-interpreter.chat()
+probe.llm.model = "petals/petals-team/StableBeluga2"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -34,13 +34,13 @@ We support any model on [Petals:](https://github.com/bigscience-workshop/petals)
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model petals/petals-team/StableBeluga2
-interpreter --model petals/huggyllama/llama-65b
+probe --model petals/petals-team/StableBeluga2
+probe --model petals/huggyllama/llama-65b
 ```
 
 ```python Python
-interpreter.llm.model = "petals/petals-team/StableBeluga2"
-interpreter.llm.model = "petals/huggyllama/llama-65b"
+probe.llm.model = "petals/petals-team/StableBeluga2"
+probe.llm.model = "petals/huggyllama/llama-65b"
 ```
 
 </CodeGroup>

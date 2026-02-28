@@ -11,7 +11,7 @@ import torch
 from PIL import Image, ImageDraw, ImageEnhance, ImageFont
 from sentence_transformers import SentenceTransformer, util
 
-from .....terminal_interface.utils.oi_dir import oi_dir
+from .....terminal_interface.utils.probe_dir import probe_dir as oi_dir
 from ...utils.computer_vision import pytesseract_get_text_bounding_boxes
 
 try:

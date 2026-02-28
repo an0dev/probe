@@ -7,14 +7,14 @@ To use Probe with a model from Cohere, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model command-nightly
+probe --model command-nightly
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "command-nightly"
-interpreter.chat()
+probe.llm.model = "command-nightly"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -26,21 +26,21 @@ We support any model on [Cohere's models page:](https://www.cohere.ai/models)
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model command
-interpreter --model command-light
-interpreter --model command-medium
-interpreter --model command-medium-beta
-interpreter --model command-xlarge-beta
-interpreter --model command-nightly
+probe --model command
+probe --model command-light
+probe --model command-medium
+probe --model command-medium-beta
+probe --model command-xlarge-beta
+probe --model command-nightly
 ```
 
 ```python Python
-interpreter.llm.model = "command"
-interpreter.llm.model = "command-light"
-interpreter.llm.model = "command-medium"
-interpreter.llm.model = "command-medium-beta"
-interpreter.llm.model = "command-xlarge-beta"
-interpreter.llm.model = "command-nightly"
+probe.llm.model = "command"
+probe.llm.model = "command-light"
+probe.llm.model = "command-medium"
+probe.llm.model = "command-medium-beta"
+probe.llm.model = "command-xlarge-beta"
+probe.llm.model = "command-nightly"
 ```
 
 </CodeGroup>

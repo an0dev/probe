@@ -20,8 +20,8 @@ from .vision.vision import Vision
 
 
 class Computer:
-    def __init__(self, interpreter):
-        self.probe = interpreter
+    def __init__(self, probe):
+        self.probe = probe
 
         self.terminal = Terminal(self)
 

@@ -35,9 +35,9 @@ if missing_packages:
     )
 
 
-from probe import interpreter
+from probe import probe
 
-interpreter.system_message = """You are an AI assistant that writes markdown code snippets to answer the user's request. You speak very concisely and quickly, you say nothing irrelevant to the user's request. For example:
+probe.system_message = """You are an AI assistant that writes markdown code snippets to answer the user's request. You speak very concisely and quickly, you say nothing irrelevant to the user's request. For example:
 
 User: Open the chrome app.
 Assistant: On it. 
@@ -92,35 +92,35 @@ Assistant: We are finished.
 Now, your turn:"""
 
 # Message templates
-interpreter.code_output_template = '''I executed that code. This was the output: """{content}"""\n\nWhat does this output mean (I can't understand it, please help) / what code needs to be run next (if anything, or are we done)? I can't replace any placeholders.'''
-interpreter.empty_code_output_template = "The code above was executed on my machine. It produced no text output. What's next (if anything, or are we done?)"
-interpreter.code_output_sender = "user"
+probe.code_output_template = '''I executed that code. This was the output: """{content}"""\n\nWhat does this output mean (I can't understand it, please help) / what code needs to be run next (if anything, or are we done)? I can't replace any placeholders.'''
+probe.empty_code_output_template = "The code above was executed on my machine. It produced no text output. What's next (if anything, or are we done?)"
+probe.code_output_sender = "user"
 
 # LLM settings
-interpreter.llm.model = "ollama/codestral"
-interpreter.llm.supports_functions = False
-interpreter.llm.execution_instructions = False
-interpreter.llm.max_tokens = 1000
-interpreter.llm.context_window = 7000
-interpreter.llm.load()  # Loads Ollama models
+probe.llm.model = "ollama/codestral"
+probe.llm.supports_functions = False
+probe.llm.execution_instructions = False
+probe.llm.max_tokens = 1000
+probe.llm.context_window = 7000
+probe.llm.load()  # Loads Ollama models
 
 # Computer settings
-interpreter.computer.import_computer_api = True
-interpreter.computer.system_message = ""  # The default will explain how to use the full Computer API, and append this to the system message. For local models, we want more control, so we set this to "". The system message will ONLY be what's above ^
+probe.computer.import_computer_api = True
+probe.computer.system_message = ""  # The default will explain how to use the full Computer API, and append this to the system message. For local models, we want more control, so we set this to "". The system message will ONLY be what's above ^
 
 # Misc settings
-interpreter.auto_run = True
-interpreter.offline = True
-interpreter.os = True
+probe.auto_run = True
+probe.offline = True
+probe.os = True
 
 # Vision setup
-interpreter.computer.vision.load()
+probe.computer.vision.load()
 
 # Final message
-interpreter.display_message(
+probe.display_message(
     "**Warning:** In this mode, Probe will not require approval before performing actions. Be ready to close your terminal."
 )
-interpreter.display_message(
-    "\n**Note:** Codestral is a relatively weak model, so OS mode is highly experimental. Try using a more powerful model for OS mode with `interpreter --os`."
+probe.display_message(
+    "\n**Note:** Codestral is a relatively weak model, so OS mode is highly experimental. Try using a more powerful model for OS mode with `probe --os`."
 )
-interpreter.display_message("> Experimental OS control enabled.")
+probe.display_message("> Experimental OS control enabled.")

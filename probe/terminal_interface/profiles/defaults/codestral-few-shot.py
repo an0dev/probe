@@ -6,13 +6,13 @@ print("Remember to `pip install probe[local]`.")
 
 import subprocess
 
-from probe import interpreter
+from probe import probe
 
-interpreter.llm.model = "ollama/codestral"
-interpreter.llm.max_tokens = 1000
-interpreter.llm.context_window = 7000
+probe.llm.model = "ollama/codestral"
+probe.llm.max_tokens = 1000
+probe.llm.context_window = 7000
 
-model_name = interpreter.llm.model.replace("ollama/", "")
+model_name = probe.llm.model.replace("ollama/", "")
 try:
     # List out all downloaded ollama models. Will fail if ollama isn't installed
     result = subprocess.run(
@@ -20,7 +20,7 @@ try:
     )
 except Exception as e:
     print(str(e))
-    interpreter.display_message(
+    probe.display_message(
         f"> Ollama not found\n\nPlease download Ollama from [ollama.com](https://ollama.com/) to use `codestral`.\n"
     )
     exit()
@@ -31,22 +31,22 @@ names = [
 ]  # Extract names, trim out ":latest", skip header
 
 if model_name not in names:
-    interpreter.display_message(f"\nDownloading {model_name}...\n")
+    probe.display_message(f"\nDownloading {model_name}...\n")
     subprocess.run(["ollama", "pull", model_name], check=True)
 
 # Send a ping, which will actually load the model
-interpreter.display_message("\n*Loading model...*\n")
+probe.display_message("\n*Loading model...*\n")
 
-old_max_tokens = interpreter.llm.max_tokens
-interpreter.llm.max_tokens = 1
-interpreter.computer.ai.chat("ping")
-interpreter.llm.max_tokens = old_max_tokens
+old_max_tokens = probe.llm.max_tokens
+probe.llm.max_tokens = 1
+probe.computer.ai.chat("ping")
+probe.llm.max_tokens = old_max_tokens
 
-interpreter.display_message("> Model set to `codestral`")
+probe.display_message("> Model set to `codestral`")
 
 
 # Set the system message to a minimal version for all local models.
-interpreter.system_message = """
+probe.system_message = """
 You are Probe, a world-class programmer that can execute code on the user's machine.
 First, list all of the information you know related to the user's request.
 Next, write a plan. **Always recap the plan between each code block** (you have extreme short-term memory loss, so you need to recap the plan between each message block to retain it).
@@ -62,9 +62,9 @@ Once you have accomplished the task, ask the user if they are happy with the res
 The user will tell you the next task after you ask them.
 """
 
-interpreter.system_message = """You are an AI assistant that writes markdown code snippets to answer the user's request. You speak very concisely and quickly, you say nothing irrelevant to the user's request. YOU NEVER USE PLACEHOLDERS, always code that should 'just work'."""
-interpreter.llm.supports_functions = False
-interpreter.messages = [
+probe.system_message = """You are an AI assistant that writes markdown code snippets to answer the user's request. You speak very concisely and quickly, you say nothing irrelevant to the user's request. YOU NEVER USE PLACEHOLDERS, always code that should 'just work'."""
+probe.llm.supports_functions = False
+probe.messages = [
     {"role": "user", "type": "message", "content": "Open the chrome app."},
     {
         "role": "assistant",
@@ -83,38 +83,38 @@ interpreter.messages = [
     },
 ]
 
-# interpreter.user_message_template = "{content} Please send me some code that would be able to answer my question, in the form of ```python\n... the code ...\n``` or ```shell\n... the code ...\n```"
-interpreter.code_output_template = '''I executed that code. This was the output: """\n{content}\n"""\n\nWhat does this output mean (I can't understand it, please help) / what code needs to be run next (if anything, or are we done)? I can't replace any placeholders, send me code that just works.'''
-interpreter.empty_code_output_template = "The code above was executed on my machine. It produced no text output. what's next (if anything, or are we done?)"
-interpreter.code_output_sender = "user"
-interpreter.max_output = 600
-interpreter.llm.context_window = 8000
-interpreter.loop = False
-interpreter.user_message_template = "{content}. If my question must be solved by running code on my computer, send me code to run enclosed in ```python (preferred) or ```shell (less preferred). Otherwise, don't send code. Be concise, don't include anything unnecessary. Don't use placeholders, I can't edit code."
-# interpreter.user_message_template = "{content}"
-interpreter.llm.execution_instructions = False
+# probe.user_message_template = "{content} Please send me some code that would be able to answer my question, in the form of ```python\n... the code ...\n``` or ```shell\n... the code ...\n```"
+probe.code_output_template = '''I executed that code. This was the output: """\n{content}\n"""\n\nWhat does this output mean (I can't understand it, please help) / what code needs to be run next (if anything, or are we done)? I can't replace any placeholders, send me code that just works.'''
+probe.empty_code_output_template = "The code above was executed on my machine. It produced no text output. what's next (if anything, or are we done?)"
+probe.code_output_sender = "user"
+probe.max_output = 600
+probe.llm.context_window = 8000
+probe.loop = False
+probe.user_message_template = "{content}. If my question must be solved by running code on my computer, send me code to run enclosed in ```python (preferred) or ```shell (less preferred). Otherwise, don't send code. Be concise, don't include anything unnecessary. Don't use placeholders, I can't edit code."
+# probe.user_message_template = "{content}"
+probe.llm.execution_instructions = False
 
 # Set offline for all local models
-interpreter.offline = True
+probe.offline = True
 
 
-# interpreter.user_message_template = "{content} Please send me some code that would be able to answer my question, in the form of ```python\n... the code ...\n``` or ```shell\n... the code ...\n```"
-interpreter.code_output_template = '''I executed that code. This was the output: """{content}"""\n\nWhat does this output mean (I can't understand it, please help) / what's next (if anything, or are we done)?'''
-interpreter.empty_code_output_template = "The code above was executed on my machine. It produced no text output. what's next (if anything, or are we done?)"
-interpreter.code_output_sender = "user"
-interpreter.max_output = 600
-interpreter.llm.context_window = 8000
-interpreter.loop = False
-interpreter.user_message_template = "{content}. If my question must be solved by running code on my computer, send me code to run enclosed in ```python (preferred) or ```shell (less preferred). Otherwise, don't send code. Be concise, don't include anything unnecessary. Don't use placeholders, I can't edit code."
-interpreter.llm.execution_instructions = False
+# probe.user_message_template = "{content} Please send me some code that would be able to answer my question, in the form of ```python\n... the code ...\n``` or ```shell\n... the code ...\n```"
+probe.code_output_template = '''I executed that code. This was the output: """{content}"""\n\nWhat does this output mean (I can't understand it, please help) / what's next (if anything, or are we done)?'''
+probe.empty_code_output_template = "The code above was executed on my machine. It produced no text output. what's next (if anything, or are we done?)"
+probe.code_output_sender = "user"
+probe.max_output = 600
+probe.llm.context_window = 8000
+probe.loop = False
+probe.user_message_template = "{content}. If my question must be solved by running code on my computer, send me code to run enclosed in ```python (preferred) or ```shell (less preferred). Otherwise, don't send code. Be concise, don't include anything unnecessary. Don't use placeholders, I can't edit code."
+probe.llm.execution_instructions = False
 
 # Set offline for all local models
-interpreter.offline = True
+probe.offline = True
 
 
-interpreter.system_message = """You are an AI assistant that returns code snippets that, if run, would answer the user's query. You speak very concisely and quickly, you say nothing irrelevant to the user's request. YOU NEVER USE PLACEHOLDERS, and instead always write code that 'just works' — for example, instead of a <username> placeholder, you put code that determines the user's username."""
+probe.system_message = """You are an AI assistant that returns code snippets that, if run, would answer the user's query. You speak very concisely and quickly, you say nothing irrelevant to the user's request. YOU NEVER USE PLACEHOLDERS, and instead always write code that 'just works' — for example, instead of a <username> placeholder, you put code that determines the user's username."""
 
-interpreter.messages = [
+probe.messages = [
     {
         "role": "user",
         "type": "message",
@@ -158,7 +158,7 @@ interpreter.messages = [
 ]
 
 
-interpreter.messages = [
+probe.messages = [
     {
         "role": "user",
         "type": "message",
@@ -212,27 +212,27 @@ and I also imported computer.vision.query(path='path/to/image', query='describe 
 ]
 
 
-interpreter.llm.supports_functions = False
+probe.llm.supports_functions = False
 
-interpreter.computer.import_computer_api = True
-interpreter.computer.system_message = ""
+probe.computer.import_computer_api = True
+probe.computer.system_message = ""
 
-# interpreter.user_message_template = "{content} Please send me some code that would be able to answer my question, in the form of ```python\n... the code ...\n``` or ```shell\n... the code ...\n```"
-interpreter.code_output_template = '''I executed that code. This was the output: """{content}"""\n\nWhat does this output mean (I can't understand it, please help) / what code needs to be run next (if anything, or are we done)? I can't replace any placeholders— please send me code to determine usernames, paths, etc given the request. I'm lazy!'''
-interpreter.empty_code_output_template = "The code above was executed on my machine. It produced no text output. what's next (if anything, or are we done?)"
-interpreter.code_output_sender = "user"
-interpreter.max_output = 600
-interpreter.llm.context_window = 8000
-interpreter.loop = False
-interpreter.user_message_template = "{content}. If my question must be solved by running code on my computer, send me code to run enclosed in ```python (preferred) or ```shell (less preferred). Otherwise, don't send code. Be concise, don't include anything unnecessary. Don't use placeholders, I can't edit code. Send code that will determine any placeholders (e.g. determine my username)."
-interpreter.user_message_template = "I'm trying to help someone use their computer. Here's the last thing they said: '{content}'. What is some code that might be able to answer that question / what should I say to them? DONT USE PLACEHOLDERS! It needs to just work. If it's like a simple greeting, just tell me what to say (without code)."
-# interpreter.user_message_template = "{content}"
-interpreter.always_apply_user_message_template = False
-interpreter.llm.execution_instructions = False
-interpreter.auto_run = True
+# probe.user_message_template = "{content} Please send me some code that would be able to answer my question, in the form of ```python\n... the code ...\n``` or ```shell\n... the code ...\n```"
+probe.code_output_template = '''I executed that code. This was the output: """{content}"""\n\nWhat does this output mean (I can't understand it, please help) / what code needs to be run next (if anything, or are we done)? I can't replace any placeholders— please send me code to determine usernames, paths, etc given the request. I'm lazy!'''
+probe.empty_code_output_template = "The code above was executed on my machine. It produced no text output. what's next (if anything, or are we done?)"
+probe.code_output_sender = "user"
+probe.max_output = 600
+probe.llm.context_window = 8000
+probe.loop = False
+probe.user_message_template = "{content}. If my question must be solved by running code on my computer, send me code to run enclosed in ```python (preferred) or ```shell (less preferred). Otherwise, don't send code. Be concise, don't include anything unnecessary. Don't use placeholders, I can't edit code. Send code that will determine any placeholders (e.g. determine my username)."
+probe.user_message_template = "I'm trying to help someone use their computer. Here's the last thing they said: '{content}'. What is some code that might be able to answer that question / what should I say to them? DONT USE PLACEHOLDERS! It needs to just work. If it's like a simple greeting, just tell me what to say (without code)."
+# probe.user_message_template = "{content}"
+probe.always_apply_user_message_template = False
+probe.llm.execution_instructions = False
+probe.auto_run = True
 
 # Set offline for all local models
-interpreter.offline = True
+probe.offline = True
 
 import os, platform
 
@@ -246,7 +246,7 @@ cwd = os.getcwd()
 
 # OS MODE
 
-interpreter.messages = [
+probe.messages = [
     {
         "role": "user",
         "type": "message",
@@ -322,10 +322,10 @@ interpreter.messages = [
     },
 ]
 
-interpreter.system_message = "You are an AI assistant designed to help users with remote IT support tasks. If the user asks you to use functions, be biased towards using them if possible."
+probe.system_message = "You are an AI assistant designed to help users with remote IT support tasks. If the user asks you to use functions, be biased towards using them if possible."
 
 
-interpreter.messages = [
+probe.messages = [
     {
         "role": "user",
         "type": "message",
@@ -370,12 +370,12 @@ interpreter.messages = [
     },
 ]
 
-interpreter.system_message = """You are an AI assistant that writes working markdown code snippets to answer the user's request. You speak concisely and quickly. You say nothing irrelevant to the user's request. YOU NEVER USE PLACEHOLDERS, and instead always send code that 'just works' by figuring out placeholders dynamically. When you send code that fails, you identify the issue, then send new code that doesn't fail."""
-interpreter.max_output = 600
-interpreter.llm.context_window = 8000
-interpreter.loop = False
-interpreter.user_message_template = "{content}. If my question must be solved by running code on my computer, send me code to run enclosed in ```python (preferred) or ```shell (less preferred). Otherwise, don't send code. Be concise, don't include anything unnecessary. Don't use placeholders, I can't edit code. Send code that will determine any placeholders (e.g. determine my username)."
-interpreter.user_message_template = "I'm trying to help someone use their computer. Here's the last thing they said: '{content}'. What is some code that might be able to answer that question / what should I say to them? DONT USE PLACEHOLDERS! It needs to just work. If it's like a simple greeting, just tell me what to say (without code)."
-interpreter.always_apply_user_message_template = False
-interpreter.llm.execution_instructions = False
-interpreter.auto_run = False
+probe.system_message = """You are an AI assistant that writes working markdown code snippets to answer the user's request. You speak concisely and quickly. You say nothing irrelevant to the user's request. YOU NEVER USE PLACEHOLDERS, and instead always send code that 'just works' by figuring out placeholders dynamically. When you send code that fails, you identify the issue, then send new code that doesn't fail."""
+probe.max_output = 600
+probe.llm.context_window = 8000
+probe.loop = False
+probe.user_message_template = "{content}. If my question must be solved by running code on my computer, send me code to run enclosed in ```python (preferred) or ```shell (less preferred). Otherwise, don't send code. Be concise, don't include anything unnecessary. Don't use placeholders, I can't edit code. Send code that will determine any placeholders (e.g. determine my username)."
+probe.user_message_template = "I'm trying to help someone use their computer. Here's the last thing they said: '{content}'. What is some code that might be able to answer that question / what should I say to them? DONT USE PLACEHOLDERS! It needs to just work. If it's like a simple greeting, just tell me what to say (without code)."
+probe.always_apply_user_message_template = False
+probe.llm.execution_instructions = False
+probe.auto_run = False

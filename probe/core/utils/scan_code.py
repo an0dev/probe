@@ -10,20 +10,20 @@ except ImportError:
     pass
 
 
-def scan_code(code, language, interpreter):
+def scan_code(code, language, probe):
     """
     Scan code with semgrep
     """
-    language_class = interpreter.computer.terminal.get_language(language)
+    language_class = probe.computer.terminal.get_language(language)
 
     temp_file = create_temporary_file(
-        code, language_class.file_extension, verbose=interpreter.verbose
+        code, language_class.file_extension, verbose=probe.verbose
     )
 
     temp_path = os.path.dirname(temp_file)
     file_name = os.path.basename(temp_file)
 
-    if interpreter.verbose:
+    if probe.verbose:
         print(f"Scanning {language} code in {file_name}")
         print("---")
 
@@ -43,7 +43,7 @@ def scan_code(code, language, interpreter):
         if scan.returncode == 0:
             language_name = language_class.name
             print(
-                f"  {'Code Scanner: ' if interpreter.safe_mode == 'auto' else ''}No issues were found in this {language_name} code."
+                f"  {'Code Scanner: ' if probe.safe_mode == 'auto' else ''}No issues were found in this {language_name} code."
             )
             print("")
 
@@ -55,4 +55,4 @@ def scan_code(code, language, interpreter):
         print(e)
         print("")  # <- Aesthetic choice
 
-    cleanup_temporary_file(temp_file, verbose=interpreter.verbose)
+    cleanup_temporary_file(temp_file, verbose=probe.verbose)

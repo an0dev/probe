@@ -7,14 +7,14 @@ To use Probe with PaLM, you must `pip install -q google-generativeai`, then set 
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model palm/chat-bison
+probe --model palm/chat-bison
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "palm/chat-bison"
-interpreter.chat()
+probe.llm.model = "palm/chat-bison"
+probe.chat()
 ```
 
 </CodeGroup>

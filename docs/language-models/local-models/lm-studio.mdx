@@ -4,16 +4,16 @@ title: LM Studio
 
 Probe can use OpenAI-compatible server to run models locally. (LM Studio, jan.ai, ollama etc)
 
-Simply run `interpreter` with the api_base URL of your inference server (for LM studio it is `http://localhost:1234/v1` by default):
+Simply run `probe` with the api_base URL of your inference server (for LM studio it is `http://localhost:1234/v1` by default):
 
 ```shell
-interpreter --api_base "http://localhost:1234/v1" --api_key "fake_key"
+probe --api_base "http://localhost:1234/v1" --api_key "fake_key"
 ```
 
 Alternatively you can use Llamafile without installing any third party software just by running
 
 ```shell
-interpreter --local
+probe --local
 ```
 
 for a more detailed guide check out [this video by Mike Bird](https://www.youtube.com/watch?v=CEs51hGWuGU?si=cN7f6QhfT4edfG5H)
@@ -27,7 +27,7 @@ for a more detailed guide check out [this video by Mike Bird](https://www.youtub
 
 Once the server is running, you can begin your conversation with Probe.
 
-(When you run the command `interpreter --local` and select LMStudio, these steps will be displayed.)
+(When you run the command `probe --local` and select LMStudio, these steps will be displayed.)
 
 <Info>
   Local mode sets your `context_window` to 3000, and your `max_tokens` to 1000.
@@ -39,19 +39,19 @@ Once the server is running, you can begin your conversation with Probe.
 
 Compared to the terminal interface, our Python package gives you more granular control over each setting.
 
-You can point `interpreter.llm.api_base` at any OpenAI compatible server (including one running locally).
+You can point `probe.llm.api_base` at any OpenAI compatible server (including one running locally).
 
 For example, to connect to [LM Studio](https://lmstudio.ai/), use these settings:
 
 ```python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.offline = True # Disables online features like Open Procedures
-interpreter.llm.model = "openai/x" # Tells OI to send messages in OpenAI's format
-interpreter.llm.api_key = "fake_key" # LiteLLM, which we use to talk to LM Studio, requires this
-interpreter.llm.api_base = "http://localhost:1234/v1" # Point this at any OpenAI compatible server
+probe.offline = True # Disables online features like Open Procedures
+probe.llm.model = "openai/x" # Tells OI to send messages in OpenAI's format
+probe.llm.api_key = "fake_key" # LiteLLM, which we use to talk to LM Studio, requires this
+probe.llm.api_base = "http://localhost:1234/v1" # Point this at any OpenAI compatible server
 
-interpreter.chat()
+probe.chat()
 ```
 
 Simply ensure that **LM Studio**, or any other OpenAI compatible server, is running at `api_base`.

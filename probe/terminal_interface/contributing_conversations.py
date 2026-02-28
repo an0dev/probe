@@ -22,7 +22,7 @@ def display_contribution_message():
 ---
 > We're training an open-source language model.
 
-Want to contribute? Run `interpreter --model i` to use our free, hosted model. Conversations with this `i` model will be used for training.
+Want to contribute? Run `probe --model i` to use our free, hosted model. Conversations with this `i` model will be used for training.
 
 """
     )
@@ -38,12 +38,12 @@ def display_contributing_current_message():
     )
 
 
-def send_past_conversations(interpreter):
-    past_conversations = get_all_conversations(interpreter)
+def send_past_conversations(probe):
+    past_conversations = get_all_conversations(probe)
     if len(past_conversations) > 0:
         print()
         print(
-            "We are about to send all previous conversations to Probe for training an open-source language model. Please make sure these don't contain any private information. Run `interpreter --conversations` to browse them."
+            "We are about to send all previous conversations to Probe for training an open-source language model. Please make sure these don't contain any private information. Run `probe --conversations` to browse them."
         )
         print()
         time.sleep(2)
@@ -57,13 +57,13 @@ def send_past_conversations(interpreter):
             print()
 
 
-def set_send_future_conversations(interpreter, should_send_future):
+def set_send_future_conversations(probe, should_send_future):
     write_key_to_profile("contribute_conversation", should_send_future)
     display_markdown_message(
         """
 > Probe will contribute conversations from now on. Thank you for your help!
 
-To change this, run `interpreter --profiles` and edit the `default.yaml` profile so "contribute_conversation" = False.
+To change this, run `probe --profiles` and edit the `default.yaml` profile so "contribute_conversation" = False.
 """
     )
 
@@ -80,11 +80,11 @@ def user_wants_to_contribute_future():
     return response.lower() == "y"
 
 
-def contribute_conversation_launch_logic(interpreter):
+def contribute_conversation_launch_logic(probe):
     contribution_cache = get_contribute_cache_contents()
 
-    if interpreter.will_contribute:
-        contribute_past_and_future_logic(interpreter, contribution_cache)
+    if probe.will_contribute:
+        contribute_past_and_future_logic(probe, contribution_cache)
     elif not contribution_cache["displayed_contribution_message"]:
         display_contribution_message()
 
@@ -101,16 +101,16 @@ class ContributionCache(TypedDict):
 
 # modifies the contribution cache!
 def contribute_past_and_future_logic(
-    interpreter, contribution_cache: ContributionCache
+    probe, contribution_cache: ContributionCache
 ):
     if not contribution_cache["asked_to_contribute_past"]:
         if user_wants_to_contribute_past():
-            send_past_conversations(interpreter)
+            send_past_conversations(probe)
         contribution_cache["asked_to_contribute_past"] = True
 
     if not contribution_cache["asked_to_contribute_future"]:
         if user_wants_to_contribute_future():
-            set_send_future_conversations(interpreter, True)
+            set_send_future_conversations(probe, True)
         contribution_cache["asked_to_contribute_future"] = True
 
     display_contributing_current_message()
@@ -142,12 +142,12 @@ def write_to_contribution_cache(contribution_cache: ContributionCache):
         json.dump(contribution_cache, file)
 
 
-def get_all_conversations(interpreter) -> List[List]:
+def get_all_conversations(probe) -> List[List]:
     def is_conversation_path(path: str):
         _, ext = os.path.splitext(path)
         return ext == ".json"
 
-    history_path = interpreter.conversation_history_path
+    history_path = probe.conversation_history_path
     all_conversations: List[List] = []
     conversation_files = (
         os.listdir(history_path) if os.path.exists(history_path) else []

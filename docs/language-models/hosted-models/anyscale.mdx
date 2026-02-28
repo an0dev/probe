@@ -7,15 +7,15 @@ To use Probe with a model from Anyscale, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model anyscale/<model-name>
+probe --model anyscale/<model-name>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
 # Set the model to use from Anyscale:
-interpreter.llm.model = "anyscale/<model-name>"
-interpreter.chat()
+probe.llm.model = "anyscale/<model-name>"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -33,19 +33,19 @@ We support the following completion models from Anyscale:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model anyscale/meta-llama/Llama-2-7b-chat-hf
-interpreter --model anyscale/meta-llama/Llama-2-13b-chat-hf
-interpreter --model anyscale/meta-llama/Llama-2-70b-chat-hf
-interpreter --model anyscale/mistralai/Mistral-7B-Instruct-v0.1
-interpreter --model anyscale/codellama/CodeLlama-34b-Instruct-hf
+probe --model anyscale/meta-llama/Llama-2-7b-chat-hf
+probe --model anyscale/meta-llama/Llama-2-13b-chat-hf
+probe --model anyscale/meta-llama/Llama-2-70b-chat-hf
+probe --model anyscale/mistralai/Mistral-7B-Instruct-v0.1
+probe --model anyscale/codellama/CodeLlama-34b-Instruct-hf
 ```
 
 ```python Python
-interpreter.llm.model = "anyscale/meta-llama/Llama-2-7b-chat-hf"
-interpreter.llm.model = "anyscale/meta-llama/Llama-2-13b-chat-hf"
-interpreter.llm.model = "anyscale/meta-llama/Llama-2-70b-chat-hf"
-interpreter.llm.model = "anyscale/mistralai/Mistral-7B-Instruct-v0.1"
-interpreter.llm.model = "anyscale/codellama/CodeLlama-34b-Instruct-hf"
+probe.llm.model = "anyscale/meta-llama/Llama-2-7b-chat-hf"
+probe.llm.model = "anyscale/meta-llama/Llama-2-13b-chat-hf"
+probe.llm.model = "anyscale/meta-llama/Llama-2-70b-chat-hf"
+probe.llm.model = "anyscale/mistralai/Mistral-7B-Instruct-v0.1"
+probe.llm.model = "anyscale/codellama/CodeLlama-34b-Instruct-hf"
 ```
 
 </CodeGroup>

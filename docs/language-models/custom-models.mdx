@@ -22,20 +22,20 @@ def custom_language_model(messages, model, stream, max_tokens):
 
 # Tell Probe to power the language model with this function
 
-interpreter.llm.completions = custom_language_model
+probe.llm.completions = custom_language_model
 ```
 
 Then, set the following settings:
 
 ```
-interpreter.llm.context_window = 2000 # In tokens
-interpreter.llm.max_tokens = 1000 # In tokens
-interpreter.llm.supports_vision = False # Does this completions endpoint accept images?
-interpreter.llm.supports_functions = False # Does this completions endpoint accept/return function calls?
+probe.llm.context_window = 2000 # In tokens
+probe.llm.max_tokens = 1000 # In tokens
+probe.llm.supports_vision = False # Does this completions endpoint accept images?
+probe.llm.supports_functions = False # Does this completions endpoint accept/return function calls?
 ```
 
 And start using it:
 
 ```
-interpreter.chat("Hi!") # Returns/displays "Hi!" character by character
+probe.chat("Hi!") # Returns/displays "Hi!" character by character
 ```

@@ -1,1 +1,1 @@
-Reach out to help@openinterpreter.com for support.
+Reach out to help@openprobe.com for support.

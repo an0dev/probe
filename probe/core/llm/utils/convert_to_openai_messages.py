@@ -11,7 +11,7 @@ def convert_to_openai_messages(
     function_calling=True,
     vision=False,
     shrink_images=True,
-    interpreter=None,
+    probe=None,
 ):
     """
     Converts LMC messages into OpenAI messages
@@ -45,10 +45,10 @@ def convert_to_openai_messages(
 
             if message["role"] == "user" and (
                 message == [m for m in messages if m["role"] == "user"][-1]
-                or interpreter.always_apply_user_message_template
+                or probe.always_apply_user_message_template
             ):
                 # Only add the template for the last message?
-                new_message["content"] = interpreter.user_message_template.replace(
+                new_message["content"] = probe.user_message_template.replace(
                     "{content}", message["content"]
                 )
             else:
@@ -84,7 +84,7 @@ def convert_to_openai_messages(
                 if "content" not in message:
                     print("What is this??", content)
                 if type(message["content"]) != str:
-                    if interpreter.debug:
+                    if probe.debug:
                         print("\n\n\nStrange chunk found:", message, "\n\n\n")
                     message["content"] = str(message["content"])
                 if message["content"].strip() == "":
@@ -96,17 +96,17 @@ def convert_to_openai_messages(
 
             else:
                 # This should be experimented with.
-                if interpreter.code_output_sender == "user":
+                if probe.code_output_sender == "user":
                     if message["content"].strip() == "":
-                        content = interpreter.empty_code_output_template
+                        content = probe.empty_code_output_template
                     else:
-                        content = interpreter.code_output_template.replace(
+                        content = probe.code_output_template.replace(
                             "{content}", message["content"]
                         )
 
                     new_message["role"] = "user"
                     new_message["content"] = content
-                elif interpreter.code_output_sender == "assistant":
+                elif probe.code_output_sender == "assistant":
                     new_message["role"] = "assistant"
                     new_message["content"] = (
                         "\n```output\n" + message["content"] + "\n```"

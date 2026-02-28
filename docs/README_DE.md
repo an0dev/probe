@@ -1,23 +1,22 @@
 <h1 align="center">● Probe</h1>
 
 <p align="center">
-        <img alt="Discord" src="https://img.shields.io/discord/1146610656779440188?logo=discord&style=flat&logoColor=white">
-    </a>
+
     <a href="README_ES.md"> <img src="https://img.shields.io/badge/Español-white.svg" alt="ES doc"/></a>
     <a href="README_JA.md"><img src="https://img.shields.io/badge/ドキュメント-日本語-white.svg" alt="JA doc"></a>
     <a href="README_ZH.md"><img src="https://img.shields.io/badge/文档-中文版-white.svg" alt="ZH doc"></a>
     <a href="../README.md"><img src="https://img.shields.io/badge/english-document-white.svg" alt="EN doc"></a>
-    <a href="https://github.com/OpenInterpreter/probe/blob/main/docs/README_UK.md"><img src="https://img.shields.io/badge/Українська-white.svg" alt="UK doc"/></a>
+    <a href="https://github.com/Probe/probe/blob/main/docs/README_UK.md"><img src="https://img.shields.io/badge/Українська-white.svg" alt="UK doc"/></a>
     <a href="../LICENSE"><img src="https://img.shields.io/static/v1?label=license&message=AGPL&color=white&style=flat" alt="License"/></a>
     <br><br>
     <b>Lassen Sie Sprachmodelle Code auf Ihrem Computer ausführen.</b><br>
-    Eine Open-Source, lokal laufende Implementierung von OpenAIs Code-Interpreter.<br>
-    <br><a href="https://openinterpreter.com">Erhalten Sie frühen Zugang zur Desktop-Anwendung.</a><br>
+    Eine Open-Source, lokal laufende Implementierung von OpenAIs Code-Probe.<br>
+    <br><a href="https://probe.com">Erhalten Sie frühen Zugang zur Desktop-Anwendung.</a><br>
 </p>
 
 <br>
 
-![poster](https://github.com/OpenInterpreter/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
+![poster](https://github.com/Probe/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
 
 <br>
 
@@ -26,12 +25,12 @@ pip install probe
 ```
 
 ```shell
-interpreter
+probe
 ```
 
 <br>
 
-**Probe** ermöglicht es LLMs (Language Models), Code (Python, Javascript, Shell und mehr) lokal auszuführen. Sie können mit Probe über eine ChatGPT-ähnliche Schnittstelle in Ihrem Terminal chatten, indem Sie $ interpreter nach der Installation ausführen.
+**Probe** ermöglicht es LLMs (Language Models), Code (Python, Javascript, Shell und mehr) lokal auszuführen. Sie können mit Probe über eine ChatGPT-ähnliche Schnittstelle in Ihrem Terminal chatten, indem Sie $ probe nach der Installation ausführen.
 
 Dies bietet eine natürliche Sprachschnittstelle zu den allgemeinen Fähigkeiten Ihres Computers:
 
@@ -46,7 +45,7 @@ Dies bietet eine natürliche Sprachschnittstelle zu den allgemeinen Fähigkeiten
 
 ## Demo
 
-https://github.com/OpenInterpreter/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
+https://github.com/Probe/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
 
 #### Eine interaktive Demo ist auch auf Google Colab verfügbar:
 
@@ -60,29 +59,29 @@ pip install probe
 
 ### Terminal
 
-Nach der Installation führen Sie einfach `interpreter` aus:
+Nach der Installation führen Sie einfach `probe` aus:
 
 ```shell
-interpreter
+probe
 ```
 
 ### Python
 
 ```python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.chat("Stellen Sie AAPL und METAs normalisierte Aktienpreise dar") # Führt einen einzelnen Befehl aus
-interpreter.chat() # Startet einen interaktiven Chat
+probe.chat("Stellen Sie AAPL und METAs normalisierte Aktienpreise dar") # Führt einen einzelnen Befehl aus
+probe.chat() # Startet einen interaktiven Chat
 ```
 
-## Vergleich zu ChatGPTs Code Interpreter
+## Vergleich zu ChatGPTs Code Probe
 
-OpenAIs Veröffentlichung des [Code Interpreters](https://openai.com/blog/chatgpt-plugins#code-interpreter) mit GPT-4 bietet eine fantastische Möglichkeit, reale Aufgaben mit ChatGPT zu erledigen.
+OpenAIs Veröffentlichung des [Code Probes](https://openai.com/blog/chatgpt-plugins#code-probe) mit GPT-4 bietet eine fantastische Möglichkeit, reale Aufgaben mit ChatGPT zu erledigen.
 
 Allerdings ist OpenAIs Dienst gehostet, Closed-Source und stark eingeschränkt:
 
 - Kein Internetzugang.
-- [Begrenzte Anzahl vorinstallierter Pakete](https://wfhbrian.com/mastering-chatgpts-code-interpreter-list-of-python-packages/).
+- [Begrenzte Anzahl vorinstallierter Pakete](https://wfhbrian.com/mastering-chatgpts-code-probe-list-of-python-packages/).
 - 100 MB maximale Uploadgröße, 120.0 Sekunden Laufzeitlimit.
 - Der Zustand wird gelöscht (zusammen mit allen generierten Dateien oder Links), wenn die Umgebung abstirbt.
 
@@ -90,7 +89,7 @@ Allerdings ist OpenAIs Dienst gehostet, Closed-Source und stark eingeschränkt:
 
 Probe überwindet diese Einschränkungen, indem es in Ihrer lokalen Umgebung läuft. Es hat vollen Zugang zum Internet, ist nicht durch Zeit oder Dateigröße eingeschränkt und kann jedes Paket oder jede Bibliothek nutzen.
 
-Dies kombiniert die Kraft von GPT-4s Code Interpreter mit der Flexibilität Ihrer lokalen Maschine.
+Dies kombiniert die Kraft von GPT-4s Code Probe mit der Flexibilität Ihrer lokalen Maschine.
 
 ## Sicherheitshinweis
 
@@ -98,7 +97,7 @@ Da generierter Code in deiner lokalen Umgebung ausgeführt wird, kann er mit dei
 
 **⚠️ Probe wird um Nutzerbestätigung bitten, bevor Code ausgeführt wird.**
 
-Du kannst `interpreter -y` ausführen oder `interpreter.auto_run = True` setzen, um diese Bestätigung zu umgehen, in diesem Fall:
+Du kannst `probe -y` ausführen oder `probe.auto_run = True` setzen, um diese Bestätigung zu umgehen, in diesem Fall:
 
 - Sei vorsichtig bei Befehlsanfragen, die Dateien oder Systemeinstellungen ändern.
 - Beobachte Probe wie ein selbstfahrendes Auto und sei bereit, den Prozess zu beenden, indem du dein Terminal schließt.
@@ -126,6 +125,6 @@ Probe ist unter der MIT-Lizenz lizenziert. Du darfst die Software verwenden, kop
 
 > Zugriff auf einen Junior-Programmierer zu haben, der mit der Geschwindigkeit deiner Fingerspitzen arbeitet ... kann neue Arbeitsabläufe mühelos und effizient machen sowie das Programmieren einem neuen Publikum öffnen.
 >
-> — _OpenAIs Code Interpreter Release_
+> — _OpenAIs Code Probe Release_
 
 <br>

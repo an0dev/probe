@@ -78,15 +78,15 @@ def chunk_responses(responses, tokens, llm):
 
 
 def fast_llm(llm, system_message, user_message):
-    old_messages = llm.interpreter.messages
-    old_system_message = llm.interpreter.system_message
+    old_messages = llm.probe.messages
+    old_system_message = llm.probe.system_message
     try:
-        llm.interpreter.system_message = system_message
-        llm.interpreter.messages = []
-        response = llm.interpreter.chat(user_message)
+        llm.probe.system_message = system_message
+        llm.probe.messages = []
+        response = llm.probe.chat(user_message)
     finally:
-        llm.interpreter.messages = old_messages
-        llm.interpreter.system_message = old_system_message
+        llm.probe.messages = old_messages
+        llm.probe.system_message = old_system_message
         return response[-1].get("content")
 
 
@@ -131,34 +131,34 @@ class Ai:
                 {"role": "user", "type": "image", "format": "base64", "content": base64}
             )
         response = ""
-        for chunk in self.computer.interpreter.llm.run(messages):
+        for chunk in self.computer.probe.llm.run(messages):
             if "content" in chunk:
                 response += chunk.get("content")
         return response
 
         # Old way
-        old_messages = self.computer.interpreter.llm.interpreter.messages
-        old_system_message = self.computer.interpreter.llm.interpreter.system_message
+        old_messages = self.computer.probe.llm.probe.messages
+        old_system_message = self.computer.probe.llm.probe.system_message
         old_import_computer_api = self.computer.import_computer_api
         old_execution_instructions = (
-            self.computer.interpreter.llm.execution_instructions
+            self.computer.probe.llm.execution_instructions
         )
         try:
-            self.computer.interpreter.llm.interpreter.system_message = (
+            self.computer.probe.llm.probe.system_message = (
                 "You are an AI assistant."
             )
-            self.computer.interpreter.llm.interpreter.messages = []
+            self.computer.probe.llm.probe.messages = []
             self.computer.import_computer_api = False
-            self.computer.interpreter.llm.execution_instructions = ""
+            self.computer.probe.llm.execution_instructions = ""
 
-            response = self.computer.interpreter.llm.interpreter.chat(text)
+            response = self.computer.probe.llm.probe.chat(text)
         finally:
-            self.computer.interpreter.llm.interpreter.messages = old_messages
-            self.computer.interpreter.llm.interpreter.system_message = (
+            self.computer.probe.llm.probe.messages = old_messages
+            self.computer.probe.llm.probe.system_message = (
                 old_system_message
             )
             self.computer.import_computer_api = old_import_computer_api
-            self.computer.interpreter.llm.execution_instructions = (
+            self.computer.probe.llm.execution_instructions = (
                 old_execution_instructions
             )
 
@@ -173,15 +173,15 @@ class Ai:
 
         # Split the text into chunks
         chunks = split_into_chunks(
-            text, chunk_size, self.computer.interpreter.llm, overlap
+            text, chunk_size, self.computer.probe.llm, overlap
         )
 
         # (Map) Query each chunk
-        responses = query_map_chunks(chunks, self.computer.interpreter.llm, query)
+        responses = query_map_chunks(chunks, self.computer.probe.llm, query)
 
         # (Reduce) Compress the responses
         response = query_reduce_chunks(
-            responses, self.computer.interpreter.llm, chunk_size, custom_reduce_query
+            responses, self.computer.probe.llm, chunk_size, custom_reduce_query
         )
 
         return response

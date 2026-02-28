@@ -12,14 +12,14 @@ title: Arguments
 
 #### `messages`
 
-This property holds a list of `messages` between the user and the interpreter.
+This property holds a list of `messages` between the user and the probe.
 
 You can use it to restore a conversation:
 
 ```python
-interpreter.chat("Hi! Can you print hello world?")
+probe.chat("Hi! Can you print hello world?")
 
-print(interpreter.messages)
+print(probe.messages)
 
 # This would output:
 
@@ -41,23 +41,23 @@ print(interpreter.messages)
 ]
 ```
 
-You can use this to restore `interpreter` to a previous conversation.
+You can use this to restore `probe` to a previous conversation.
 
 ```python
-interpreter.messages = messages # A list that resembles the one above
+probe.messages = messages # A list that resembles the one above
 ```
 
 ---
 
 #### `offline`
 
-<Info>This replaced `interpreter.local` in the New Computer Update (`0.2.0`).</Info>
+<Info>This replaced `probe.local` in the New Computer Update (`0.2.0`).</Info>
 
 This boolean flag determines whether to enable or disable some offline features like [open procedures](https://open-procedures.replit.app/).
 
 ```python
-interpreter.offline = True  # Check for updates, use procedures
-interpreter.offline = False  # Don't check for updates, don't use procedures
+probe.offline = True  # Check for updates, use procedures
+probe.offline = False  # Don't check for updates, don't use procedures
 ```
 
 Use this in conjunction with the `model` parameter to set your language model.
@@ -69,8 +69,8 @@ Use this in conjunction with the `model` parameter to set your language model.
 Setting this flag to `True` allows Probe to automatically run the generated code without user confirmation.
 
 ```python
-interpreter.auto_run = True  # Don't require user confirmation
-interpreter.auto_run = False  # Require user confirmation (default)
+probe.auto_run = True  # Don't require user confirmation
+probe.auto_run = False  # Require user confirmation (default)
 ```
 
 ---
@@ -80,8 +80,8 @@ interpreter.auto_run = False  # Require user confirmation (default)
 Use this boolean flag to toggle verbose mode on or off. Verbose mode will print information at every step to help diagnose problems.
 
 ```python
-interpreter.verbose = True  # Turns on verbose mode
-interpreter.verbose = False  # Turns off verbose mode
+probe.verbose = True  # Turns on verbose mode
+probe.verbose = False  # Turns off verbose mode
 ```
 
 ---
@@ -91,7 +91,7 @@ interpreter.verbose = False  # Turns off verbose mode
 This property sets the maximum number of tokens for the output response.
 
 ```python
-interpreter.max_output = 2000
+probe.max_output = 2000
 ```
 
 ---
@@ -101,8 +101,8 @@ interpreter.max_output = 2000
 A boolean flag to indicate if the conversation history should be stored or not.
 
 ```python
-interpreter.conversation_history = True  # To store history
-interpreter.conversation_history = False  # To not store history
+probe.conversation_history = True  # To store history
+probe.conversation_history = False  # To not store history
 ```
 
 ---
@@ -112,7 +112,7 @@ interpreter.conversation_history = False  # To not store history
 This property sets the filename where the conversation history will be stored.
 
 ```python
-interpreter.conversation_filename = "my_conversation.json"
+probe.conversation_filename = "my_conversation.json"
 ```
 
 ---
@@ -123,7 +123,7 @@ You can set the path where the conversation history will be stored.
 
 ```python
 import os
-interpreter.conversation_history_path = os.path.join("my_folder", "conversations")
+probe.conversation_history_path = os.path.join("my_folder", "conversations")
 ```
 
 ---
@@ -133,7 +133,7 @@ interpreter.conversation_history_path = os.path.join("my_folder", "conversations
 Specifies the language model to be used.
 
 ```python
-interpreter.llm.model = "gpt-3.5-turbo"
+probe.llm.model = "gpt-3.5-turbo"
 ```
 
 ---
@@ -143,7 +143,7 @@ interpreter.llm.model = "gpt-3.5-turbo"
 Sets the randomness level of the model's output.
 
 ```python
-interpreter.llm.temperature = 0.7
+probe.llm.temperature = 0.7
 ```
 
 ---
@@ -153,7 +153,7 @@ interpreter.llm.temperature = 0.7
 This stores the model's system message as a string. Explore or modify it:
 
 ```python
-interpreter.system_message += "\nRun all shell commands with -y."
+probe.system_message += "\nRun all shell commands with -y."
 ```
 
 ---
@@ -165,7 +165,7 @@ This manually sets the context window size in tokens.
 We try to guess the right context window size for you model, but you can override it with this parameter.
 
 ```python
-interpreter.llm.context_window = 16000
+probe.llm.context_window = 16000
 ```
 
 ---
@@ -175,7 +175,7 @@ interpreter.llm.context_window = 16000
 Sets the maximum number of tokens the model can generate in a single response.
 
 ```python
-interpreter.llm.max_tokens = 100
+probe.llm.max_tokens = 100
 ```
 
 ---
@@ -185,7 +185,7 @@ interpreter.llm.max_tokens = 100
 If you are using a custom API, you can specify its base URL here.
 
 ```python
-interpreter.llm.api_base = "https://api.example.com"
+probe.llm.api_base = "https://api.example.com"
 ```
 
 ---
@@ -195,7 +195,7 @@ interpreter.llm.api_base = "https://api.example.com"
 Set your API key for authentication.
 
 ```python
-interpreter.llm.api_key = "your_api_key_here"
+probe.llm.api_key = "your_api_key_here"
 ```
 
 ---
@@ -205,5 +205,5 @@ interpreter.llm.api_key = "your_api_key_here"
 This property sets the maximum budget limit for the session in USD.
 
 ```python
-interpreter.max_budget = 0.01 # 1 cent
+probe.max_budget = 0.01 # 1 cent
 ```

@@ -43,12 +43,12 @@ class Llm:
     A stateless LMC-style LLM with some helpful properties.
     """
 
-    def __init__(self, interpreter):
+    def __init__(self, probe):
         # Add the filter to the logger
         logger.addFilter(SuppressDebugFilter())
 
-        # Store a reference to parent interpreter
-        self.probe = interpreter
+        # Store a reference to parent probe
+        self.probe = probe
 
         # OpenAI-compatible chat completions "endpoint"
         self.completions = fixed_litellm_completions
@@ -79,7 +79,7 @@ class Llm:
     def run(self, messages):
         """
         We're responsible for formatting the call into the llm.completions object,
-        starting with LMC messages in interpreter.messages, going to OpenAI compatible messages into the llm,
+        starting with LMC messages in probe.messages, going to OpenAI compatible messages into the llm,
         respecting whether it's a vision or function model, respecting its context window and max tokens, etc.
 
         And then processing its output, whether it's a function or non function calling model, into LMC format.
@@ -150,7 +150,7 @@ class Llm:
         image_messages = [msg for msg in messages if msg["type"] == "image"]
         if self.supports_vision:
             if self.probe.os:
-                # Keep only the last two images if the interpreter is running in OS mode
+                # Keep only the last two images if the probe is running in OS mode
                 if len(image_messages) > 1:
                     for img_msg in image_messages[:-2]:
                         messages.remove(img_msg)
@@ -208,7 +208,7 @@ class Llm:
             function_calling=self.supports_functions,
             vision=self.supports_vision,
             shrink_images=self.probe.shrink_images,
-            interpreter=self.probe,
+            probe=self.probe,
         )
 
         system_message = messages[0]["content"]
@@ -244,7 +244,7 @@ class Llm:
                                 """
 **We were unable to determine the context window of this model.** Defaulting to 8000.
 
-If your model can handle more, run `interpreter --context_window {token limit} --max_tokens {max tokens per response}`.
+If your model can handle more, run `probe --context_window {token limit} --max_tokens {max tokens per response}`.
 
 Continuing...
                             """
@@ -457,7 +457,7 @@ def fixed_litellm_completions(**params):
                 and "api_key" not in params
             ):
                 print(
-                    "LiteLLM requires an API key. Trying again with a dummy API key. In the future, if this fixes it, please set a dummy API key to prevent this message. (e.g `interpreter --api_key x` or `self.api_key = 'x'`)"
+                    "LiteLLM requires an API key. Trying again with a dummy API key. In the future, if this fixes it, please set a dummy API key to prevent this message. (e.g `probe --api_key x` or `self.api_key = 'x'`)"
                 )
                 # So, let's try one more time with a dummy API key:
                 params["api_key"] = "x"

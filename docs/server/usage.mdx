@@ -6,17 +6,17 @@
 To start the server from the command line, use:
 
 ```bash
-interpreter --server
+probe --server
 ```
 
 ### From Python
 To start the server from within a Python script:
 
 ```python
-from interpreter import AsyncInterpreter
+from probe import AsyncProbe
 
-async_interpreter = AsyncInterpreter()
-async_interpreter.server.run(port=8000)  # Default port is 8000, but you can customize it
+async_probe = AsyncProbe()
+async_probe.server.run(port=8000)  # Default port is 8000, but you can customize it
 ```
 
 ## WebSocket API
@@ -25,7 +25,7 @@ async_interpreter.server.run(port=8000)  # Default port is 8000, but you can cus
 Connect to the WebSocket server at `ws://localhost:8000/`.
 
 ### Message Format
-Probe uses an extended version of OpenAI's message format called [LMC messages](https://docs.openinterpreter.com/protocols/lmc-messages) that allow for rich, multi-part messages. **Messages must be sent between start and end flags.** Here's the basic structure:
+Probe uses an extended version of OpenAI's message format called [LMC messages](https://github.com/an0dev/probe/blob/main/protocols/lmc-messages) that allow for rich, multi-part messages. **Messages must be sent between start and end flags.** Here's the basic structure:
 
 ```json
 {"role": "user", "start": true}
@@ -154,7 +154,7 @@ asyncio.run(websocket_interaction())
 ## HTTP API
 
 ### Modifying Settings
-To change server settings, send a POST request to `http://localhost:8000/settings`. The payload should conform to [the interpreter object's settings](https://docs.openinterpreter.com/settings/all-settings).
+To change server settings, send a POST request to `http://localhost:8000/settings`. The payload should conform to [the probe object's settings](https://github.com/an0dev/probe/settings/all-settings).
 
 Example:
 ```python
@@ -234,7 +234,7 @@ This will expose the server on port 8000 of your host machine.
 
 ## Acknowledgment Feature
 
-When the `INTERPRETER_REQUIRE_ACKNOWLEDGE` environment variable is set to `"True"`, the server requires clients to acknowledge each message received. This feature ensures reliable message delivery in environments where network stability might be a concern.
+When the `PROBE_REQUIRE_ACKNOWLEDGE` environment variable is set to `"True"`, the server requires clients to acknowledge each message received. This feature ensures reliable message delivery in environments where network stability might be a concern.
 
 ### How it works
 
@@ -287,37 +287,37 @@ asyncio.run(main())
 
 ### Enabling the Feature
 
-To enable this feature, set the `INTERPRETER_REQUIRE_ACKNOWLEDGE` environment variable to `"True"` before starting the server:
+To enable this feature, set the `PROBE_REQUIRE_ACKNOWLEDGE` environment variable to "True" before starting the server:
 
 ```bash
-export INTERPRETER_REQUIRE_ACKNOWLEDGE="True"
-interpreter --server
+export PROBE_REQUIRE_ACKNOWLEDGE="True"
+probe --server
 ```
 
 Or in Python:
 
 ```python
 import os
-os.environ["INTERPRETER_REQUIRE_ACKNOWLEDGE"] = "True"
+os.environ["PROBE_REQUIRE_ACKNOWLEDGE"] = "True"
 
-from interpreter import AsyncInterpreter
-async_interpreter = AsyncInterpreter()
-async_interpreter.server.run()
+from probe import AsyncProbe
+async_probe = AsyncProbe()
+async_probe.server.run()
 ```
 
 ## Advanced Usage: Accessing the FastAPI App Directly
 
-The FastAPI app is exposed at `async_interpreter.server.app`. This allows you to add custom routes or host the app using Uvicorn directly.
+The FastAPI app is exposed at `async_probe.server.app` (where `async_probe` is an instance of `AsyncProbe`). This allows you to add custom routes or host the app using Uvicorn directly.
 
 Example of adding a custom route and hosting with Uvicorn:
 
 ```python
-from interpreter import AsyncInterpreter
+from probe import AsyncProbe
 from fastapi import FastAPI
 import uvicorn
 
-async_interpreter = AsyncInterpreter()
-app = async_interpreter.server.app
+async_probe = AsyncProbe()
+app = async_probe.server.app
 
 @app.get("/custom")
 async def custom_route():
@@ -332,7 +332,7 @@ if __name__ == "__main__":
 1. Always handle the "complete" status message to ensure your client knows when the server has finished processing.
 2. If `auto_run` is set to `False`, remember to send the "go" command to execute code blocks and continue the interaction.
 3. Implement proper error handling in your client to manage potential connection issues, unexpected server responses, or server-sent error messages.
-4. Use the AsyncInterpreter class when working with the server in Python to ensure compatibility with asynchronous operations.
+4. Use the AsyncProbe class when working with the server in Python to ensure compatibility with asynchronous operations.
 5. Pay attention to the code execution review messages for important safety and operational information.
 6. Utilize the multi-part user message structure for complex inputs, including file paths and images.
 7. When sending file paths or image paths, ensure they are accessible to the server.

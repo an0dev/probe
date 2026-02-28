@@ -26,7 +26,7 @@ def run_function_calling_llm(llm, request_params):
 
     # Add languages OI has access to
     function_schema["parameters"]["properties"]["language"]["enum"] = [
-        i.name.lower() for i in llm.interpreter.computer.terminal.languages
+        i.name.lower() for i in llm.probe.computer.terminal.languages
     ]
     request_params["functions"] = [function_schema]
 
@@ -126,7 +126,7 @@ def run_function_calling_llm(llm, request_params):
                                 "content": code_delta,
                             }
                 else:
-                    if llm.interpreter.verbose:
+                    if llm.probe.verbose:
                         print("Arguments not a dict.")
 
             # Common hallucinations
@@ -134,7 +134,7 @@ def run_function_calling_llm(llm, request_params):
                 accumulated_deltas["function_call"]["name"] == "python"
                 or accumulated_deltas["function_call"]["name"] == "functions"
             ):
-                if llm.interpreter.verbose:
+                if llm.probe.verbose:
                     print("Got direct python call")
                 if language is None:
                     language = "python"

@@ -1,13 +1,13 @@
 import re
 
 
-def render_message(interpreter, message):
+def render_message(probe, message):
     """
     Renders a dynamic message into a string.
     """
 
-    previous_save_skills_setting = interpreter.computer.save_skills
-    interpreter.computer.save_skills = False
+    previous_save_skills_setting = probe.computer.save_skills
+    probe.computer.save_skills = False
 
     # Split the message into parts by {{ and }}, including multi-line strings
     parts = re.split(r"({{.*?}})", message, flags=re.DOTALL)
@@ -16,8 +16,8 @@ def render_message(interpreter, message):
         # If the part is enclosed in {{ and }}
         if part.startswith("{{") and part.endswith("}}"):
             # Run the code inside the brackets
-            output = interpreter.computer.run(
-                "python", part[2:-2].strip(), display=interpreter.verbose
+            output = probe.computer.run(
+                "python", part[2:-2].strip(), display=probe.verbose
             )
 
             # Extract the output content
@@ -35,12 +35,12 @@ def render_message(interpreter, message):
     rendered_message = "".join(parts).strip()
 
     if (
-        interpreter.debug == True and False  # DISABLED
+        probe.debug == True and False  # DISABLED
     ):  # debug will equal "server" if we're debugging the server specifically
         print("\n\n\nSYSTEM MESSAGE\n\n\n")
         print(rendered_message)
         print("\n\n\n")
 
-    interpreter.computer.save_skills = previous_save_skills_setting
+    probe.computer.save_skills = previous_save_skills_setting
 
     return rendered_message

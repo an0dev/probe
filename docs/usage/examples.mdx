@@ -29,16 +29,16 @@ description: Get started by copying these code snippets into your terminal, a `.
 
 ### Interactive Chat
 
-To start an interactive chat in your terminal, either run `interpreter` from the command line:
+To start an interactive chat in your terminal, either run `probe` from the command line:
 
 ```shell
-interpreter
+probe
 ```
 
-Or `interpreter.chat()` from a .py file:
+Or `probe.chat()` from a .py file:
 
 ```python
-interpreter.chat()
+probe.chat()
 ```
 
 ---
@@ -48,11 +48,11 @@ interpreter.chat()
 For more precise control, you can pass messages directly to `.chat(message)` in Python:
 
 ```python
-interpreter.chat("Add subtitles to all videos in /videos.")
+probe.chat("Add subtitles to all videos in /videos.")
 
 # ... Displays output in your terminal, completes task ...
 
-interpreter.chat("These look great but can you make the subtitles bigger?")
+probe.chat("These look great but can you make the subtitles bigger?")
 
 # ...
 ```
@@ -61,16 +61,16 @@ interpreter.chat("These look great but can you make the subtitles bigger?")
 
 ### Start a New Chat
 
-In your terminal, Probe behaves like ChatGPT and will not remember previous conversations. Simply run `interpreter` to start a new chat:
+In your terminal, Probe behaves like ChatGPT and will not remember previous conversations. Simply run `probe` to start a new chat:
 
 ```shell
-interpreter
+probe
 ```
 
 In Python, Probe remembers conversation history. If you want to start fresh, you can reset it:
 
 ```python
-interpreter.messages = []
+probe.messages = []
 ```
 
 ---
@@ -82,20 +82,20 @@ In your terminal, Probe will save previous conversations to `<your application d
 You can resume any of them by running `--conversations`. Use your arrow keys to select one , then press `ENTER` to resume it.
 
 ```shell
-interpreter --conversations
+probe --conversations
 ```
 
-In Python, `interpreter.chat()` returns a List of messages, which can be used to resume a conversation with `interpreter.messages = messages`:
+In Python, `probe.chat()` returns a List of messages, which can be used to resume a conversation with `probe.messages = messages`:
 
 ```python
 # Save messages to 'messages'
-messages = interpreter.chat("My name is Killian.")
+messages = probe.chat("My name is Killian.")
 
-# Reset interpreter ("Killian" will be forgotten)
-interpreter.messages = []
+# Reset probe ("Killian" will be forgotten)
+probe.messages = []
 
 # Resume chat from 'messages' ("Killian" will be remembered)
-interpreter.messages = messages
+probe.messages = messages
 ```
 
 ---
@@ -105,14 +105,14 @@ interpreter.messages = messages
 We save default settings to a profile which can be edited by running the following command:
 
 ```shell
-interpreter --profiles
+probe --profiles
 ```
 
 You can use this to set your default language model, system message (custom instructions), max budget, etc.
 
 <Info>
   **Note:** The Python library will also inherit settings from the default
-  profile file. You can change it by running `interpreter --profiles` and
+  profile file. You can change it by running `probe --profiles` and
   editing `default.yaml`.
 </Info>
 
@@ -125,10 +125,10 @@ In your terminal, modify the system message by [editing your configuration file 
 In Python, you can inspect and configure Probe's system message to extend its functionality, modify permissions, or give it more context.
 
 ```python
-interpreter.system_message += """
+probe.system_message += """
 Run shell commands with -y so the user doesn't have to confirm them.
 """
-print(interpreter.system_message)
+print(probe.system_message)
 ```
 
 ---
@@ -140,15 +140,15 @@ Probe uses [LiteLLM](https://docs.litellm.ai/docs/providers/) to connect to lang
 You can change the model by setting the model parameter:
 
 ```shell
-interpreter --model gpt-3.5-turbo
-interpreter --model claude-2
-interpreter --model command-nightly
+probe --model gpt-3.5-turbo
+probe --model claude-2
+probe --model command-nightly
 ```
 
 In Python, set the model on the object:
 
 ```python
-interpreter.llm.model = "gpt-3.5-turbo"
+probe.llm.model = "gpt-3.5-turbo"
 ```
 
 [Find the appropriate "model" string for your language model here.](https://docs.litellm.ai/docs/providers/)

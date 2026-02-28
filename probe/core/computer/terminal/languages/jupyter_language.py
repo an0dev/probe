@@ -94,7 +94,7 @@ import matplotlib.pyplot as plt
         self.last_output_message_time = time.time()
 
         ################################################################
-        ### OFFICIAL OPEN INTERPRETER GOVERNMENT ISSUE SKILL LIBRARY ###
+        ### OFFICIAL PROBE GOVERNMENT ISSUE SKILL LIBRARY ###
         ################################################################
 
         # try:
@@ -142,15 +142,15 @@ import matplotlib.pyplot as plt
                     return
                 # For async usage
                 if (
-                    hasattr(self.computer.interpreter, "stop_event")
-                    and self.computer.interpreter.stop_event.is_set()
+                    hasattr(self.computer.probe, "stop_event")
+                    and self.computer.probe.stop_event.is_set()
                 ):
                     self.km.interrupt_kernel()
                     self.finish_flag = True
                     return
                 try:
                     input_patience = int(
-                        os.environ.get("INTERPRETER_TERMINAL_INPUT_PATIENCE", 15)
+                        os.environ.get("PROBE_TERMINAL_INPUT_PATIENCE", 15)
                     )
                     if (
                         time.time() - self.last_output_time > input_patience
@@ -158,7 +158,7 @@ import matplotlib.pyplot as plt
                     ):
                         self.last_output_message_time = time.time()
 
-                        text = f"{self.computer.interpreter.messages}\n\nThe program above has been running for over 15 seconds. It might require user input. Are there keystrokes that the user should type in, to proceed after the last command?"
+                        text = f"{self.computer.probe.messages}\n\nThe program above has been running for over 15 seconds. It might require user input. Are there keystrokes that the user should type in, to proceed after the last command?"
                         if time.time() - self.last_output_time > 500:
                             text += f" If you think the process is frozen, or that the user wasn't expect it to run for this long (it has been {time.time() - self.last_output_time} seconds since last output) then say <input>CTRL-C</input>."
 
@@ -172,12 +172,12 @@ import matplotlib.pyplot as plt
                         ]
                         params = {
                             "messages": messages,
-                            "model": self.computer.interpreter.llm.model,
+                            "model": self.computer.probe.llm.model,
                             "stream": True,
                             "temperature": 0,
                         }
-                        if self.computer.interpreter.llm.api_key:
-                            params["api_key"] = self.computer.interpreter.llm.api_key
+                        if self.computer.probe.llm.api_key:
+                            params["api_key"] = self.computer.probe.llm.api_key
 
                         response = ""
                         for chunk in litellm.completion(**params):
@@ -323,8 +323,8 @@ import matplotlib.pyplot as plt
 
             # For async usage
             if (
-                hasattr(self.computer.interpreter, "stop_event")
-                and self.computer.interpreter.stop_event.is_set()
+                hasattr(self.computer.probe, "stop_event")
+                and self.computer.probe.stop_event.is_set()
             ):
                 self.finish_flag = True
                 break
@@ -369,7 +369,7 @@ def preprocess_python(code):
     # but don't do this if any line starts with ! or %
     if (
         not any(line.strip().startswith(("!", "%")) for line in code.split("\n"))
-        and os.environ.get("INTERPRETER_ACTIVE_LINE_DETECTION", "True").lower()
+        and os.environ.get("PROBE_ACTIVE_LINE_DETECTION", "True").lower()
         == "true"
     ):
         code = add_active_line_prints(code)

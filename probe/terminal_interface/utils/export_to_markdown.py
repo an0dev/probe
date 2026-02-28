@@ -6,7 +6,7 @@ def export_to_markdown(messages: list[dict], export_path: str):
 
 
 def messages_to_markdown(messages: list[dict]) -> str:
-    # Convert interpreter.messages to Markdown text
+    # Convert Probe messages to Markdown text
     markdown_content = ""
     previous_role = None
     for chunk in messages:

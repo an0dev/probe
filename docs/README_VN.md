@@ -12,12 +12,12 @@
     <br>
     <b>chạy mô hình ngôn ngữ trí tuệ nhân tạo trên máy tính của bạn.</b><br>
     Mã nguồn mở và ứng dụng phát triển dựa trên code của OpenAI.<br>
-    <br><a href="https://openinterpreter.com">Quyền truy cập sớm dành cho máy tính cá nhân</a>‎ ‎ |‎ ‎ <b><a href="https://docs.openinterpreter.com/">Tài liệu đọc tham khảo</a></b><br>
+    <br><a href="https://probe.com">Quyền truy cập sớm dành cho máy tính cá nhân</a>‎ ‎ |‎ ‎ <b><a href="https://docs.probe.com/">Tài liệu đọc tham khảo</a></b><br>
 </p>
 
 <br>
 
-![poster](https://github.com/OpenInterpreter/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
+![poster](https://github.com/Probe/probe/assets/63927363/08f0d493-956b-4d49-982e-67d4b20c4b56)
 
 <br>
 
@@ -26,12 +26,12 @@ pip install probe
 ```
 
 ```shell
-interpreter
+probe
 ```
 
 <br>
 
-**Probe** Chạy LLMs trên máy tính cục bộ (Có thể sử dụng ngôn ngữ Python, Javascript, Shell, và nhiều hơn thế). Bạn có thể nói chuyện với Probe thông qua giao diện giống với ChatGPT ngay trên terminal của bạn bằng cách chạy lệnh `$ interpreter` sau khi tải thành công.
+**Probe** Chạy LLMs trên máy tính cục bộ (Có thể sử dụng ngôn ngữ Python, Javascript, Shell, và nhiều hơn thế). Bạn có thể nói chuyện với Probe thông qua giao diện giống với ChatGPT ngay trên terminal của bạn bằng cách chạy lệnh `$ probe` sau khi tải thành công.
 
 Các tính năng chung giao diện ngôn ngữ mang llại
 
@@ -46,7 +46,7 @@ Các tính năng chung giao diện ngôn ngữ mang llại
 
 ## Thử nghiệm
 
-https://github.com/OpenInterpreter/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
+https://github.com/Probe/probe/assets/63927363/37152071-680d-4423-9af3-64836a6f7b60
 
 #### Bản thử nghiệm có sẵn trên Google Colab:
 
@@ -64,29 +64,29 @@ pip install probe
 
 ### Terminal
 
-Sau khi cài đặt, chạy dòng lệnh `interpreter`:
+Sau khi cài đặt, chạy dòng lệnh `probe`:
 
 ```shell
-interpreter
+probe
 ```
 
 ### Python
 
 ```python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.chat("Vẽ giá cổ phiếu đã bình hoá của AAPL và META ") # Chạy trên 1 dòng lệnh
-interpreter.chat() # Khởi động chat có khả năng tương tác
+probe.chat("Vẽ giá cổ phiếu đã bình hoá của AAPL và META ") # Chạy trên 1 dòng lệnh
+probe.chat() # Khởi động chat có khả năng tương tác
 ```
 
-## So sánh Code Interpreter của ChatGPT
+## So sánh Code Probe của ChatGPT
 
-Bản phát hành của OpenAI [Code Interpreter](https://openai.com/blog/chatgpt-plugins#code-interpreter) sử dụng GPT-4 tăng khả năng hoàn thiện vấn đề thực tiễn với ChatGPT.
+Bản phát hành của OpenAI [Code Probe](https://openai.com/blog/chatgpt-plugins#code-probe) sử dụng GPT-4 tăng khả năng hoàn thiện vấn đề thực tiễn với ChatGPT.
 
 Tuy nhiên, dịch vụ của OpenAI được lưu trữ, mã nguồn đóng, và rất hạn chế:
 
 - Không có truy cập Internet.
-- [Số lượng gói cài đặt hỗ trỡ có sẵn giới hạn](https://wfhbrian.com/mastering-chatgpts-code-interpreter-list-of-python-packages/).
+- [Số lượng gói cài đặt hỗ trỡ có sẵn giới hạn](https://wfhbrian.com/mastering-chatgpts-code-probe-list-of-python-packages/).
 - tốc độ tải tối đa 100 MB , thời gian chạy giới hạn 120.0 giây .
 - Trạng thái tin nhắn bị xoá kèm với các tệp và liên kết được tạo trước đó khi đóng môi trường lại.
 
@@ -103,22 +103,22 @@ Probe khắc phục những hạn chế này bằng cách chạy cục bộ trob
 ```python
 message = "Chúng ta đang ở trên hệ điều hành nào?"
 
-for chunk in interpreter.chat(message, display=False, stream=True):
+for chunk in probe.chat(message, display=False, stream=True):
   print(chunk)
 ```
 
 ### Trò chuyện tương tác
 
-Để tạo một cuộc trò chuyện tương tác từ terminal của bạn, chạy `interpreter` bằng dòng lệnh:
+Để tạo một cuộc trò chuyện tương tác từ terminal của bạn, chạy `probe` bằng dòng lệnh:
 
 ```shell
-interpreter
+probe
 ```
 
-hoặc `interpreter.chat()` từ file có đuôi .py :
+hoặc `probe.chat()` từ file có đuôi .py :
 
 ```python
-interpreter.chat()
+probe.chat()
 ```
 
 **Bạn cũng có thể phát trực tuyến từng đoạn:**
@@ -126,7 +126,7 @@ interpreter.chat()
 ```python
 message = "Chúng ta đang chạy trên hệ điều hành nào?"
 
-for chunk in interpreter.chat(message, display=False, stream=True):
+for chunk in probe.chat(message, display=False, stream=True):
   print(chunk)
 ```
 
@@ -135,11 +135,11 @@ for chunk in interpreter.chat(message, display=False, stream=True):
 Để kiểm soát tốt hơn, bạn chuyển tin nhắn qua `.chat(message)`:
 
 ```python
-interpreter.chat("Truyền phụ đề tới tất cả videos vào /videos.")
+probe.chat("Truyền phụ đề tới tất cả videos vào /videos.")
 
 # ... Truyền đầu ra đến thiết bị đầu cuối của bạn (terminal) hoàn thành tác vụ ...
 
-interpreter.chat("Nhìn đẹp đấy nhưng bạn có thể làm cho phụ đề lớn hơn được không?")
+probe.chat("Nhìn đẹp đấy nhưng bạn có thể làm cho phụ đề lớn hơn được không?")
 
 # ...
 ```
@@ -149,29 +149,29 @@ interpreter.chat("Nhìn đẹp đấy nhưng bạn có thể làm cho phụ đ�
 Trong Python, Probe ghi nhớ lịch sử hội thoại, nếu muốn bắt đầu lại từ đầu, bạn có thể cài thứ:
 
 ```python
-interpreter.messages = []
+probe.messages = []
 ```
 
 ### Lưu và khôi phục cuộc trò chuyện
 
-`interpreter.chat()` trả về danh sách tin nhắn, có thể được sử dụng để tiếp tục cuộc trò chuyện với `interpreter.messages = messages`:
+`probe.chat()` trả về danh sách tin nhắn, có thể được sử dụng để tiếp tục cuộc trò chuyện với `probe.messages = messages`:
 
 ```python
-messages = interpreter.chat("Tên của tôi là Killian.") # Lưu tin nhắn tới 'messages'
-interpreter.messages = [] # Khởi động lại trình phiên dịch ("Killian" sẽ bị lãng quên)
+messages = probe.chat("Tên của tôi là Killian.") # Lưu tin nhắn tới 'messages'
+probe.messages = [] # Khởi động lại trình phiên dịch ("Killian" sẽ bị lãng quên)
 
-interpreter.messages = messages # Tiếp tục cuộc trò chuyện từ 'messages' ("Killian" sẽ được ghi nhớ)
+probe.messages = messages # Tiếp tục cuộc trò chuyện từ 'messages' ("Killian" sẽ được ghi nhớ)
 ```
 
 ### Cá nhân hoá tin nhắn từ hệ thống
 
-Bạn có thể kiếm tra và điều chỉnh tin nhắn hệ thống từ Optừ Interpreter để mở rộng chức năng của nó, thay đổi quyền, hoặc đưa cho nó nhiều ngữ cảnh hơn.
+Bạn có thể kiếm tra và điều chỉnh tin nhắn hệ thống từ Optừ Probe để mở rộng chức năng của nó, thay đổi quyền, hoặc đưa cho nó nhiều ngữ cảnh hơn.
 
 ```python
-interpreter.system_message += """
+probe.system_message += """
 Chạy shell commands với -y để người dùng không phải xác nhận chúng.
 """
-print(interpreter.system_message)
+print(probe.system_message)
 ```
 
 ### Thay đổi mô hình ngôn ngữ
@@ -181,15 +181,15 @@ Probe sử dụng mô hình [LiteLLM](https://docs.litellm.ai/docs/providers/) �
 Bạn có thể thay đổi mô hình ngôn ngữ bằng cách thay đổi tham số mô hình:
 
 ```shell
-interpreter --model gpt-3.5-turbo
-interpreter --model claude-2
-interpreter --model command-nightly
+probe --model gpt-3.5-turbo
+probe --model claude-2
+probe --model command-nightly
 ```
 
 Ở trong Python, đổi model bằng cách thay đổi đối tượng:
 
 ```python
-interpreter.llm.model = "gpt-3.5-turbo"
+probe.llm.model = "gpt-3.5-turbo"
 ```
 
 [Tìm tên chuỗi "mô hình" phù hợp cho mô hình ngôn ngữ của bạn ở đây.](https://docs.litellm.ai/docs/providers/)
@@ -198,7 +198,7 @@ interpreter.llm.model = "gpt-3.5-turbo"
 
 Probe có thể sử dụng máy chủ tương thích với OpenAI để chạy các mô hình cục bộ. (LM Studio, jan.ai, ollama, v.v.)
 
-Chỉ cần chạy `interpreter` với URL api_base của máy chủ suy luận của bạn (đối với LM studio, nó là `http://localhost:1234/v1` theo mặc định):
+Chỉ cần chạy `probe` với URL api_base của máy chủ suy luận của bạn (đối với LM studio, nó là `http://localhost:1234/v1` theo mặc định):
 
 ```vỏ
 trình thông dịch --api_base "http://localhost:1234/v1" --api_key "fake_key"
@@ -230,17 +230,17 @@ Bạn có thể thay đổi `max_tokens` và `context_window` (ở trong các) o
 Ở chế độ cục bộ, các cửa sổ ngữ cảnh sẽ tiêu ít RAM hơn, vậy nên chúng tôi khuyến khích dùng cửa sổ nhỏ hơn (~1000) nếu như nó chạy không ổn định / hoặc nếu nó chậm. Đảm bảo rằng `max_tokens` ít hơn `context_window`.
 
 ```shell
-interpreter --local --max_tokens 1000 --context_window 3000
+probe --local --max_tokens 1000 --context_window 3000
 ```
 
 ### Chế độ sửa lỗi
 
 Để giúp đóng góp kiểm tra Probe, thì chế độ `--verbose` hơi dài dòng.
 
-Bạn có thể khởi động chế độ sửa lỗi bằng cách sử dụng cờ (`interpreter --verbose`), hoặc mid-chat:
+Bạn có thể khởi động chế độ sửa lỗi bằng cách sử dụng cờ (`probe --verbose`), hoặc mid-chat:
 
 ```shell
-$ interpreter
+$ probe
 ...
 > %verbose true <- Khởi động chế độ gỡ lỗi
 
@@ -270,7 +270,7 @@ Probe cho phép bạn thiết lập các tác vụ mặc định bằng cách s�
 Chạy lệnh sau để mở tệp cấu hình:
 
 ```
-interpreter --config
+probe --config
 ```
 
 #### Cấu hình cho nhiều tệp
@@ -282,13 +282,13 @@ Probe hỗ trợ nhiều file `config.yaml`, cho phép bạn dễ dàng chuyển
 Để tạo hoặc chỉnh sửa cấu hình mới, hãy chạy:
 
 ```
-interpreter --config --config_file $config_path
+probe --config --config_file $config_path
 ```
 
 Để yêu cầu Probe chạy một tệp cấu hình cụ thể, hãy chạy:
 
 ```
-interpreter --config_file $config_path
+probe --config_file $config_path
 ```
 
 **Chú ý**: Thay đổi `$config_path` với tên hoặc đường dẫn đến tệp cấu hình của bạn.
@@ -297,12 +297,12 @@ interpreter --config_file $config_path
 
 1. Tạo mới một file `config.turbo.yaml`
    ```
-   interpreter --config --config_file config.turbo.yaml
+   probe --config --config_file config.turbo.yaml
    ```
 2. Chạy file `config.turbo.yaml`để đặt lại `model` thành `gpt-3.5-turbo`
 3. Chạy Probe với cấu hình `config.turbo.yaml
    ```
-   interpreter --config_file config.turbo.yaml
+   probe --config_file config.turbo.yaml
    ```
 
 ##### Ví dụ Python
@@ -311,16 +311,16 @@ Bạn cũng có thể tải các tệp cấu hình khi gọi Probe từ tập l�
 
 ```python
 import os
-from interpreter import interpreter
+from probe import probe
 
 currentPath = os.path.dirname(os.path.abspath(__file__))
 config_path=os.path.join(currentPath, './config.test.yaml')
 
-interpreter.extend_config(config_path=config_path)
+probe.extend_config(config_path=config_path)
 
 message = "What operating system are we on?"
 
-for chunk in interpreter.chat(message, display=False, stream=True):
+for chunk in probe.chat(message, display=False, stream=True):
   print(chunk)
 ```
 
@@ -333,21 +333,21 @@ Bản cập nhật trình tạo cho phép điều khiển Trình thông dịch m
 
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
-from interpreter import interpreter
+from probe import probe
 
 app = FastAPI()
 
 @app.get("/chat")
 def chat_endpoint(message: str):
     def event_stream():
-        for result in interpreter.chat(message, stream=True):
+        for result in probe.chat(message, stream=True):
             yield f"data: {result}\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
 @app.get("/history")
 def history_endpoint():
-    return interpreter.messages
+    return probe.messages
 ```
 
 ```shell
@@ -361,7 +361,7 @@ Vì mã được tạo được thực thi trong môi trường cục bộ của
 
 **⚠️ Probe sẽ yêu cầu xác nhận của người dùng trước khi chạy code.**
 
-Bạn có thể chạy `interpreter -y` hoặc đặt `interpreter.auto_run = True` để bỏ qua xác nhận này, trong trường hợp đó:
+Bạn có thể chạy `probe -y` hoặc đặt `probe.auto_run = True` để bỏ qua xác nhận này, trong trường hợp đó:
 
 - Hãy thận trọng khi yêu cầu các lệnh sửa đổi tệp hoặc cài đặt hệ thống.
 - Theo dõi Probe giống như một chiếc ô tô tự lái và sẵn sàng kết thúc quá trình bằng cách đóng terminal của bạn.

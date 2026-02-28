@@ -2,15 +2,15 @@
 
 **Probe is large, open-source initiative to build a standard interface between language models and computers.**
 
-There are many ways to contribute, from helping others on [Github](https://github.com/OpenInterpreter/probe/issues) or [Discord](https://discord.gg/6p3fD6rBVm), writing documentation, or improving code.
+There are many ways to contribute, from helping others on [GitHub](https://github.com/Probe/probe/issues), writing documentation, or improving code.
 
 We depend on contributors like you. Let's build this.
 
 ## What should I work on?
 
-First, please familiarize yourself with our [project scope](https://github.com/OpenInterpreter/probe/blob/main/docs/ROADMAP.md#whats-in-our-scope). Then, pick up a task from our [roadmap](https://github.com/OpenInterpreter/probe/blob/main/docs/ROADMAP.md) or work on solving an [issue](https://github.com/OpenInterpreter/probe/issues).
+First, please familiarize yourself with our [project scope](https://github.com/Probe/probe/blob/main/docs/ROADMAP.md#whats-in-our-scope). Then, pick up a task from our [roadmap](https://github.com/Probe/probe/blob/main/docs/ROADMAP.md) or work on solving an [issue](https://github.com/Probe/probe/issues).
 
-If you encounter a bug or have a feature in mind, don't hesitate to [open a new issue](https://github.com/OpenInterpreter/probe/issues/new/choose).
+If you encounter a bug or have a feature in mind, don't hesitate to [open a new issue](https://github.com/Probe/probe/issues/new/choose).
 
 ## Philosophy
 
@@ -18,25 +18,25 @@ This is a minimalist, **tightly scoped** project that places a premium on simpli
 
 # Contribution Guidelines
 
-1. Before taking on significant code changes, please discuss your ideas on [Discord](https://discord.gg/6p3fD6rBVm) to ensure they align with our vision. We want to keep the codebase simple and unintimidating for new users.
+1. Before taking on significant code changes, please discuss your ideas via the GitHub issue tracker to ensure they align with our vision. We want to keep the codebase simple and unintimidating for new users.
 2. Fork the repository and create a new branch for your work.
-3. Follow the [Running Your Local Fork](https://github.com/OpenInterpreter/probe/blob/main/docs/CONTRIBUTING.md#running-your-local-fork) guide below.
+3. Follow the [Running Your Local Fork](https://github.com/Probe/probe/blob/main/docs/CONTRIBUTING.md#running-your-local-fork) guide below.
 4. Make changes with clear code comments explaining your approach. Try to follow existing conventions in the code.
-5. Follow the [Code Formatting and Linting](https://github.com/OpenInterpreter/probe/blob/main/docs/CONTRIBUTING.md#code-formatting-and-linting) guide below.
+5. Follow the [Code Formatting and Linting](https://github.com/Probe/probe/blob/main/docs/CONTRIBUTING.md#code-formatting-and-linting) guide below.
 6. Open a PR into `main` linking any related issues. Provide detailed context on your changes.
 
 We will review PRs when possible and work with you to integrate your contribution. Please be patient as reviews take time. Once approved, your code will be merged.
 
 ## Running Your Local Fork
 
-**Note: for anyone testing the new `--local`, `--os`, and `--local --os` modes: When you run `poetry install` you aren't installing the optional dependencies and it'll throw errors. To test `--local` mode, run `poetry install -E local`. To test `--os` mode, run `poetry install -E os`. To test `--local --os` mode, run `poetry install -E local -E os`. You can edit the system messages for these modes in `interpreter/terminal_interface/profiles/defaults`.**
+**Note: for anyone testing the new `--local`, `--os`, and `--local --os` modes: When you run `poetry install` you aren't installing the optional dependencies and it'll throw errors. To test `--local` mode, run `poetry install -E local`. To test `--os` mode, run `poetry install -E os`. To test `--local --os` mode, run `poetry install -E local -E os`. You can edit the system messages for these modes in `probe/terminal_interface/profiles/defaults`.**
 
 Once you've forked the code and created a new branch for your work, you can run the fork in CLI mode by following these steps:
 
 1. CD into the project folder by running `cd probe`.
 2. Install `poetry` [according to their documentation](https://python-poetry.org/docs/#installing-with-pipx), which will create a virtual environment for development + handle dependencies.
 3. Install dependencies by running `poetry install`.
-4. Run the program with `poetry run interpreter`. Run tests with `poetry run pytest -s -x`.
+4. Run the program with `poetry run probe`. Run tests with `poetry run pytest -s -x`.
 
 **Note**: This project uses [`black`](https://black.readthedocs.io/en/stable/index.html) and [`isort`](https://pypi.org/project/isort/) via a [`pre-commit`](https://pre-commit.com/) hook to ensure consistent code style. If you need to bypass it for some reason, you can `git commit` with the `--no-verify` flag.
 
@@ -54,7 +54,7 @@ For some, `poetry install` might hang on some dependencies. As a first step, try
 
 `export PYTHON_KEYRING_BACKEND=keyring.backends.fail.Keyring`
 
-Then run `poetry install` again. If this doesn't work, please join our [Discord community](https://discord.gg/6p3fD6rBVm) for help.
+Then run `poetry install` again. If this doesn't work, please open an issue on GitHub for help.
 
 ## Code Formatting and Linting
 
@@ -86,6 +86,6 @@ Contributions to Probe would be under the MIT license before version 0.2.0, or u
 
 # Questions?
 
-Join our [Discord community](https://discord.gg/6p3fD6rBVm) and post in the #General channel to connect with contributors. We're happy to guide you through your first open source contribution to this project!
+Join the GitHub discussions or issues to connect with contributors. We're happy to guide you through your first open source contribution to this project!
 
 **Thank you for your dedication and understanding as we continue refining our processes. As we explore this extraordinary new technology, we sincerely appreciate your involvement.**

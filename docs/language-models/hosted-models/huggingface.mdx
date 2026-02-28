@@ -7,14 +7,14 @@ To use Probe with Huggingface models, set the `model` flag:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --model huggingface/<huggingface-model>
+probe --model huggingface/<huggingface-model>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.model = "huggingface/<huggingface-model>"
-interpreter.chat()
+probe.llm.model = "huggingface/<huggingface-model>"
+probe.chat()
 ```
 
 </CodeGroup>
@@ -23,14 +23,14 @@ You may also need to specify your Huggingface api base url:
 <CodeGroup>
 
 ```bash Terminal
-interpreter --api_base <https://my-endpoint.huggingface.cloud>
+probe --api_base <https://my-endpoint.huggingface.cloud>
 ```
 
 ```python Python
-from interpreter import interpreter
+from probe import probe
 
-interpreter.llm.api_base = "https://my-endpoint.huggingface.cloud"
-interpreter.chat()
+probe.llm.api_base = "https://my-endpoint.huggingface.cloud"
+probe.chat()
 ```
 
 </CodeGroup>

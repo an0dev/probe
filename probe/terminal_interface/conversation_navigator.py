@@ -13,12 +13,12 @@ from .render_past_conversation import render_past_conversation
 from .utils.local_storage_path import get_storage_path
 
 
-def conversation_navigator(interpreter):
+def conversation_navigator(probe):
     import time
 
     conversations_dir = get_storage_path("conversations")
 
-    interpreter.display_message(
+    probe.display_message(
         f"""> Conversations are stored in "`{conversations_dir}`".
     
     Select a conversation to resume.
@@ -83,12 +83,12 @@ def conversation_navigator(interpreter):
     # Pass the data into render_past_conversation
     render_past_conversation(messages)
 
-    # Set the interpreter's settings to the loaded messages
-    interpreter.messages = messages
-    interpreter.conversation_filename = selected_filename
+    # Set the probe's settings to the loaded messages
+    probe.messages = messages
+    probe.conversation_filename = selected_filename
 
     # Start the chat
-    interpreter.chat()
+    probe.chat()
 
 
 def open_folder(path):
