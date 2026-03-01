@@ -14,6 +14,9 @@ from .conversation_navigator import conversation_navigator
 from .profiles.profiles import open_storage_dir, profile, reset_profile
 from .utils.check_for_update import check_for_update
 from .validate_llm_settings import validate_llm_settings
+# New: provider selection and API key validation helpers
+from probe.terminal_interface import provider_selection
+from probe.core.utils import api_key_validation
 
 
 def start_terminal_interface(probe):
@@ -409,7 +412,11 @@ Use """ to write multi-line messages.
         return
 
     if args.version:
-        probe_version = version("probe")
+        try:
+            probe_version = version("probe")
+        except Exception:
+            # Fallback if version detection fails
+            probe_version = "unknown"
         update_name = "Developer Preview"  # Change this with each major update
         print(f"Probe {probe_version} {update_name}")
         return
@@ -557,9 +564,44 @@ Use """ to write multi-line messages.
     if not args.server:
         # This SHOULD RUN WHEN THE SERVER STARTS. But it can't rn because
         # if you don't have an API key, a prompt shows up, breaking the whole thing.
-        validate_llm_settings(
-            probe
-        )  # This should actually just run probe.llm.load() once that's == to validate_llm_settings
+        try:
+            # If user did not pass --model on the CLI, show provider selection menu (non-fatal)
+            if not args.model:
+                # debug
+                if hasattr(probe, 'debug') and probe.debug:
+                    print("[debug] invoking provider_selection")
+                try:
+                    sel = provider_selection.select_provider(
+                        display_message_func=probe.display_message
+                    )
+                    if sel:
+                        probe.llm.model = provider_selection.get_default_model_for_provider(
+                            sel
+                        )
+                except Exception as exc:
+                    # Best-effort: provider selection must not crash startup
+                    if hasattr(probe, 'debug') and probe.debug:
+                        print(f"Provider selection failed: {exc}", file=sys.stderr)
+
+            # Validate LLM settings (including prompting for API keys) but do not crash on failure
+            try:
+                validate_llm_settings(probe)
+            except KeyboardInterrupt:
+                raise
+            except EOFError:
+                raise
+            except Exception as e:
+                if hasattr(probe, 'debug') and probe.debug:
+                    print(f"LLM validation warning: {str(e)}", file=sys.stderr)
+                # Continue even if validation had issues
+        except KeyboardInterrupt:
+            raise
+        except EOFError:
+            raise
+        except Exception:
+            # Defensive: do not allow provider/validation issues to stop startup
+            if hasattr(probe, 'debug') and probe.debug:
+                print("Unexpected error in LLM setup, continuing", file=sys.stderr)
 
     if args.server:
         probe.server.run()
@@ -571,11 +613,27 @@ Use """ to write multi-line messages.
 
     # Standard in mode
     if args.stdin:
-        stdin_input = input()
-        probe.plain_text_display = True
-        probe.chat(stdin_input)
+        try:
+            stdin_input = input()
+            probe.plain_text_display = True
+            probe.chat(stdin_input)
+        except (KeyboardInterrupt, EOFError):
+            # User cancelled input
+            pass
+        except Exception as e:
+            # Log error if in debug mode
+            if hasattr(probe, 'debug') and probe.debug:
+                print(f"Error during stdin chat: {str(e)}", file=sys.stderr)
+            raise
     else:
-        probe.chat()
+        try:
+            probe.chat()
+        except (KeyboardInterrupt, EOFError):
+            # User cancelled chat
+            pass
+        except Exception:
+            # Re-raise other exceptions
+            raise
 
 
 def set_attributes(args, arguments):
@@ -615,5 +673,24 @@ def main():
             probe.computer.terminate()
         except KeyboardInterrupt:
             pass
+        except Exception:
+            pass
+    except EOFError:
+        # Handle pipe closure or Ctrl+D
+        try:
+            probe.computer.terminate()
+        except Exception:
+            pass
+    except Exception as e:
+        # Log the error but try to clean up
+        try:
+            probe.computer.terminate()
+        except Exception:
+            pass
+        # Re-raise the exception after cleanup
+        raise
     finally:
-        probe.computer.terminate()
+        try:
+            probe.computer.terminate()
+        except Exception:
+            pass

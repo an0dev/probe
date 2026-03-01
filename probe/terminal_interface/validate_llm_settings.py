@@ -9,6 +9,7 @@ from prompt_toolkit import prompt
 from probe.terminal_interface.contributing_conversations import (
     contribute_conversation_launch_logic,
 )
+from probe.core.utils import api_key_validation
 
 
 def validate_llm_settings(probe):
@@ -54,16 +55,26 @@ def validate_llm_settings(probe):
                     """
                     )
 
-                    response = prompt("OpenAI API key: ", is_password=True)
-
-                    if response == "probe --local":
-                        print(
-                            "\nType `probe --local` again to use a local language model.\n"
+                    # Use centralized API key validation flow
+                    try:
+                        api_key = api_key_validation.validate_api_key_interactive(
+                            provider="openai",
+                            max_attempts=3,
+                            display_message_func=probe.display_message,
+                            show_setup_instructions=True,
                         )
+                    except (KeyboardInterrupt, EOFError):
+                        raise
+                    except Exception:
+                        api_key = None
+
+                    if api_key == "probe --local":
+                        print("\nType `probe --local` again to use a local language model.\n")
                         exit()
 
-                    probe.display_message(
-                        """
+                    if api_key:
+                        probe.display_message(
+                            """
 
                     **Tip:** To save this key for later, run one of the following and then restart your terminal. 
                     MacOS: `echo 'export OPENAI_API_KEY=your_api_key' >> ~/.zshrc`
@@ -71,11 +82,15 @@ def validate_llm_settings(probe):
                     Windows: `setx OPENAI_API_KEY your_api_key`
                     
                     ---"""
-                    )
-
-                    probe.llm.api_key = response
-                    time.sleep(2)
-                    break
+                        )
+                        probe.llm.api_key = api_key
+                        time.sleep(1)
+                        break
+                    else:
+                        # No valid key obtained, show instructions and continue the loop so user can try again
+                        probe.display_message("No valid OpenAI API key provided.")
+                        time.sleep(0.5)
+                        # continue the while loop to allow retry
 
             # This is a model we don't have checks for yet.
             break

@@ -165,17 +165,21 @@ class Probe:
         try:
             self.responding = True
             if self.anonymous_telemetry:
-                message_type = type(
-                    message
-                ).__name__  # Only send message type, no content
-                send_telemetry(
-                    "started_chat",
-                    properties={
-                        "in_terminal_interface": self.in_terminal_interface,
-                        "message_type": message_type,
-                        "os_mode": self.os,
-                    },
-                )
+                try:
+                    message_type = type(
+                        message
+                    ).__name__  # Only send message type, no content
+                    send_telemetry(
+                        "started_chat",
+                        properties={
+                            "in_terminal_interface": self.in_terminal_interface,
+                            "message_type": message_type,
+                            "os_mode": self.os,
+                        },
+                    )
+                except Exception:
+                    # Telemetry should never crash the chat function
+                    pass
 
             if not blocking:
                 chat_thread = threading.Thread(
@@ -201,16 +205,20 @@ class Probe:
         except Exception as e:
             self.responding = False
             if self.anonymous_telemetry:
-                message_type = type(message).__name__
-                send_telemetry(
-                    "errored",
-                    properties={
-                        "error": str(e),
-                        "in_terminal_interface": self.in_terminal_interface,
-                        "message_type": message_type,
-                        "os_mode": self.os,
-                    },
-                )
+                try:
+                    message_type = type(message).__name__
+                    send_telemetry(
+                        "errored",
+                        properties={
+                            "error": str(e),
+                            "in_terminal_interface": self.in_terminal_interface,
+                            "message_type": message_type,
+                            "os_mode": self.os,
+                        },
+                    )
+                except Exception:
+                    # Telemetry should never crash error handling
+                    pass
 
             raise
 

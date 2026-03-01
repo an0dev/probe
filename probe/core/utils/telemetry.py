@@ -14,8 +14,9 @@ import json
 import os
 import threading
 import uuid
+import sys
 
-from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError
 import requests
 
 
@@ -44,11 +45,82 @@ def get_or_create_uuid():
 user_id = get_or_create_uuid()
 
 
-def send_telemetry(event_name, properties=None):
-    if properties is None:
-        properties = {}
-    properties["oi_version"] = version("probe")
+def _get_package_version():
+    """
+    Try multiple methods to get the package version.
+    Returns "unknown" as last resort if all methods fail.
+    This function ensures telemetry never crashes due to version detection.
+    """
+    # Method 1: Try importlib.metadata.version()
     try:
+        from importlib.metadata import version
+        return version("probe")
+    except Exception:
+        pass
+    
+    # Method 2: Try pkg_resources.get_distribution()
+    try:
+        import pkg_resources
+        return pkg_resources.get_distribution("probe").version
+    except Exception:
+        pass
+    
+    # Method 3: Try reading package.__version__  
+    try:
+        import probe
+        if hasattr(probe, '__version__'):
+            return probe.__version__
+    except Exception:
+        pass
+    
+    # Method 4: Try reading VERSION or version.txt files
+    try:
+        probe_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        version_files = [
+            os.path.join(probe_dir, "VERSION"),
+            os.path.join(probe_dir, "version.txt"),
+            os.path.join(probe_dir, "probe", "VERSION"),
+            os.path.join(probe_dir, "probe", "version.txt"),
+        ]
+        for version_file in version_files:
+            if os.path.exists(version_file):
+                with open(version_file, 'r') as f:
+                    version_str = f.read().strip()
+                    if version_str:
+                        return version_str
+    except Exception:
+        pass
+    
+    # Method 5: Try reading pyproject.toml for version
+    try:
+        probe_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        pyproject_path = os.path.join(probe_dir, "pyproject.toml")
+        if os.path.exists(pyproject_path):
+            import re
+            with open(pyproject_path, 'r') as f:
+                content = f.read()
+                match = re.search(r'version\s*=\s*["\']([^"\']+)["\']', content)
+                if match:
+                    return match.group(1)
+    except Exception:
+        pass
+    
+    # Last resort: return "unknown"
+    return "unknown"
+
+
+def send_telemetry(event_name, properties=None):
+    """
+    Send anonymous telemetry event. This function should NEVER raise exceptions
+    or crash the application. All errors are silently caught.
+    """
+    try:
+        if properties is None:
+            properties = {}
+        
+        # Get version with multiple fallback methods - this will never raise
+        properties["oi_version"] = _get_package_version()
+        
         url = "https://app.posthog.com/capture"
         headers = {"Content-Type": "application/json"}
         data = {
@@ -57,6 +129,8 @@ def send_telemetry(event_name, properties=None):
             "properties": properties,
             "distinct_id": user_id,
         }
-        requests.post(url, headers=headers, data=json.dumps(data))
-    except:
+        requests.post(url, headers=headers, data=json.dumps(data), timeout=2)
+    except Exception:
+        # Telemetry should NEVER crash the application
+        # Silently catch all exceptions
         pass
